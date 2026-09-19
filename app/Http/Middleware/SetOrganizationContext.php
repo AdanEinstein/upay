@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Models\Organization;
+use App\Support\Tenant;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpFoundation\Response;
+
+class SetOrganizationContext
+{
+    /**
+     * Resolve the organization from the {organization} route slug, verify the
+     * authenticated user belongs to it, and make it the active tenant for the
+     * duration of the request.
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        $organization = Organization::query()
+            ->where('slug', $request->route('organization'))
+            ->firstOrFail();
+
+        abort_unless($organization->isActive(), 404);
+
+        if ($user = $request->user()) {
+            abort_unless($user->organization_id === $organization->id, 403);
+        }
+
+        Tenant::use($organization);
+        URL::defaults(['organization' => $organization->slug]);
+
+        try {
+            return $next($request);
+        } finally {
+            Tenant::forget();
+        }
+    }
+}

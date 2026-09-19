@@ -1,0 +1,15 @@
+{
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "name": "Name",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "logIn": "Log in",
+    "logOut": "Log out",
+    "settings": "Settings"
+}

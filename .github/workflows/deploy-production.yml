@@ -1,0 +1,244 @@
+# Importado do field-core como ponto de partida (runner self-hosted, deploy
+# via docker compose). Desativado no repo-template (workflow_dispatch apenas)
+# pra não gastar Actions minutes aqui — e porque o template não tem
+# docker-compose.prod.yml/secrets de deploy próprios. Adapte nome do app,
+# secrets e docker-compose.*.yml em projetos derivados antes de reativar os
+# triggers push/tags.
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  # cancelling mid-deploy can kill `migrate --force` partway through, leaving
+  # the schema half-migrated. Queue instead so each deploy finishes.
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # ponytail: no shivammathur/setup-php here -- that action installs via
+      # apt/sudo, which hangs on a self-hosted runner without root.
+      #
+      # Build the CI toolchain image once (cached across runs -- same
+      # Dockerfile content = same layer cache hit), then run composer/npm
+      # AS THE HOST USER (--user), so vendor/, node_modules/, public/build/
+      # and the wayfinder-generated resources/js/actions|routes/ come out
+      # owned by the runner user instead of root. Learned the hard way:
+      # root-owned output in the workspace breaks actions/checkout's own
+      # cleanup on the next run.
+      - name: Build CI toolchain image
+        run: |
+          cat > /tmp/field-core-ci.Dockerfile << 'EOF'
+          FROM php:8.4-cli-alpine
+          RUN apk add --no-cache nodejs npm git unzip curl \
+              && curl -sSLf -o /usr/local/bin/install-php-extensions \
+                  https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
+              && chmod +x /usr/local/bin/install-php-extensions \
+              && install-php-extensions mbstring xml pdo_sqlite sqlite3 gd \
+              && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          EOF
+          docker build -t field-core-ci:8.4 -f /tmp/field-core-ci.Dockerfile /tmp
+
+      - name: Install deps, build assets, lint/type-check/test
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
+            -v "$PWD":/app -w /app field-core-ci:8.4 sh -c '
+              set -e
+              composer install --no-interaction --prefer-dist --optimize-autoloader
+              npm ci
+              cp .env.example .env
+              php artisan key:generate
+              npm run build
+              composer ci:check
+            '
+
+      - name: Clean workspace
+        if: always()
+        run: rm -rf vendor node_modules public/build .env bootstrap/cache/*.php
+
+  deploy:
+    needs: verify
+    runs-on: self-hosted
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Resolve image tag
+        id: tag
+        run: echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Write .env.production
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          APP_URL: ${{ secrets.APP_URL }}
+          SUPER_ADMIN_NAME: ${{ secrets.SUPER_ADMIN_NAME }}
+          SUPER_ADMIN_USERNAME: ${{ secrets.SUPER_ADMIN_USERNAME }}
+          SUPER_ADMIN_EMAIL: ${{ secrets.SUPER_ADMIN_EMAIL }}
+          SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+          AWS_URL: ${{ secrets.AWS_URL }}
+          AWS_ENDPOINT: ${{ secrets.AWS_ENDPOINT }}
+          REVERB_APP_ID: ${{ secrets.REVERB_APP_ID }}
+          REVERB_APP_KEY: ${{ secrets.REVERB_APP_KEY }}
+          REVERB_APP_SECRET: ${{ secrets.REVERB_APP_SECRET }}
+          REVERB_HOST: ${{ secrets.REVERB_HOST }}
+          REVERB_PORT: ${{ secrets.REVERB_PORT }}
+          REVERB_SCHEME: ${{ secrets.REVERB_SCHEME }}
+          MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
+          MAIL_HOST: ${{ secrets.MAIL_HOST }}
+          MAIL_PORT: ${{ secrets.MAIL_PORT }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: ${{ secrets.VAPID_SUBJECT }}
+        run: |
+          cat > .env.production <<EOF
+          APP_NAME=FieldCore
+          APP_ENV=production
+          APP_DEBUG=false
+          APP_KEY=${APP_KEY}
+          APP_URL=${APP_URL}
+          APP_VERSION=${{ steps.tag.outputs.tag }}
+
+          APP_LOCALE=pt_BR
+          APP_FALLBACK_LOCALE=en
+
+          SUPER_ADMIN_NAME=${SUPER_ADMIN_NAME}
+          SUPER_ADMIN_USERNAME=${SUPER_ADMIN_USERNAME}
+          SUPER_ADMIN_EMAIL=${SUPER_ADMIN_EMAIL}
+          SUPER_ADMIN_PASSWORD=${SUPER_ADMIN_PASSWORD}
+
+          LOG_CHANNEL=stack
+          LOG_LEVEL=error
+
+          DB_CONNECTION=pgsql
+          DB_HOST=${DB_HOST}
+          DB_PORT=${DB_PORT}
+          DB_DATABASE=${DB_DATABASE}
+          DB_USERNAME=${DB_USERNAME}
+          DB_PASSWORD=${DB_PASSWORD}
+          DB_SSLMODE=${DB_SSLMODE}
+
+          SESSION_DRIVER=redis
+          SESSION_LIFETIME=120
+          SESSION_SAME_SITE=lax
+          SESSION_SECURE_COOKIE=true
+
+          SANCTUM_TOKEN_PREFIX=fldc_
+
+          BROADCAST_CONNECTION=reverb
+          FILESYSTEM_DISK=s3
+          QUEUE_CONNECTION=database
+          CACHE_STORE=redis
+
+          # server-to-server: talk to the redis container directly on the
+          # docker network (same pattern as REVERB_INTERNAL_HOST below).
+          REDIS_CLIENT=predis
+          REDIS_HOST=redis
+          REDIS_PORT=6379
+
+          REVERB_APP_ID=${REVERB_APP_ID}
+          REVERB_APP_KEY=${REVERB_APP_KEY}
+          REVERB_APP_SECRET=${REVERB_APP_SECRET}
+          REVERB_HOST=${REVERB_HOST}
+          REVERB_PORT=${REVERB_PORT}
+          REVERB_SCHEME=${REVERB_SCHEME}
+
+          # server-to-server publishing: talk to the reverb container directly
+          # on the docker network, not through the public domain/proxy above.
+          REVERB_INTERNAL_HOST=reverb
+          REVERB_INTERNAL_PORT=8080
+          REVERB_INTERNAL_SCHEME=http
+
+          AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+          AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+          AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+          AWS_BUCKET=${AWS_BUCKET}
+          AWS_URL=${AWS_URL}
+          AWS_ENDPOINT=${AWS_ENDPOINT}
+          AWS_USE_PATH_STYLE_ENDPOINT=true
+
+          MAIL_MAILER=${MAIL_MAILER}
+          MAIL_HOST=${MAIL_HOST}
+          MAIL_PORT=${MAIL_PORT}
+          MAIL_USERNAME=${MAIL_USERNAME}
+          MAIL_PASSWORD=${MAIL_PASSWORD}
+          MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
+          MAIL_FROM_NAME=FieldCore
+          RESEND_API_KEY=${RESEND_API_KEY}
+
+          VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+          VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+          VAPID_SUBJECT=${VAPID_SUBJECT}
+          EOF
+
+      - name: Build image
+        env:
+          VITE_APP_NAME: FieldCore
+          VITE_REVERB_APP_KEY: ${{ secrets.REVERB_APP_KEY }}
+          VITE_REVERB_HOST: ${{ secrets.REVERB_HOST }}
+          VITE_REVERB_PORT: ${{ secrets.REVERB_PORT }}
+          VITE_REVERB_SCHEME: ${{ secrets.REVERB_SCHEME }}
+          VITE_VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+        run: |
+          docker build \
+            --build-arg VITE_APP_NAME="${VITE_APP_NAME}" \
+            --build-arg VITE_REVERB_APP_KEY="${VITE_REVERB_APP_KEY}" \
+            --build-arg VITE_REVERB_HOST="${VITE_REVERB_HOST}" \
+            --build-arg VITE_REVERB_PORT="${VITE_REVERB_PORT}" \
+            --build-arg VITE_REVERB_SCHEME="${VITE_REVERB_SCHEME}" \
+            --build-arg VITE_VAPID_PUBLIC_KEY="${VITE_VAPID_PUBLIC_KEY}" \
+            -t field-core:${{ steps.tag.outputs.tag }} \
+            -t field-core:latest \
+            .
+
+      - name: Deploy
+        env:
+          PORT: ${{ secrets.PORT }}
+          REVERB_PORT: ${{ secrets.REVERB_PORT }}
+          IMAGE_TAG: ${{ steps.tag.outputs.tag }}
+        run: docker compose -f docker-compose.prod.yml up -d
+
+      - name: Dump container logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.prod.yml logs --tail=100
+
+      - name: Health check
+        env:
+          PORT: ${{ secrets.PORT }}
+        run: |
+          sleep 10
+          curl -f http://127.0.0.1:${PORT}/up || exit 1
+
+      - name: Clean up unused docker resources
+        if: always()
+        run: |
+          docker container prune -f
+          docker image prune -f
+          docker builder prune -f --filter "until=72h"
+          # keep only the 5 most recent versioned field-core images, drop the rest
+          docker images field-core --format '{{.Tag}} {{.CreatedAt}}' \
+            | grep -v '^latest ' \
+            | sort -rk2 \
+            | tail -n +6 \
+            | awk '{print $1}' \
+            | xargs -r -I{} docker rmi -f field-core:{} || true

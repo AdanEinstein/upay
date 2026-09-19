@@ -1,0 +1,32 @@
+{
+    "login": {
+        "title": "Super admin",
+        "description": "Entre para gerenciar a plataforma"
+    },
+    "organizations": {
+        "title": "Organizações",
+        "heading": "Organizações",
+        "description": "Gerencie todos os tenants da plataforma",
+        "new": "Nova organização",
+        "name": "Nome",
+        "slug": "Slug",
+        "status": "Status",
+        "users": "Usuários",
+        "actions": "Ações",
+        "edit": "Editar",
+        "delete": "Excluir",
+        "deleteConfirm": "Tem certeza de que deseja excluir esta organização? Esta ação não pode ser desfeita.",
+        "active": "Ativa",
+        "suspended": "Suspensa",
+        "create": {
+            "title": "Nova organização",
+            "heading": "Nova organização",
+            "description": "Crie um novo tenant na plataforma"
+        },
+        "edit_page": {
+            "title": "Editar organização",
+            "heading": "Editar organização",
+            "description": "Atualize os dados deste tenant"
+        }
+    }
+}

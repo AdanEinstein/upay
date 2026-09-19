@@ -1,0 +1,13 @@
+{
+    "organizationSettings": {
+        "title": "Configurações da organização",
+        "heading": "Organização",
+        "description": "Atualize a identidade visual da sua organização",
+        "logo": "Logotipo",
+        "favicon": "Favicon",
+        "accentColor": "Cor de destaque",
+        "accentColorHover": "Cor de destaque (hover)",
+        "accentColorSoft": "Cor de destaque (suave)",
+        "onPrimaryColor": "Texto sobre o destaque"
+    }
+}

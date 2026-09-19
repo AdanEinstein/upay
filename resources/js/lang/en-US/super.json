@@ -1,0 +1,32 @@
+{
+    "login": {
+        "title": "Super admin",
+        "description": "Sign in to manage the platform"
+    },
+    "organizations": {
+        "title": "Organizations",
+        "heading": "Organizations",
+        "description": "Manage every tenant on the platform",
+        "new": "New organization",
+        "name": "Name",
+        "slug": "Slug",
+        "status": "Status",
+        "users": "Users",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleteConfirm": "Are you sure you want to delete this organization? This cannot be undone.",
+        "active": "Active",
+        "suspended": "Suspended",
+        "create": {
+            "title": "New organization",
+            "heading": "New organization",
+            "description": "Create a new tenant on the platform"
+        },
+        "edit_page": {
+            "title": "Edit organization",
+            "heading": "Edit organization",
+            "description": "Update this tenant's details"
+        }
+    }
+}

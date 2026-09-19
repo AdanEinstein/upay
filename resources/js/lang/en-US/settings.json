@@ -1,0 +1,43 @@
+{
+    "title": "Settings",
+    "description": "Manage your profile and account settings",
+    "nav": {
+        "profile": "Profile",
+        "security": "Security",
+        "appearance": "Appearance",
+        "language": "Language"
+    },
+    "profile": {
+        "title": "Profile settings",
+        "heading": "Profile",
+        "description": "Update your name and email address",
+        "namePlaceholder": "Full name"
+    },
+    "security": {
+        "title": "Security settings",
+        "heading": "Update password",
+        "description": "Ensure your account is using a long, random password to stay secure"
+    },
+    "appearance": {
+        "title": "Appearance settings",
+        "heading": "Appearance settings",
+        "description": "Update the appearance settings for your account",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    },
+    "language": {
+        "title": "Language settings",
+        "heading": "Language",
+        "description": "Choose the language used across the app"
+    },
+    "deleteAccount": {
+        "heading": "Delete account",
+        "description": "Delete your account and all of its resources",
+        "warning": "Warning",
+        "warningDescription": "Please proceed with caution, this cannot be undone.",
+        "button": "Delete account",
+        "confirmTitle": "Are you sure you want to delete your account?",
+        "confirmDescription": "Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account."
+    }
+}

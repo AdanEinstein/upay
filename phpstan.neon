@@ -1,0 +1,26 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - bootstrap/app.php
+        - config/
+        - database/
+        - routes/
+
+    excludePaths:
+        # Published verbatim from laravel/pulse; pre-existing type issues in
+        # the package's own code, not ours to fix here.
+        - config/pulse.php
+        - database/migrations/*_create_pulse_tables.php
+
+    level: 7
+
+    ignoreErrors:
+        -
+            # Template infrastructure: not used by any model here, but meant
+            # to be applied by tenant-scoped models in projects built on this template.
+            identifier: trait.unused
+            path: app/Models/Concerns/BelongsToTenant.php

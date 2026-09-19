@@ -1,0 +1,80 @@
+<?php
+
+namespace Tests\Feature\Settings;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ProfileUpdateTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_profile_page_is_displayed()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('profile.edit', ['organization' => $user->organization->slug]));
+
+        $response->assertOk();
+    }
+
+    public function test_profile_information_can_be_updated()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch(route('profile.update', ['organization' => $user->organization->slug]), [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('profile.edit', ['organization' => $user->organization->slug]));
+
+        $user->refresh();
+
+        $this->assertSame('Test User', $user->name);
+        $this->assertSame('test@example.com', $user->email);
+    }
+
+    public function test_user_can_delete_their_account()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->delete(route('profile.destroy', ['organization' => $user->organization->slug]), [
+                'password' => 'password',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('home'));
+
+        $this->assertGuest();
+        $this->assertNull($user->fresh());
+    }
+
+    public function test_correct_password_must_be_provided_to_delete_account()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('profile.edit', ['organization' => $user->organization->slug]))
+            ->delete(route('profile.destroy', ['organization' => $user->organization->slug]), [
+                'password' => 'wrong-password',
+            ]);
+
+        $response
+            ->assertSessionHasErrors('password')
+            ->assertRedirect(route('profile.edit', ['organization' => $user->organization->slug]));
+
+        $this->assertNotNull($user->fresh());
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "organizationSettings": {
+        "title": "Organization settings",
+        "heading": "Organization",
+        "description": "Update your organization's branding",
+        "logo": "Logo",
+        "favicon": "Favicon",
+        "accentColor": "Accent color",
+        "accentColorHover": "Accent color (hover)",
+        "accentColorSoft": "Accent color (soft)",
+        "onPrimaryColor": "Text on accent"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "name": "Nome",
+    "email": "Endereço de e-mail",
+    "password": "Senha",
+    "confirmPassword": "Confirmar senha",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "logIn": "Entrar",
+    "logOut": "Sair",
+    "settings": "Configurações"
+}
