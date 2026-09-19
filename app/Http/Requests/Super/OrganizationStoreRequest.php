@@ -6,6 +6,7 @@ use App\Models\Organization;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class OrganizationStoreRequest extends FormRequest
 {
@@ -28,6 +29,9 @@ class OrganizationStoreRequest extends FormRequest
                 Rule::notIn(Organization::RESERVED_SLUGS),
                 'unique:organizations,slug',
             ],
+            'admin_name' => ['required', 'string', 'max:255'],
+            'admin_email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'admin_password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 }
