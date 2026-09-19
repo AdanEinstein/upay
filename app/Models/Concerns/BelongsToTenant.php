@@ -24,12 +24,16 @@ trait BelongsToTenant
         });
 
         static::creating(function (Model $model) {
-            if (Tenant::check() && ! $model->organization_id) {
-                $model->organization_id = Tenant::id();
+            if (Tenant::check() && ! $model->getAttribute('organization_id')) {
+                $model->setAttribute('organization_id', Tenant::id());
             }
         });
     }
 
+    /**
+     * @param  Builder<static>  $builder
+     * @return Builder<static>
+     */
     public function scopeWithoutTenant(Builder $builder): Builder
     {
         return $builder->withoutGlobalScope('tenant');
