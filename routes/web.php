@@ -18,3 +18,7 @@ Route::middleware(['auth', SetOrganizationContext::class])
 
         require __DIR__.'/settings.php';
     });
+
+// Registered after the tenant group so an organization slug always wins over `/p/...`.
+// The token maps to `customers.public_token` (see docs/database-schema.md).
+Route::inertia('p/{token}', 'public/debt')->name('public.debt');

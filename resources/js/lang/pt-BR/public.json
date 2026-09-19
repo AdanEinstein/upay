@@ -1,0 +1,17 @@
+{
+    "title": "Minhas compras",
+    "greeting": "Olá, {{name}}",
+    "totalOpen": "Total em aberto",
+    "allPaid": "Tudo pago, obrigado!",
+    "installments": "O que falta pagar",
+    "history": "Já pago",
+    "installmentOf": "Parcela {{number}}/{{total}}",
+    "dueOn": "vence em {{date}}",
+    "paidOn": "pago em {{date}}",
+    "pending": "A vencer",
+    "overdue": "Atrasada",
+    "copyPix": "Copiar código PIX",
+    "copied": "Código PIX copiado",
+    "copyFailed": "Não foi possível copiar o código",
+    "pixHint": "Cole no app do seu banco em Pix > Copia e Cola."
+}

@@ -1,3 +1,34 @@
 {
-    "title": "Dashboard"
+    "title": "Dashboard",
+    "defaultStore": "My store",
+    "greeting": "Hi, {{store}}",
+    "subtitle": "Your business at a glance",
+    "stats": {
+        "salesToday": "Sales today",
+        "toReceive": "To receive",
+        "expensesMonth": "Expenses this month",
+        "profitMonth": "Profit this month"
+    },
+    "lowStock": {
+        "title": "Low stock",
+        "left_one": "{{count}} left",
+        "left_other": "{{count}} left"
+    },
+    "receivables": {
+        "title": "To receive",
+        "dueOn": "Due {{date}}",
+        "overdue": "Overdue",
+        "charge": "Charge",
+        "chargeText": "Hi, {{name}}! See what's left to pay: {{url}}"
+    },
+    "actions": {
+        "newSale": "New sale",
+        "quickTitle": "What do you want to record?",
+        "quickDescription": "Pick a quick action.",
+        "registerSale": "Record sale",
+        "registerExpense": "Record expense",
+        "addCustomer": "New customer",
+        "shareCatalog": "Share catalog",
+        "shareCatalogText": "Check out {{store}}'s catalog!"
+    }
 }

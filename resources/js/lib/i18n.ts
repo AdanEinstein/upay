@@ -6,6 +6,7 @@ import authEnUS from '@/lang/en-US/auth.json';
 import commonEnUS from '@/lang/en-US/common.json';
 import dashboardEnUS from '@/lang/en-US/dashboard.json';
 import navEnUS from '@/lang/en-US/nav.json';
+import publicEnUS from '@/lang/en-US/public.json';
 import settingsEnUS from '@/lang/en-US/settings.json';
 import superEnUS from '@/lang/en-US/super.json';
 import adminPtBR from '@/lang/pt-BR/admin.json';
@@ -13,6 +14,7 @@ import authPtBR from '@/lang/pt-BR/auth.json';
 import commonPtBR from '@/lang/pt-BR/common.json';
 import dashboardPtBR from '@/lang/pt-BR/dashboard.json';
 import navPtBR from '@/lang/pt-BR/nav.json';
+import publicPtBR from '@/lang/pt-BR/public.json';
 import settingsPtBR from '@/lang/pt-BR/settings.json';
 import superPtBR from '@/lang/pt-BR/super.json';
 
@@ -26,6 +28,7 @@ export const resources = {
         settings: settingsPtBR,
         admin: adminPtBR,
         dashboard: dashboardPtBR,
+        public: publicPtBR,
         super: superPtBR,
     },
     'en-US': {
@@ -35,6 +38,7 @@ export const resources = {
         settings: settingsEnUS,
         admin: adminEnUS,
         dashboard: dashboardEnUS,
+        public: publicEnUS,
         super: superEnUS,
     },
 } as const;
