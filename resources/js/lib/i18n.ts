@@ -9,6 +9,7 @@ import navEnUS from '@/lang/en-US/nav.json';
 import publicEnUS from '@/lang/en-US/public.json';
 import settingsEnUS from '@/lang/en-US/settings.json';
 import superEnUS from '@/lang/en-US/super.json';
+import welcomeEnUS from '@/lang/en-US/welcome.json';
 import adminPtBR from '@/lang/pt-BR/admin.json';
 import authPtBR from '@/lang/pt-BR/auth.json';
 import commonPtBR from '@/lang/pt-BR/common.json';
@@ -17,6 +18,7 @@ import navPtBR from '@/lang/pt-BR/nav.json';
 import publicPtBR from '@/lang/pt-BR/public.json';
 import settingsPtBR from '@/lang/pt-BR/settings.json';
 import superPtBR from '@/lang/pt-BR/super.json';
+import welcomePtBR from '@/lang/pt-BR/welcome.json';
 
 export const defaultNS = 'common';
 
@@ -30,6 +32,7 @@ export const resources = {
         dashboard: dashboardPtBR,
         public: publicPtBR,
         super: superPtBR,
+        welcome: welcomePtBR,
     },
     'en-US': {
         common: commonEnUS,
@@ -40,6 +43,7 @@ export const resources = {
         dashboard: dashboardEnUS,
         public: publicEnUS,
         super: superEnUS,
+        welcome: welcomeEnUS,
     },
 } as const;
 

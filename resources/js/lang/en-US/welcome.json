@@ -1,0 +1,15 @@
+{
+    "title": "Your sales and payments, in one place",
+    "subtitle": "Log sales, track the installments you're owed and send a payment reminder on WhatsApp — all from your phone.",
+    "form": {
+        "label": "Your store address",
+        "placeholder": "my-store",
+        "submit": "Go to my store",
+        "error": "Enter your store address, using only letters, numbers and hyphens."
+    },
+    "platformAccess": "Platform access",
+    "preview": {
+        "store": "Ana's Boutique",
+        "item": "Floral dress"
+    }
+}
