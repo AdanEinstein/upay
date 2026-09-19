@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Super\ErrorOccurrenceController;
 use App\Http\Controllers\Super\OrganizationController;
 use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::prefix('super-admin')->name('super-admin.')->group(function () {
     Route::middleware('auth:super_admin')->group(function () {
         Route::post('logout', [SuperAdminController::class, 'destroy'])->name('logout');
 
-        Route::resource('organizations', OrganizationController::class)->except('show');
+        Route::resource('organizations', OrganizationController::class)
+            ->only(['index', 'store', 'update', 'destroy']);
+
+        Route::get('errors', [ErrorOccurrenceController::class, 'index'])->name('errors.index');
     });
 });

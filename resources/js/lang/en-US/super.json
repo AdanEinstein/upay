@@ -1,7 +1,15 @@
 {
+    "brand": "Super admin",
     "login": {
         "title": "Super admin",
         "description": "Sign in to manage the platform"
+    },
+    "nav": {
+        "menu": "Open menu",
+        "menuDescription": "Browse the platform area",
+        "organizations": "Organizations",
+        "errors": "Errors",
+        "pulse": "Pulse"
     },
     "organizations": {
         "title": "Organizations",
@@ -15,18 +23,80 @@
         "actions": "Actions",
         "edit": "Edit",
         "delete": "Delete",
-        "deleteConfirm": "Are you sure you want to delete this organization? This cannot be undone.",
         "active": "Active",
         "suspended": "Suspended",
-        "create": {
-            "title": "New organization",
-            "heading": "New organization",
-            "description": "Create a new tenant on the platform"
+        "search": "Search by name or slug",
+        "empty": "No organizations yet. Create the first one to get started.",
+        "noResults": "No organization matches that search.",
+        "kpi": {
+            "total": "Organizations",
+            "active": "Active",
+            "suspended": "Suspended",
+            "users": "Users"
         },
-        "edit_page": {
-            "title": "Edit organization",
-            "heading": "Edit organization",
-            "description": "Update this tenant's details"
+        "dialog": {
+            "createTitle": "New organization",
+            "createDescription": "Create a tenant and its first administrator.",
+            "editTitle": "Edit organization",
+            "editDescription": "Update this tenant's details.",
+            "adminSection": "First administrator",
+            "adminName": "Administrator name",
+            "adminEmail": "Administrator email",
+            "adminPassword": "Administrator password",
+            "adminPasswordConfirmation": "Confirm password",
+            "create": "Create organization"
+        },
+        "deleteDialog": {
+            "title": "Delete organization",
+            "description": "This removes {{name}} along with all of its data and users. This action cannot be undone.",
+            "confirm": "Delete organization"
+        },
+        "toast": {
+            "created": "Organization created and administrator provisioned.",
+            "updated": "Organization updated.",
+            "deleted": "Organization deleted."
+        }
+    },
+    "errors": {
+        "title": "Errors",
+        "heading": "Errors",
+        "description": "HTTP failures recorded across the platform",
+        "kpi": {
+            "last24h": "Last 24 hours",
+            "last7d": "Last 7 days"
+        },
+        "filters": {
+            "status": "Status",
+            "allStatuses": "All statuses",
+            "organization": "Organization",
+            "allOrganizations": "All organizations",
+            "clear": "Clear filters"
+        },
+        "table": {
+            "when": "When",
+            "status": "Status",
+            "path": "Route",
+            "organization": "Organization",
+            "exception": "Exception",
+            "details": "View details"
+        },
+        "empty": "No errors recorded. Good sign.",
+        "noOrganization": "No organization",
+        "detail": {
+            "title": "Error details",
+            "description": "{{method}} /{{path}}",
+            "message": "Message",
+            "user": "User",
+            "trace": "Stack trace",
+            "noTrace": "No stack trace recorded.",
+            "copy": "Copy details",
+            "copied": "Details copied.",
+            "copyFailed": "Could not copy."
+        },
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "summary": "Page {{current}} of {{last}}"
         }
     }
 }

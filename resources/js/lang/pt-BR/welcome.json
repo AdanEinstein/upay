@@ -1,0 +1,15 @@
+{
+    "title": "Suas vendas e recebimentos, num só lugar",
+    "subtitle": "Registre vendas, acompanhe as parcelas a receber e envie o lembrete de pagamento pelo WhatsApp — tudo pelo celular.",
+    "form": {
+        "label": "Endereço da sua loja",
+        "placeholder": "minha-loja",
+        "submit": "Entrar na minha loja",
+        "error": "Digite o endereço da sua loja, só letras, números e hífen."
+    },
+    "platformAccess": "Acesso da plataforma",
+    "preview": {
+        "store": "Loja da Ana",
+        "item": "Vestido floral"
+    }
+}

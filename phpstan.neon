@@ -17,10 +17,3 @@ parameters:
         - database/migrations/*_create_pulse_tables.php
 
     level: 7
-
-    ignoreErrors:
-        -
-            # Template infrastructure: not used by any model here, but meant
-            # to be applied by tenant-scoped models in projects built on this template.
-            identifier: trait.unused
-            path: app/Models/Concerns/BelongsToTenant.php
