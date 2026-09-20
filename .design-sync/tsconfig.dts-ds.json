@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "allowImportingTsExtensions": false,
+        "outDir": "../dist/types/ds",
+        "rootDir": "./components"
+    },
+    "include": ["./components/**/*.tsx", "../resources/js/**/*.d.ts"]
+}

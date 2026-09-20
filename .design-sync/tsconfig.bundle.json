@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "baseUrl": "..",
+        "paths": {
+            "@inertiajs/react": ["./.design-sync/inertia-stub.tsx"],
+            "@/components/app-logo-icon": ["./.design-sync/shims/app-logo-icon.tsx"]
+        }
+    }
+}

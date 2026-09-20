@@ -1,0 +1,10 @@
+@import "../resources/css/app.css";
+@source "../resources/js";
+@source "./previews";
+
+/* Utilitários comuns para o "glue" de layout que o design agent escreve — sem isso só existem as classes usadas no fonte. */
+@source inline("{p,px,py,pt,pb,pl,pr,m,mx,my,mt,mb,ml,mr,gap,gap-x,gap-y,space-y,space-x}-{0,0.5,1,1.5,2,3,4,5,6,8,10,12,16}");
+@source inline("{w,h,size}-{full,fit,auto,screen,4,5,6,8,10,12,16,24,32,48,64,72,80,96}");
+@source inline("grid-cols-{1,2,3,4,6,12}");
+@source inline("{flex,grid,hidden,block,inline-flex,flex-col,flex-row,flex-wrap,flex-1,items-start,items-center,items-end,justify-start,justify-center,justify-end,justify-between,text-left,text-center,text-right,truncate,overflow-hidden,relative,absolute,border,border-b,border-t,rounded,rounded-md,rounded-lg,rounded-xl,rounded-full,shadow-sm,shadow-md,font-medium,font-semibold,font-bold,font-heading,text-xs,text-sm,text-base,text-lg,text-xl,text-2xl,text-3xl,text-foreground,text-muted-foreground,text-primary,text-destructive,bg-background,bg-card,bg-muted,bg-primary,bg-secondary,bg-accent,bg-brand,bg-brand-soft,text-brand,text-brand-foreground,border-border,max-w-sm,max-w-md,max-w-lg,max-w-xl,max-w-2xl,mx-auto,min-h-screen}");
+@source "./components";

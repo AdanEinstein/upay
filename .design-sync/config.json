@@ -1,0 +1,164 @@
+{
+  "projectId": "9f0557b0-e089-4fb9-9911-ec39e00c5939",
+  "shape": "package",
+  "pkg": "upay",
+  "globalName": "Upay",
+  "buildCmd": "node .design-sync/build-inputs.mjs",
+  "entry": "dist/entry.ts",
+  "cssEntry": "styles.css",
+  "tsconfig": "../.design-sync/tsconfig.bundle.json",
+  "srcDir": "../resources/js/components",
+  "docsDir": "component-docs",
+  "overrides": {
+    "Dialog": {
+      "cardMode": "single",
+      "viewport": "640x420",
+      "primaryStory": "ConfirmDelete"
+    },
+    "Alert": {
+      "cardMode": "column"
+    },
+    "Card": {
+      "cardMode": "column"
+    },
+    "Button": {
+      "cardMode": "column"
+    },
+    "Select": {
+      "cardMode": "single",
+      "viewport": "420x300",
+      "primaryStory": "OpenList"
+    },
+    "DropdownMenu": {
+      "cardMode": "single",
+      "viewport": "420x320"
+    },
+    "Tooltip": {
+      "cardMode": "single",
+      "viewport": "420x200"
+    },
+    "Sheet": {
+      "cardMode": "single",
+      "viewport": "720x420",
+      "primaryStory": "Right"
+    },
+    "NavigationMenu": {
+      "cardMode": "single",
+      "viewport": "520x300"
+    },
+    "Sidebar": {
+      "cardMode": "single",
+      "viewport": "420x420"
+    },
+    "SidebarMenuSkeleton": {
+      "cardMode": "single",
+      "viewport": "340x220"
+    },
+    "Table": {
+      "cardMode": "column"
+    },
+    "Collapsible": {
+      "cardMode": "column"
+    },
+    "ToggleGroup": {
+      "cardMode": "column"
+    },
+    "DatePicker": {
+      "cardMode": "single",
+      "viewport": "420x420",
+      "primaryStory": "OpenCalendar"
+    },
+    "TimePicker": {
+      "cardMode": "single",
+      "viewport": "380x380",
+      "primaryStory": "OpenList"
+    },
+    "DateTimePicker": {
+      "cardMode": "single",
+      "viewport": "680x440",
+      "primaryStory": "OpenPicker"
+    },
+    "Popover": {
+      "cardMode": "single",
+      "viewport": "420x300"
+    },
+    "Calendar": {
+      "cardMode": "column"
+    },
+    "TimeColumns": {
+      "cardMode": "column"
+    },
+    "AppSidebar": {
+      "cardMode": "single",
+      "viewport": "900x560"
+    },
+    "AppShell": {
+      "cardMode": "single",
+      "viewport": "1000x640"
+    },
+    "AppHeader": {
+      "cardMode": "single",
+      "viewport": "1000x160"
+    },
+    "AppSidebarHeader": {
+      "cardMode": "single",
+      "viewport": "900x120"
+    },
+    "UserMenuContent": {
+      "cardMode": "single",
+      "viewport": "420x340"
+    },
+    "NavUser": {
+      "cardMode": "single",
+      "viewport": "380x220"
+    },
+    "NavMain": {
+      "cardMode": "single",
+      "viewport": "380x320"
+    },
+    "NavFooter": {
+      "cardMode": "single",
+      "viewport": "380x320"
+    },
+    "DeleteUser": {
+      "cardMode": "column"
+    },
+    "ManagePasskeys": {
+      "cardMode": "column"
+    },
+    "PasskeyItem": {
+      "cardMode": "column"
+    },
+    "PasskeyRegistration": {
+      "cardMode": "column"
+    },
+    "AlertError": {
+      "cardMode": "column"
+    },
+    "Breadcrumbs": {
+      "cardMode": "column"
+    },
+    "Heading": {
+      "cardMode": "column"
+    },
+    "PasswordInput": {
+      "cardMode": "column"
+    },
+    "InputError": {
+      "cardMode": "column"
+    },
+    "TextLink": {
+      "cardMode": "column"
+    },
+    "AppLogo": {
+      "cardMode": "column"
+    },
+    "UserInfo": {
+      "cardMode": "column"
+    },
+    "AppContent": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

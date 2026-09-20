@@ -47,3 +47,11 @@ yarn-error.log
 !/AGENTS.md
 !/CLAUDE.md
 !/boost.json
+
+# design-sync (artefatos gerados)
+/dist
+/ds-bundle
+/.ds-sync
+/.design-sync/.cache
+/.design-sync/learnings
+/.design-sync/node_modules
