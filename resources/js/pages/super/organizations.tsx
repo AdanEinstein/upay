@@ -1,5 +1,6 @@
 import { Form, Head, router } from '@inertiajs/react';
 import {
+    EyeIcon,
     MagnifyingGlassIcon,
     PencilSimpleIcon,
     PlusIcon,
@@ -34,6 +35,13 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+} from '@/components/ui/sheet';
+import {
     Table,
     TableBody,
     TableCell,
@@ -41,7 +49,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 import { destroy } from '@/routes/super-admin/organizations';
+import { update as updateStatus } from '@/routes/super-admin/organizations/status';
+import { update as updateSubscription } from '@/routes/super-admin/organizations/subscription';
 
 type Status = 'active' | 'suspended';
 
@@ -50,14 +61,64 @@ type Organization = {
     name: string;
     slug: string;
     status: Status;
+    suspensionReason: string | null;
+    createdAt: string;
+    plan: { id: number; name: string } | null;
+    pastDue: boolean;
+    owner: { name: string; email: string } | null;
     usersCount: number;
+    customersCount: number;
+    productsCount: number;
+    salesMonthCount: number;
 };
+
+type Plan = { id: number; name: string };
 
 type Props = {
     organizations: Organization[];
+    plans: Plan[];
     statuses: Status[];
-    kpis: { total: number; active: number; suspended: number; users: number };
+    kpis: {
+        total: number;
+        active: number;
+        suspended: number;
+        users: number;
+        pastDue: number;
+    };
 };
+
+type Filter = 'all' | 'active' | 'suspended' | 'pastDue';
+
+const FILTERS: Filter[] = ['all', 'active', 'suspended', 'pastDue'];
+
+function displayStatus(
+    organization: Organization,
+): 'active' | 'suspended' | 'pastDue' {
+    if (organization.status === 'suspended') {
+        return 'suspended';
+    }
+
+    return organization.pastDue ? 'pastDue' : 'active';
+}
+
+function StatusBadge({ organization }: { organization: Organization }) {
+    const { t } = useTranslation('super');
+    const status = displayStatus(organization);
+
+    return (
+        <Badge
+            variant={
+                status === 'active'
+                    ? 'default'
+                    : status === 'pastDue'
+                      ? 'destructive'
+                      : 'secondary'
+            }
+        >
+            {t(`organizations.${status}`)}
+        </Badge>
+    );
+}
 
 // `null` = closed, `'create'` = new organization, an Organization = editing it.
 type DialogState = null | 'create' | Organization;
@@ -330,13 +391,274 @@ function DeleteDialog({
     );
 }
 
+function OrganizationDetail({
+    organization,
+    plans,
+    onClose,
+}: {
+    organization: Organization | null;
+    plans: Plan[];
+    onClose: () => void;
+}) {
+    const { t } = useTranslation(['super', 'common']);
+    const [planId, setPlanId] = useState(String(organization?.plan?.id ?? ''));
+    const [blocking, setBlocking] = useState(false);
+    const [reason, setReason] = useState('');
+    const [processing, setProcessing] = useState(false);
+
+    if (!organization) {
+        return null;
+    }
+
+    const send = (
+        url: string,
+        data: Record<string, string | number | null>,
+        message: string,
+        after?: () => void,
+    ) =>
+        router.put(url, data, {
+            preserveScroll: true,
+            onStart: () => setProcessing(true),
+            onSuccess: () => {
+                toast.success(message);
+                after?.();
+            },
+            onFinish: () => setProcessing(false),
+        });
+
+    const usage = [
+        {
+            label: t('super:organizations.detail.customers'),
+            value: organization.customersCount,
+        },
+        {
+            label: t('super:organizations.detail.products'),
+            value: organization.productsCount,
+        },
+        {
+            label: t('super:organizations.detail.salesMonth'),
+            value: organization.salesMonthCount,
+        },
+    ];
+
+    return (
+        <>
+            <Sheet open onOpenChange={(open) => !open && onClose()}>
+                <SheetContent className="overflow-y-auto sm:max-w-md">
+                    <SheetHeader>
+                        <SheetTitle>{organization.name}</SheetTitle>
+                        <SheetDescription>
+                            {t('super:organizations.detail.description')}
+                        </SheetDescription>
+                    </SheetHeader>
+
+                    <div className="space-y-5 px-6 pb-6">
+                        <div className="flex items-center gap-2">
+                            <StatusBadge organization={organization} />
+                            <span className="text-muted-foreground text-sm">
+                                {organization.slug}
+                            </span>
+                        </div>
+
+                        {organization.status === 'suspended' &&
+                            organization.suspensionReason && (
+                                <p className="bg-muted rounded-lg p-3 text-sm">
+                                    {t(
+                                        'super:organizations.detail.blockedReason',
+                                        {
+                                            reason: organization.suspensionReason,
+                                        },
+                                    )}
+                                </p>
+                            )}
+
+                        <dl className="grid gap-1 text-sm">
+                            <dt className="text-muted-foreground">
+                                {t('super:organizations.detail.owner')}
+                            </dt>
+                            <dd className="font-medium">
+                                {organization.owner?.name ?? '—'}
+                            </dd>
+                            <dd className="text-muted-foreground">
+                                {organization.owner?.email}
+                            </dd>
+                        </dl>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="plan">
+                                {organization.plan
+                                    ? t('super:organizations.detail.changePlan')
+                                    : t(
+                                          'super:organizations.detail.selectPlan',
+                                      )}
+                            </Label>
+                            {organization.plan && (
+                                <p className="text-muted-foreground text-sm">
+                                    {t(
+                                        'super:organizations.detail.currentPlan',
+                                    )}
+                                    : {organization.plan.name}
+                                </p>
+                            )}
+                            <div className="flex gap-2">
+                                <Select
+                                    value={planId}
+                                    onValueChange={setPlanId}
+                                >
+                                    <SelectTrigger id="plan" className="flex-1">
+                                        <SelectValue
+                                            placeholder={t(
+                                                'super:organizations.detail.selectPlan',
+                                            )}
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {plans.map((plan) => (
+                                            <SelectItem
+                                                key={plan.id}
+                                                value={String(plan.id)}
+                                            >
+                                                {plan.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Button
+                                    variant="secondary"
+                                    disabled={
+                                        processing ||
+                                        planId === '' ||
+                                        planId === String(organization.plan?.id)
+                                    }
+                                    onClick={() =>
+                                        send(
+                                            updateSubscription(organization.id)
+                                                .url,
+                                            { plan_id: Number(planId) },
+                                            t(
+                                                'super:organizations.toast.planChanged',
+                                            ),
+                                        )
+                                    }
+                                >
+                                    {t('super:organizations.detail.savePlan')}
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2">
+                            {usage.map((item) => (
+                                <div
+                                    key={item.label}
+                                    className="rounded-xl border p-3"
+                                >
+                                    <p className="text-muted-foreground text-xs">
+                                        {item.label}
+                                    </p>
+                                    <p className="text-lg font-semibold tabular-nums">
+                                        {item.value}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {organization.status === 'suspended' ? (
+                            <Button
+                                className="w-full"
+                                disabled={processing}
+                                onClick={() =>
+                                    send(
+                                        updateStatus(organization.id).url,
+                                        { status: 'active' },
+                                        t(
+                                            'super:organizations.toast.activated',
+                                        ),
+                                    )
+                                }
+                            >
+                                {t('super:organizations.detail.activate')}
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="destructive"
+                                className="w-full"
+                                onClick={() => setBlocking(true)}
+                            >
+                                {t('super:organizations.detail.block')}
+                            </Button>
+                        )}
+                    </div>
+                </SheetContent>
+            </Sheet>
+
+            <Dialog open={blocking} onOpenChange={setBlocking}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            {t('super:organizations.blockDialog.title', {
+                                name: organization.name,
+                            })}
+                        </DialogTitle>
+                        <DialogDescription>
+                            {t('super:organizations.blockDialog.description')}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-2">
+                        <Label htmlFor="reason">
+                            {t('super:organizations.blockDialog.reason')}
+                        </Label>
+                        <Input
+                            id="reason"
+                            value={reason}
+                            maxLength={500}
+                            onChange={(event) => setReason(event.target.value)}
+                        />
+                    </div>
+                    <DialogFooter className="gap-2">
+                        <DialogClose asChild>
+                            <Button type="button" variant="secondary">
+                                {t('common:cancel')}
+                            </Button>
+                        </DialogClose>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={processing}
+                            onClick={() =>
+                                send(
+                                    updateStatus(organization.id).url,
+                                    {
+                                        status: 'suspended',
+                                        reason: reason || null,
+                                    },
+                                    t('super:organizations.toast.blocked'),
+                                    () => {
+                                        setBlocking(false);
+                                        setReason('');
+                                    },
+                                )
+                            }
+                        >
+                            {t('super:organizations.blockDialog.confirm')}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
+    );
+}
+
 export default function Organizations({
     organizations,
+    plans,
     statuses,
     kpis,
 }: Props) {
     const { t } = useTranslation(['super', 'common']);
+    const { i18n } = useTranslation();
     const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState<Filter>('all');
+    const [selectedId, setSelectedId] = useState<number | null>(null);
     const [dialog, setDialog] = useState<DialogState>(null);
     const [pendingDelete, setPendingDelete] = useState<Organization | null>(
         null,
@@ -345,14 +667,21 @@ export default function Organizations({
     const filtered = useMemo(() => {
         const term = search.trim().toLowerCase();
 
-        return term === ''
-            ? organizations
-            : organizations.filter(
-                  (organization) =>
-                      organization.name.toLowerCase().includes(term) ||
-                      organization.slug.toLowerCase().includes(term),
-              );
-    }, [organizations, search]);
+        return organizations.filter(
+            (organization) =>
+                (filter === 'all' ||
+                    (filter === 'pastDue'
+                        ? organization.pastDue
+                        : organization.status === filter)) &&
+                (term === '' ||
+                    organization.name.toLowerCase().includes(term) ||
+                    organization.slug.toLowerCase().includes(term)),
+        );
+    }, [organizations, search, filter]);
+
+    const selected =
+        organizations.find((organization) => organization.id === selectedId) ??
+        null;
 
     const stats = [
         { label: t('super:organizations.kpi.total'), value: kpis.total },
@@ -361,6 +690,7 @@ export default function Organizations({
             label: t('super:organizations.kpi.suspended'),
             value: kpis.suspended,
         },
+        { label: t('super:organizations.kpi.pastDue'), value: kpis.pastDue },
         { label: t('super:organizations.kpi.users'), value: kpis.users },
     ];
 
@@ -380,7 +710,7 @@ export default function Organizations({
                     </Button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
                     {stats.map((stat) => (
                         <Card key={stat.label} size="sm">
                             <CardHeader>
@@ -406,6 +736,25 @@ export default function Organizations({
                     />
                 </div>
 
+                <div className="flex flex-wrap gap-2">
+                    {FILTERS.map((item) => (
+                        <button
+                            key={item}
+                            type="button"
+                            aria-pressed={filter === item}
+                            onClick={() => setFilter(item)}
+                            className={cn(
+                                'focus-visible:ring-ring/50 rounded-full px-3.5 py-2 text-[13px] outline-none focus-visible:ring-[3px]',
+                                filter === item
+                                    ? 'bg-primary text-primary-foreground font-semibold'
+                                    : 'bg-muted text-muted-foreground font-medium',
+                            )}
+                        >
+                            {t(`super:organizations.filters.${item}`)}
+                        </button>
+                    ))}
+                </div>
+
                 {filtered.length === 0 ? (
                     <p className="text-muted-foreground rounded-xl border border-dashed p-8 text-center text-sm">
                         {organizations.length === 0
@@ -420,10 +769,13 @@ export default function Organizations({
                                     {t('super:organizations.name')}
                                 </TableHead>
                                 <TableHead>
-                                    {t('super:organizations.slug')}
+                                    {t('super:organizations.plan')}
                                 </TableHead>
                                 <TableHead>
                                     {t('super:organizations.status')}
+                                </TableHead>
+                                <TableHead>
+                                    {t('super:organizations.since')}
                                 </TableHead>
                                 <TableHead className="text-right">
                                     {t('super:organizations.users')}
@@ -440,26 +792,40 @@ export default function Organizations({
                                         {organization.name}
                                     </TableCell>
                                     <TableCell className="text-muted-foreground">
-                                        {organization.slug}
+                                        {organization.plan?.name ??
+                                            t('super:organizations.noPlan')}
                                     </TableCell>
                                     <TableCell>
-                                        <Badge
-                                            variant={
-                                                organization.status === 'active'
-                                                    ? 'default'
-                                                    : 'secondary'
-                                            }
-                                        >
-                                            {t(
-                                                `super:organizations.${organization.status}`,
-                                            )}
-                                        </Badge>
+                                        <StatusBadge
+                                            organization={organization}
+                                        />
+                                    </TableCell>
+                                    <TableCell className="text-muted-foreground">
+                                        {new Date(
+                                            `${organization.createdAt}T00:00:00`,
+                                        ).toLocaleDateString(
+                                            i18n.resolvedLanguage,
+                                        )}
                                     </TableCell>
                                     <TableCell className="text-right tabular-nums">
                                         {organization.usersCount}
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex justify-end gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                aria-label={t(
+                                                    'super:organizations.view',
+                                                )}
+                                                onClick={() =>
+                                                    setSelectedId(
+                                                        organization.id,
+                                                    )
+                                                }
+                                            >
+                                                <EyeIcon />
+                                            </Button>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
@@ -499,6 +865,12 @@ export default function Organizations({
                 state={dialog}
                 statuses={statuses}
                 onClose={() => setDialog(null)}
+            />
+            <OrganizationDetail
+                key={selected?.id ?? 'none'}
+                organization={selected}
+                plans={plans}
+                onClose={() => setSelectedId(null)}
             />
             <DeleteDialog
                 organization={pendingDelete}

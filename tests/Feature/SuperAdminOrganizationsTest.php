@@ -1,23 +1,18 @@
 <?php
 
-use App\Auth\SuperAdminUser;
 use App\Enums\OrganizationStatus;
+use App\Enums\SaleStatus;
+use App\Enums\SubscriptionStatus;
+use App\Models\Customer;
 use App\Models\Organization;
+use App\Models\Plan;
+use App\Models\Sale;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 
 uses(RefreshDatabase::class);
-
-function superAdminActor(): SuperAdminUser
-{
-    return new SuperAdminUser([
-        'id' => config('super-admin.email'),
-        'name' => config('super-admin.name'),
-        'email' => config('super-admin.email'),
-        'remember_token' => null,
-    ]);
-}
 
 function organizationPayload(array $overrides = []): array
 {
@@ -157,4 +152,74 @@ test('a suspended organization blocks tenant access', function () {
 
     $this->get(route('login', ['organization' => $organization->slug]))
         ->assertNotFound();
+});
+
+test('the organizations list exposes plan, owner, usage and past due state', function () {
+    $organization = Organization::factory()->create();
+    $owner = User::factory()->create(['organization_id' => $organization->id]);
+    $plan = Plan::query()->where('slug', 'pro')->firstOrFail();
+    Subscription::factory()->for($organization)->create([
+        'plan_id' => $plan->id,
+        'status' => SubscriptionStatus::PastDue,
+    ]);
+    Customer::factory()->count(2)->create(['organization_id' => $organization->id]);
+    Sale::factory()->create(['organization_id' => $organization->id, 'customer_id' => null, 'sold_at' => now(), 'status' => SaleStatus::Completed]);
+    Sale::factory()->create(['organization_id' => $organization->id, 'customer_id' => null, 'sold_at' => now()->subMonths(2), 'status' => SaleStatus::Completed]);
+
+    $this->actingAs(superAdminActor(), 'super_admin')
+        ->get(route('super-admin.organizations.index'))
+        ->assertInertia(fn ($page) => $page
+            ->where('organizations.0.plan.name', 'Profissional')
+            ->where('organizations.0.pastDue', true)
+            ->where('organizations.0.owner.email', $owner->email)
+            ->where('organizations.0.customersCount', 2)
+            ->where('organizations.0.salesMonthCount', 1)
+            ->where('kpis.pastDue', 1)
+            ->has('plans', 3));
+});
+
+test('super admin blocks an organization with a reason and reactivates it', function () {
+    $organization = Organization::factory()->create();
+
+    $this->actingAs(superAdminActor(), 'super_admin')
+        ->put(route('super-admin.organizations.status.update', $organization), ['status' => 'suspended', 'reason' => 'Pagamento em atraso'])
+        ->assertRedirect(route('super-admin.organizations.index'));
+
+    expect($organization->fresh())
+        ->status->toBe(OrganizationStatus::Suspended)
+        ->suspension_reason->toBe('Pagamento em atraso');
+
+    $this->put(route('super-admin.organizations.status.update', $organization), ['status' => 'active']);
+
+    expect($organization->fresh())
+        ->status->toBe(OrganizationStatus::Active)
+        ->suspension_reason->toBeNull();
+});
+
+test('super admin changes an organization plan and the subscription is re-priced', function () {
+    $organization = Organization::factory()->create();
+    $basic = Plan::query()->where('slug', 'basico')->firstOrFail();
+    $advanced = Plan::query()->where('slug', 'avancado')->firstOrFail();
+
+    $this->actingAs(superAdminActor(), 'super_admin');
+
+    $this->put(route('super-admin.organizations.subscription.update', $organization), ['plan_id' => $basic->id])
+        ->assertRedirect(route('super-admin.organizations.index'));
+    expect($organization->fresh()->subscription->price_cents)->toBe(2990);
+
+    $this->put(route('super-admin.organizations.subscription.update', $organization), ['plan_id' => $advanced->id]);
+
+    expect($organization->fresh()->subscription)
+        ->plan_id->toBe($advanced->id)
+        ->price_cents->toBe(8990)
+        ->and(Subscription::query()->count())->toBe(1);
+});
+
+test('an inactive or unknown plan cannot be assigned', function () {
+    $organization = Organization::factory()->create();
+    $inactive = Plan::factory()->create(['active' => false]);
+
+    $this->actingAs(superAdminActor(), 'super_admin')
+        ->put(route('super-admin.organizations.subscription.update', $organization), ['plan_id' => $inactive->id])
+        ->assertSessionHasErrors('plan_id');
 });

@@ -31,7 +31,7 @@ class SuperAdminController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('super-admin.organizations.index');
+        return redirect()->route('super-admin.dashboard');
     }
 
     public function destroy(Request $request): RedirectResponse

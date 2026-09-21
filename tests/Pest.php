@@ -1,5 +1,6 @@
 <?php
 
+use App\Auth\SuperAdminUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -47,4 +48,19 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function superAdminActor(): SuperAdminUser
+{
+    return new SuperAdminUser([
+        'id' => config('super-admin.email'),
+        'name' => config('super-admin.name'),
+        'email' => config('super-admin.email'),
+        'remember_token' => null,
+    ]);
+}
+
+function shopRoute(string $name, array $params = []): string
+{
+    return route($name, ['organization' => test()->organization->slug] + $params);
 }

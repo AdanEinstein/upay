@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Super\DashboardController;
 use App\Http\Controllers\Super\ErrorOccurrenceController;
 use App\Http\Controllers\Super\OrganizationController;
+use App\Http\Controllers\Super\OrganizationStatusController;
+use App\Http\Controllers\Super\OrganizationSubscriptionController;
+use App\Http\Controllers\Super\PlanController;
 use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +20,14 @@ Route::prefix('super-admin')->name('super-admin.')->group(function () {
     Route::middleware('auth:super_admin')->group(function () {
         Route::post('logout', [SuperAdminController::class, 'destroy'])->name('logout');
 
+        Route::get('dashboard', DashboardController::class)->name('dashboard');
+
         Route::resource('organizations', OrganizationController::class)
             ->only(['index', 'store', 'update', 'destroy']);
+        Route::put('organizations/{organization}/status', OrganizationStatusController::class)->name('organizations.status.update');
+        Route::put('organizations/{organization}/subscription', OrganizationSubscriptionController::class)->name('organizations.subscription.update');
+
+        Route::resource('plans', PlanController::class)->only(['index', 'store', 'update']);
 
         Route::get('errors', [ErrorOccurrenceController::class, 'index'])->name('errors.index');
     });

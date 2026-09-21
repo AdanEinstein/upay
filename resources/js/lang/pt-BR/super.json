@@ -1,5 +1,5 @@
 {
-    "brand": "Super admin",
+    "brand": "Upay · Super admin",
     "login": {
         "title": "Super admin",
         "description": "Entre para gerenciar a plataforma"
@@ -9,7 +9,9 @@
         "menuDescription": "Navegue pela área da plataforma",
         "organizations": "Organizações",
         "errors": "Erros",
-        "pulse": "Pulse"
+        "pulse": "Pulse",
+        "dashboard": "Dashboard",
+        "plans": "Planos"
     },
     "organizations": {
         "title": "Organizações",
@@ -24,15 +26,16 @@
         "edit": "Editar",
         "delete": "Excluir",
         "active": "Ativa",
-        "suspended": "Suspensa",
+        "suspended": "Bloqueada",
         "search": "Buscar por nome ou slug",
         "empty": "Nenhuma organização cadastrada ainda. Crie a primeira para começar.",
         "noResults": "Nenhuma organização encontrada para essa busca.",
         "kpi": {
             "total": "Organizações",
             "active": "Ativas",
-            "suspended": "Suspensas",
-            "users": "Usuários"
+            "suspended": "Bloqueadas",
+            "users": "Usuários",
+            "pastDue": "Inadimplentes"
         },
         "dialog": {
             "createTitle": "Nova organização",
@@ -54,7 +57,41 @@
         "toast": {
             "created": "Organização criada e administrador provisionado.",
             "updated": "Organização atualizada.",
-            "deleted": "Organização excluída."
+            "deleted": "Organização excluída.",
+            "blocked": "Organização bloqueada.",
+            "activated": "Organização ativada.",
+            "planChanged": "Plano atualizado."
+        },
+        "pastDue": "Inadimplente",
+        "plan": "Plano",
+        "since": "Cadastro",
+        "noPlan": "Sem plano",
+        "view": "Ver",
+        "filters": {
+            "all": "Todas",
+            "active": "Ativas",
+            "suspended": "Bloqueadas",
+            "pastDue": "Inadimplentes"
+        },
+        "detail": {
+            "description": "Detalhes da organização",
+            "owner": "Dono da loja",
+            "currentPlan": "Plano atual",
+            "changePlan": "Trocar plano",
+            "selectPlan": "Selecione um plano",
+            "savePlan": "Salvar plano",
+            "customers": "Clientes",
+            "products": "Produtos",
+            "salesMonth": "Vendas no mês",
+            "activate": "Ativar organização",
+            "block": "Bloquear organização",
+            "blockedReason": "Motivo do bloqueio: {{reason}}"
+        },
+        "blockDialog": {
+            "title": "Bloquear {{name}}?",
+            "description": "A loja perde acesso ao painel até ser reativada. O catálogo público também fica indisponível.",
+            "reason": "Motivo (opcional)",
+            "confirm": "Confirmar bloqueio"
         }
     },
     "errors": {
@@ -97,6 +134,59 @@
             "previous": "Anterior",
             "next": "Próxima",
             "summary": "Página {{current}} de {{last}}"
+        }
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "heading": "Dashboard",
+        "description": "Visão geral do SaaS",
+        "mrr": "MRR atual",
+        "mrrChange": "{{value}} vs mês anterior",
+        "activeOrganizations": "Organizações ativas",
+        "newOrganizations": "Novas no mês",
+        "churn": "Churn / inadimplentes",
+        "churnDetail": "{{percent}} · {{pastDue}} inadimplentes",
+        "churnDetailNoBase": "{{pastDue}} inadimplentes",
+        "chart": "MRR — últimos 12 meses",
+        "chartLabel": "Gráfico de barras do MRR mensal nos últimos 12 meses",
+        "byPlan": "Organizações por plano",
+        "noPlans": "Nenhuma assinatura ativa ainda."
+    },
+    "plans": {
+        "title": "Planos",
+        "heading": "Planos",
+        "description": "Preços e limites oferecidos aos lojistas",
+        "new": "Novo plano",
+        "active": "Ativo",
+        "inactive": "Inativo",
+        "popular": "Mais popular",
+        "summary_one": "{{price}}/mês · {{count}} organização",
+        "summary_other": "{{price}}/mês · {{count}} organizações",
+        "edit": "Editar",
+        "empty": "Nenhum plano cadastrado.",
+        "form": {
+            "createTitle": "Novo plano",
+            "editTitle": "Editar plano",
+            "description": "Defina preço e limites. Deixe um limite em branco para ilimitado.",
+            "name": "Nome do plano",
+            "price": "Preço mensal",
+            "annualPrice": "Preço anual",
+            "limits": "Limites",
+            "limitLabels": {
+                "max_customers": "Clientes",
+                "max_products": "Produtos",
+                "max_photos_per_product": "Fotos/produto",
+                "max_sales_per_month": "Vendas/mês",
+                "max_users": "Usuários"
+            },
+            "unlimited": "Ilimitado",
+            "active": "Plano ativo",
+            "featured": "Destacar como \"mais popular\"",
+            "save": "Salvar plano"
+        },
+        "toast": {
+            "created": "Plano criado.",
+            "updated": "Plano atualizado."
         }
     }
 }

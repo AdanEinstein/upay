@@ -21,7 +21,7 @@ test('super admin can authenticate with the configured credentials', function ()
     ]);
 
     $this->assertAuthenticated('super_admin');
-    $response->assertRedirect(route('super-admin.organizations.index'));
+    $response->assertRedirect(route('super-admin.dashboard'));
 });
 
 test('super admin cannot authenticate with the wrong password', function () {

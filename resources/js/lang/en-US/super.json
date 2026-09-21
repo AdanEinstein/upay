@@ -1,5 +1,5 @@
 {
-    "brand": "Super admin",
+    "brand": "Upay · Super admin",
     "login": {
         "title": "Super admin",
         "description": "Sign in to manage the platform"
@@ -9,7 +9,9 @@
         "menuDescription": "Browse the platform area",
         "organizations": "Organizations",
         "errors": "Errors",
-        "pulse": "Pulse"
+        "pulse": "Pulse",
+        "dashboard": "Dashboard",
+        "plans": "Plans"
     },
     "organizations": {
         "title": "Organizations",
@@ -24,15 +26,16 @@
         "edit": "Edit",
         "delete": "Delete",
         "active": "Active",
-        "suspended": "Suspended",
+        "suspended": "Blocked",
         "search": "Search by name or slug",
         "empty": "No organizations yet. Create the first one to get started.",
         "noResults": "No organization matches that search.",
         "kpi": {
             "total": "Organizations",
             "active": "Active",
-            "suspended": "Suspended",
-            "users": "Users"
+            "suspended": "Blocked",
+            "users": "Users",
+            "pastDue": "Past due"
         },
         "dialog": {
             "createTitle": "New organization",
@@ -54,7 +57,41 @@
         "toast": {
             "created": "Organization created and administrator provisioned.",
             "updated": "Organization updated.",
-            "deleted": "Organization deleted."
+            "deleted": "Organization deleted.",
+            "blocked": "Organization blocked.",
+            "activated": "Organization activated.",
+            "planChanged": "Plan updated."
+        },
+        "pastDue": "Past due",
+        "plan": "Plan",
+        "since": "Signed up",
+        "noPlan": "No plan",
+        "view": "View",
+        "filters": {
+            "all": "All",
+            "active": "Active",
+            "suspended": "Blocked",
+            "pastDue": "Past due"
+        },
+        "detail": {
+            "description": "Organization details",
+            "owner": "Store owner",
+            "currentPlan": "Current plan",
+            "changePlan": "Change plan",
+            "selectPlan": "Select a plan",
+            "savePlan": "Save plan",
+            "customers": "Customers",
+            "products": "Products",
+            "salesMonth": "Sales this month",
+            "activate": "Activate organization",
+            "block": "Block organization",
+            "blockedReason": "Block reason: {{reason}}"
+        },
+        "blockDialog": {
+            "title": "Block {{name}}?",
+            "description": "The store loses access to its dashboard until reactivated. The public catalog also becomes unavailable.",
+            "reason": "Reason (optional)",
+            "confirm": "Confirm block"
         }
     },
     "errors": {
@@ -97,6 +134,59 @@
             "previous": "Previous",
             "next": "Next",
             "summary": "Page {{current}} of {{last}}"
+        }
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "heading": "Dashboard",
+        "description": "SaaS overview",
+        "mrr": "Current MRR",
+        "mrrChange": "{{value}} vs previous month",
+        "activeOrganizations": "Active organizations",
+        "newOrganizations": "New this month",
+        "churn": "Churn / past due",
+        "churnDetail": "{{percent}} · {{pastDue}} past due",
+        "churnDetailNoBase": "{{pastDue}} past due",
+        "chart": "MRR — last 12 months",
+        "chartLabel": "Bar chart of monthly MRR over the last 12 months",
+        "byPlan": "Organizations by plan",
+        "noPlans": "No active subscriptions yet."
+    },
+    "plans": {
+        "title": "Plans",
+        "heading": "Plans",
+        "description": "Prices and limits offered to merchants",
+        "new": "New plan",
+        "active": "Active",
+        "inactive": "Inactive",
+        "popular": "Most popular",
+        "summary_one": "{{price}}/month · {{count}} organization",
+        "summary_other": "{{price}}/month · {{count}} organizations",
+        "edit": "Edit",
+        "empty": "No plans yet.",
+        "form": {
+            "createTitle": "New plan",
+            "editTitle": "Edit plan",
+            "description": "Set price and limits. Leave a limit blank for unlimited.",
+            "name": "Plan name",
+            "price": "Monthly price",
+            "annualPrice": "Annual price",
+            "limits": "Limits",
+            "limitLabels": {
+                "max_customers": "Customers",
+                "max_products": "Products",
+                "max_photos_per_product": "Photos/product",
+                "max_sales_per_month": "Sales/month",
+                "max_users": "Users"
+            },
+            "unlimited": "Unlimited",
+            "active": "Active plan",
+            "featured": "Highlight as \"most popular\"",
+            "save": "Save plan"
+        },
+        "toast": {
+            "created": "Plan created.",
+            "updated": "Plan updated."
         }
     }
 }
