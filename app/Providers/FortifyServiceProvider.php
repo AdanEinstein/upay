@@ -6,8 +6,8 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Http\Responses\OrganizationLoginResponse;
 use App\Http\Responses\OrganizationLogoutResponse;
 use App\Http\Responses\OrganizationPasswordResetResponse;
-use App\Models\Organization;
 use App\Models\User;
+use App\Support\Tenant;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -52,9 +52,9 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         Fortify::authenticateUsing(function (Request $request) {
-            $organization = Organization::query()
-                ->where('slug', $request->route('organization'))
-                ->first();
+            // SetOrganizationContext has already resolved the tenant (and removed
+            // the slug from the route parameters).
+            $organization = Tenant::current();
 
             if (! $organization) {
                 return null;

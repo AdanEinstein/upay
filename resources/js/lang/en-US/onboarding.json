@@ -1,0 +1,49 @@
+{
+    "onboarding": {
+        "title": "Set up your store",
+        "progress": "Step {{current}} of {{total}}",
+        "skip": "Skip",
+        "finish": "Finish",
+        "identity": {
+            "title": "Let's get started",
+            "description": "How will your store appear to customers?",
+            "addLogo": "Add logo",
+            "storeName": "Store name",
+            "storePlaceholder": "Ana's Store"
+        },
+        "product": {
+            "title": "Add your first product",
+            "description": "You can edit everything later.",
+            "addPhoto": "Add photo",
+            "name": "Product name",
+            "namePlaceholder": "Rosé Matte Lipstick",
+            "price": "Sale price",
+            "pricePlaceholder": "R$ 39.90"
+        },
+        "pix": {
+            "title": "Get paid with PIX",
+            "description": "Your key is shown to the customer at payment time.",
+            "key": "PIX key",
+            "types": {
+                "email": "Email",
+                "phone": "Mobile",
+                "cpf": "CPF",
+                "random": "Random"
+            },
+            "placeholders": {
+                "email": "maria@anastore.com",
+                "phone": "(11) 99999-0000",
+                "cpf": "000.000.000-00",
+                "random": "Paste the random key"
+            }
+        },
+        "continue": "Continue"
+    },
+    "planLimit": {
+        "title": "Plan limit reached",
+        "description": "Your current plan ({{plan}}) allows up to {{limit}} registered customers.",
+        "customers": "Customers",
+        "viewPlans": "View plans",
+        "close": "Close"
+    }
+}

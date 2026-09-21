@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import i18n from '@/lib/i18n';
+import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import PasskeyVerify from '@/components/passkey-verify';
@@ -48,6 +49,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="email@example.com"
+                                    className="h-11"
                                 />
                                 <InputError message={errors.email} />
                             </div>
@@ -60,7 +62,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
-                                            className="ml-auto text-sm"
+                                            className="text-brand ml-auto text-sm font-medium no-underline"
                                             tabIndex={5}
                                         >
                                             {t('auth:login.forgotPassword')}
@@ -74,6 +76,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder={t('common:password')}
+                                    className="h-11"
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -91,7 +94,7 @@ export default function Login({ status, canResetPassword }: Props) {
 
                             <Button
                                 type="submit"
-                                className="mt-4 w-full"
+                                className="mt-2 h-12 w-full text-base"
                                 tabIndex={4}
                                 disabled={processing}
                                 data-test="login-button"
@@ -109,6 +112,16 @@ export default function Login({ status, canResetPassword }: Props) {
                     {status}
                 </div>
             )}
+
+            <p className="text-muted-foreground text-center text-sm">
+                {t('auth:login.noStore')}{' '}
+                <TextLink
+                    href={register()}
+                    className="text-brand font-semibold no-underline"
+                >
+                    {t('auth:login.createAccount')}
+                </TextLink>
+            </p>
         </>
     );
 }

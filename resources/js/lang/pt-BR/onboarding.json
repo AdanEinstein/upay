@@ -1,0 +1,49 @@
+{
+    "onboarding": {
+        "title": "Configurar sua loja",
+        "progress": "Passo {{current}} de {{total}}",
+        "skip": "Pular",
+        "finish": "Concluir",
+        "identity": {
+            "title": "Vamos começar",
+            "description": "Como sua loja vai aparecer para os clientes?",
+            "addLogo": "Adicionar logo",
+            "storeName": "Nome da loja",
+            "storePlaceholder": "Loja da Ana"
+        },
+        "product": {
+            "title": "Cadastre seu primeiro produto",
+            "description": "Você pode editar tudo depois.",
+            "addPhoto": "Adicionar foto",
+            "name": "Nome do produto",
+            "namePlaceholder": "Batom Matte Rosé",
+            "price": "Preço de venda",
+            "pricePlaceholder": "R$ 39,90"
+        },
+        "pix": {
+            "title": "Receba pagamentos por PIX",
+            "description": "Sua chave aparece para o cliente na hora de pagar.",
+            "key": "Chave PIX",
+            "types": {
+                "email": "E-mail",
+                "phone": "Celular",
+                "cpf": "CPF",
+                "random": "Aleatória"
+            },
+            "placeholders": {
+                "email": "maria@lojadaana.com.br",
+                "phone": "(11) 99999-0000",
+                "cpf": "000.000.000-00",
+                "random": "Cole a chave aleatória"
+            }
+        },
+        "continue": "Continuar"
+    },
+    "planLimit": {
+        "title": "Limite do plano atingido",
+        "description": "Seu plano atual ({{plan}}) permite até {{limit}} clientes cadastrados.",
+        "customers": "Clientes",
+        "viewPlans": "Ver planos",
+        "close": "Fechar"
+    }
+}

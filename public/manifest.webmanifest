@@ -1,0 +1,13 @@
+{
+    "name": "Upay",
+    "short_name": "Upay",
+    "start_url": "/",
+    "display": "standalone",
+    "lang": "pt-BR",
+    "background_color": "#ffffff",
+    "theme_color": "#3667f6",
+    "icons": [
+        { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+        { "src": "/logo-mark.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    ]
+}
