@@ -54,7 +54,7 @@ Hoje `/p/{token}` é `Route::inertia('p/{token}', 'public/debt')` com **dados de
 - [x] 6.1 FEITO 2026-09-21: `ShopSetting::hasLiveNotice()` usava `isPast()` (instante atual); trocado por `isBefore(today())` — aviso com validade hoje segue ativo até o fim do dia.
 - [x] 6.2 FEITO 2026-09-21: `pnpm run build` ok, `pnpm run types:check` ok, pint ok, `php artisan test`: 160/160. `pnpm run check` (`vp check`) falha só por **formatação** em ~92 arquivos, inclusive já commitados (`.design-sync/*`, `components.json`) — dívida pré-existente, não corrigida (`vp check --fix` reformataria o repo todo; decidir separadamente).
 - [x] 6.3 FEITO 2026-09-21: paridade pt-BR × en-US verificada (`resources/js/lang/*.json` e `lang/{pt_BR,en}/*.php`): 0 divergências. Chaves `share.inviteMessage` seguem órfãs (podem ser removidas).
-- [ ] 6.4 Commitar em fatias (por etapa) — hoje tudo está sem commit; pedir confirmação ao usuário antes de commitar/push.
+- [x] 6.4 FEITO 2026-09-21: 5 commits temáticos + docs (etapa 1; etapa 0; etapas 2+3; etapa 4; etapa 5 + `routes/web.php`). Divisão por arquivo inteiro — arquivos compartilhados (`app.tsx`, `i18n.ts`, rotas) caíram na fatia que os fecha, então commits intermediários podem não compilar sozinhos; o HEAD final passa. Sem push.
 - [ ] 6.5 Atualizar este arquivo e a memória `project_design_import_phases.md` ao concluir cada etapa.
 
 ## Ordem sugerida
