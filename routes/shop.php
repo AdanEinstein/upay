@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstallmentPaymentController;
 use App\Http\Controllers\MoreController;
 use App\Http\Controllers\PayableController;
+use App\Http\Controllers\PaymentClaimController;
 use App\Http\Controllers\PixKeyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductStockController;
@@ -23,6 +24,9 @@ Route::get('dashboard', HomeController::class)->name('dashboard');
 
 Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 Route::post('installments/{installment}/payments', [InstallmentPaymentController::class, 'store'])->name('installments.payments.store');
+Route::post('payment-claims/{claim}/confirm', [PaymentClaimController::class, 'confirm'])->name('payment-claims.confirm');
+Route::post('payment-claims/{claim}/reject', [PaymentClaimController::class, 'reject'])->name('payment-claims.reject');
+Route::get('payment-claims/{claim}/receipt', [PaymentClaimController::class, 'receipt'])->name('payment-claims.receipt');
 Route::get('receivables', ReceivableController::class)->name('receivables.index');
 
 Route::resource('customers', CustomerController::class)->except(['destroy']);

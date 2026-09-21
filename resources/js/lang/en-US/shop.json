@@ -100,6 +100,18 @@
         "installmentOf": "Installment {{number}}/{{total}}",
         "downPayment": "Down payment",
         "registerPayment": "Record payment",
+        "claimTitle": "Customer says they paid",
+        "claimConfirm": "Confirm payment",
+        "claimReject": "Reject",
+        "claimReceipt": "View receipt",
+        "receipt": {
+            "title": "Receipt",
+            "description": "Check the receipt before confirming the payment.",
+            "zoomIn": "Zoom in",
+            "zoomOut": "Zoom out",
+            "zoomReset": "Reset zoom",
+            "openNewTab": "Open in new tab"
+        },
         "chargeWhatsapp": "Charge via WhatsApp",
         "shareLink": "Share tracking link",
         "cancel": "Cancel sale",

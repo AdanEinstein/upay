@@ -100,6 +100,18 @@
         "installmentOf": "Parcela {{number}}/{{total}}",
         "downPayment": "Entrada",
         "registerPayment": "Registrar pagamento",
+        "claimTitle": "Cliente avisou que pagou",
+        "claimConfirm": "Confirmar pagamento",
+        "claimReject": "Recusar",
+        "claimReceipt": "Ver comprovante",
+        "receipt": {
+            "title": "Comprovante",
+            "description": "Confira o comprovante antes de confirmar o pagamento.",
+            "zoomIn": "Aumentar",
+            "zoomOut": "Diminuir",
+            "zoomReset": "Tamanho original",
+            "openNewTab": "Abrir em nova aba"
+        },
         "chargeWhatsapp": "Cobrar por WhatsApp",
         "shareLink": "Compartilhar link de acompanhamento",
         "cancel": "Cancelar venda",

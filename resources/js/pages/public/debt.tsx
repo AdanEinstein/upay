@@ -1,9 +1,10 @@
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import {
     CaretLeftIcon,
     CheckCircleIcon,
     CheckIcon,
     CopyIcon,
+    PaperclipIcon,
 } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { useFormat } from '@/hooks/use-format';
 import { cn } from '@/lib/utils';
+import { claim } from '@/routes/public/debt';
 
 const paneClass =
     'mx-auto flex w-full max-w-md flex-col px-5 pb-8 lg:mx-0 lg:max-h-[calc(100svh-3rem)] lg:w-[440px] lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:bg-card lg:p-7';
@@ -30,6 +32,7 @@ type Installment = {
     status: SettlementStatus;
     pixCode: string | null;
     pixQr: string | null;
+    claimPending: boolean;
 };
 
 type Purchase = {
@@ -44,6 +47,7 @@ type Purchase = {
 };
 
 type Props = {
+    token: string;
     store: string;
     customer: string;
     whatsapp: string | null;
@@ -51,7 +55,7 @@ type Props = {
     openCents: number;
 };
 
-export default function Debt({ store, customer, purchases, openCents }: Props) {
+export default function Debt({ token, store, customer, purchases, openCents }: Props) {
     const { t } = useTranslation('public');
     const { money, shortDate, date } = useFormat();
     const [purchaseId, setPurchaseId] = useState<number | null>(null);
@@ -207,7 +211,7 @@ export default function Debt({ store, customer, purchases, openCents }: Props) {
                     </div>
 
                     {installment && (
-                        <PixScreen purchase={purchase} installment={installment} onBack={() => setPixId(null)} />
+                        <PixScreen token={token} purchase={purchase} installment={installment} onBack={() => setPixId(null)} />
                     )}
                 </div>
             )}
@@ -243,10 +247,12 @@ function Figure({ label, value, className }: { label: string; value: string; cla
 }
 
 function PixScreen({
+    token,
     purchase,
     installment,
     onBack,
 }: {
+    token: string;
     purchase: Purchase;
     installment: Installment;
     onBack: () => void;
@@ -255,6 +261,7 @@ function PixScreen({
     const { money } = useFormat();
     const [, copy] = useClipboard();
     const [copied, setCopied] = useState(false);
+    const notice = useForm({ receipt: null as File | null });
 
     async function copyPix() {
         if (!(await copy(installment.pixCode ?? ''))) {
@@ -266,6 +273,14 @@ function PixScreen({
         toast.success(t('copied'));
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    }
+
+    function sendNotice() {
+        notice.post(claim.url({ token, installment: installment.id }), {
+            forceFormData: true,
+            preserveScroll: true,
+            onSuccess: () => toast.success(t('claimSent')),
+        });
     }
 
     return (
@@ -290,6 +305,29 @@ function PixScreen({
                 </Button>
                 <p className="text-muted-foreground max-w-[280px] text-[12.5px] leading-normal">{t('pixHint')}</p>
                 <p className="text-muted-foreground max-w-[280px] text-[11.5px]">{t('pixConfirmation')}</p>
+                {installment.claimPending ? (
+                    <p className="bg-muted w-full rounded-xl px-3 py-2.5 text-[13px] font-medium">{t('claimPending')}</p>
+                ) : (
+                    <div className="border-border flex w-full flex-col gap-2 border-t pt-4">
+                        <label className="text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 border-border flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed px-3 text-[13px] transition-colors has-[:focus-visible]:ring-[3px]">
+                            <input
+                                type="file"
+                                accept="image/*,application/pdf"
+                                className="sr-only"
+                                onChange={(event) => notice.setData('receipt', event.target.files?.[0] ?? null)}
+                            />
+                            <PaperclipIcon className="size-4 shrink-0" />
+                            <span className="truncate">
+                                {notice.data.receipt ? t('claimReceiptChosen', { name: notice.data.receipt.name }) : t('claimReceipt')}
+                            </span>
+                        </label>
+                        {notice.errors.receipt && <p className="text-destructive text-[12.5px]">{notice.errors.receipt}</p>}
+                        <Button variant="outline" className="h-11 w-full" disabled={notice.processing} onClick={sendNotice}>
+                            <CheckCircleIcon />
+                            {t('claimButton')}
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );

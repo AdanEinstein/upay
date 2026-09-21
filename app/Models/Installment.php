@@ -100,4 +100,12 @@ class Installment extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    /**
+     * @return HasMany<PaymentClaim, $this>
+     */
+    public function claims(): HasMany
+    {
+        return $this->hasMany(PaymentClaim::class);
+    }
 }

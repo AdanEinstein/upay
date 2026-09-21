@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClaimStatus;
 use App\Enums\SaleStatus;
 use App\Models\Customer;
 use App\Models\Installment;
@@ -33,7 +34,7 @@ class PublicDebtController extends Controller
         $sales = Sale::query()
             ->where('customer_id', $customer->id)
             ->where('status', SaleStatus::Completed)
-            ->with(['items.product', 'items.variant', 'installments' => fn ($query) => $query->orderBy('number'), 'installments.payments'])
+            ->with(['items.product', 'items.variant', 'installments' => fn ($query) => $query->orderBy('number'), 'installments.payments', 'installments.claims'])
             ->latest('sold_at')
             ->get();
 
@@ -53,6 +54,7 @@ class PublicDebtController extends Controller
         ])->values();
 
         return Inertia::render('public/debt', [
+            'token' => $token,
             'store' => $customer->organization->name,
             'customer' => $customer->name,
             'whatsapp' => $settings->whatsapp,
@@ -83,6 +85,7 @@ class PublicDebtController extends Controller
                 $installment->due_date->isPast() => 'overdue',
                 default => 'upcoming',
             },
+            'claimPending' => $installment->claims->contains('status', ClaimStatus::Pending),
             'pixCode' => $payload,
             'pixQr' => $payload ? PixPayload::qrSvg($payload) : null,
         ];

@@ -7,6 +7,7 @@ import MoneyInput from '@/components/money-input';
 import BottomSheet from '@/components/shop/bottom-sheet';
 import { Chip } from '@/components/shop/chip';
 import PageHeader from '@/components/shop/page-header';
+import ReceiptViewer from '@/components/shop/receipt-viewer';
 import ShareSheet from '@/components/shop/share-sheet';
 import { StatusBadge } from '@/components/shop/status-badge';
 import type { SettlementStatus } from '@/components/shop/status-badge';
@@ -17,6 +18,7 @@ import { useFormat } from '@/hooks/use-format';
 import { useTenant } from '@/hooks/use-tenant';
 import { publicDebtUrl, whatsappUrl } from '@/lib/whatsapp';
 import { store as storePayment } from '@/routes/installments/payments';
+import { confirm as confirmClaim, receipt as claimReceipt, reject as rejectClaim } from '@/routes/payment-claims';
 import { create, destroy, index, show } from '@/routes/sales';
 
 type Installment = {
@@ -26,6 +28,7 @@ type Installment = {
     remainingCents: number;
     dueDate: string;
     paidAt: string | null;
+    claim: { id: number; receiptType: 'image' | 'pdf' | null } | null;
 };
 
 type Sale = {
@@ -62,6 +65,7 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
     const [paying, setPaying] = useState(false);
     const [sharing, setSharing] = useState<'charge' | 'link' | null>(null);
     const [cancelling, setCancelling] = useState(false);
+    const [receiptClaim, setReceiptClaim] = useState<NonNullable<Installment['claim']> | null>(null);
 
     const next = sale.installments.find((installment) => installment.remainingCents > 0);
     const owedCents = sale.installments.reduce((sum, installment) => sum + installment.remainingCents, 0);
@@ -189,7 +193,8 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                                 const status = installmentStatus(installment);
 
                                 return (
-                                    <div key={installment.id} className="border-border flex items-center gap-2.5 rounded-xl border px-3 py-2.5">
+                                    <div key={installment.id} className="border-border flex flex-col gap-2.5 rounded-xl border px-3 py-2.5">
+                                        <div className="flex items-center gap-2.5">
                                         <div className="flex-1">
                                             <p className="text-[13.5px] font-medium">
                                                 {installment.number === 0
@@ -206,6 +211,25 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                                         </div>
                                         <span className="text-[13.5px] font-semibold">{money(installment.amountCents)}</span>
                                         <StatusBadge status={status} />
+                                        </div>
+                                        {installment.claim && (
+                                            <div className="bg-muted flex flex-col gap-2 rounded-lg p-2.5">
+                                                <p className="text-[13px] font-medium">{t('sale.claimTitle')}</p>
+                                                {installment.claim.receiptType && (
+                                                    <button type="button" className="text-brand w-fit text-[13px] underline" onClick={() => setReceiptClaim(installment.claim)}>
+                                                        {t('sale.claimReceipt')}
+                                                    </button>
+                                                )}
+                                                <div className="flex gap-2">
+                                                    <Button size="sm" className="h-9 flex-1 text-[13px]" onClick={() => router.post(confirmClaim.url({ claim: installment.claim!.id }), {}, { preserveScroll: true })}>
+                                                        {t('sale.claimConfirm')}
+                                                    </Button>
+                                                    <Button size="sm" variant="outline" className="h-9 flex-1 text-[13px]" onClick={() => router.post(rejectClaim.url({ claim: installment.claim!.id }), {}, { preserveScroll: true })}>
+                                                        {t('sale.claimReject')}
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -282,6 +306,10 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                         },
                     ]}
                 />
+            )}
+
+            {receiptClaim?.receiptType && (
+                <ReceiptViewer url={claimReceipt.url({ claim: receiptClaim.id })} type={receiptClaim.receiptType} open onOpenChange={(open) => !open && setReceiptClaim(null)} />
             )}
 
             <BottomSheet open={cancelling} onOpenChange={setCancelling} title={t('sale.cancel')} description={t('sale.cancelConfirm')}>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClaimStatus;
 use App\Enums\SaleStatus;
 use App\Enums\StockMovementReason;
 use App\Http\Requests\SaleStoreRequest;
@@ -61,7 +62,7 @@ class SaleController extends Controller
 
     public function show(Request $request, Sale $sale): Response
     {
-        $sale->load(['customer', 'items.product', 'items.variant', 'installments' => fn ($query) => $query->withRemaining()->orderBy('number')->with('payments')]);
+        $sale->load(['customer', 'items.product', 'items.variant', 'installments' => fn ($query) => $query->withRemaining()->orderBy('number')->with(['payments', 'claims' => fn ($claims) => $claims->where('status', ClaimStatus::Pending)])]);
 
         return Inertia::render('sales/show', [
             'justCreated' => $request->boolean('created'),
@@ -88,6 +89,11 @@ class SaleController extends Controller
                     'remainingCents' => (int) $installment->remaining_cents,
                     'dueDate' => $installment->due_date->toDateString(),
                     'paidAt' => $installment->remaining_cents == 0 ? $installment->payments->max('paid_at')?->toDateString() : null,
+                    'claim' => ($claim = $installment->claims->first()) ? ['id' => $claim->id, 'receiptType' => match (true) {
+                        $claim->receipt_path === null => null,
+                        str_ends_with($claim->receipt_path, '.pdf') => 'pdf',
+                        default => 'image',
+                    }] : null,
                 ]),
                 'installmentCount' => $sale->installments->where('number', '>', 0)->count(),
             ],
