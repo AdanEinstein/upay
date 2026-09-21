@@ -22,6 +22,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $due_date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read int $remaining_cents Only loaded via `withRemaining()`.
  */
 #[Fillable(['sale_id', 'customer_id', 'number', 'amount_cents', 'due_date'])]
 class Installment extends Model
@@ -61,6 +62,8 @@ class Installment extends Model
 
     /**
      * SQL expression for what is still owed on an installment.
+     *
+     * @return literal-string
      */
     public static function remainingSql(): string
     {

@@ -7,13 +7,14 @@ use App\Enums\SaleStatus;
 use App\Models\Customer;
 use App\Models\Installment;
 use App\Models\Sale;
+use App\Models\SaleItem;
 use App\Models\ShopSetting;
 use App\Support\PixPayload;
 use App\Support\Tenant;
-use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class PublicDebtController extends Controller
 {
@@ -42,11 +43,11 @@ class PublicDebtController extends Controller
             'id' => $sale->id,
             'soldAt' => $sale->sold_at->toDateString(),
             'totalCents' => $sale->total_cents,
-            'paidCents' => (int) $sale->installments->flatMap->payments->sum('amount_cents'),
+            'paidCents' => (int) $sale->installments->flatMap(fn (Installment $installment) => $installment->payments)->sum('amount_cents'),
             'installmentCount' => $sale->installments->count(),
             'status' => $sale->settlement()['status'],
-            'items' => $sale->items->map(fn ($item) => [
-                'name' => trim($item->product->name.' '.($item->variant?->name ?? '')),
+            'items' => $sale->items->map(fn (SaleItem $item) => [
+                'name' => trim($item->product->name.' '.($item->variant->name ?? '')),
                 'quantity' => $item->quantity,
                 'totalCents' => $item->quantity * $item->unit_price_cents,
             ])->values(),

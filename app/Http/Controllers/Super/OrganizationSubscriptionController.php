@@ -12,7 +12,7 @@ class OrganizationSubscriptionController extends Controller
 {
     public function __invoke(OrganizationSubscriptionRequest $request, Organization $organization): RedirectResponse
     {
-        $plan = Plan::query()->findOrFail($request->validated('plan_id'));
+        $plan = Plan::query()->findOrFail((int) $request->validated('plan_id'));
 
         // The price is frozen on the subscription (MRR base), so a plan change re-prices it.
         $organization->subscription()->updateOrCreate([], [

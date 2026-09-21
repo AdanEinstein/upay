@@ -88,7 +88,7 @@ class PromotionController extends Controller
     }
 
     /**
-     * @return list<array{id: int, name: string, priceCents: int}>
+     * @return array<int, array{id: int, name: string, priceCents: int}>
      */
     private function products(): array
     {

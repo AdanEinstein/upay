@@ -19,7 +19,7 @@ class ProductStockController extends Controller
         ]);
 
         DB::transaction(function () use ($product, $data): void {
-            $variant = $data['variant_id'] ? $product->variants()->findOrFail($data['variant_id']) : null;
+            $variant = $data['variant_id'] ? $product->variants()->findOrFail((int) $data['variant_id']) : null;
 
             $product->increment('stock_qty', $data['quantity']);
             $variant?->increment('stock_qty', $data['quantity']);

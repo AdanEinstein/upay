@@ -9,6 +9,7 @@ use App\Http\Requests\SaleStoreRequest;
 use App\Models\Customer;
 use App\Models\Installment;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Sale;
 use App\Support\RegisterSale;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +19,9 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @phpstan-import-type SaleData from RegisterSale
+ */
 class SaleController extends Controller
 {
     public function index(): Response
@@ -55,7 +59,9 @@ class SaleController extends Controller
 
     public function store(SaleStoreRequest $request, RegisterSale $registerSale): RedirectResponse
     {
-        $sale = $registerSale->handle($request->validated());
+        /** @var SaleData $data */
+        $data = $request->validated();
+        $sale = $registerSale->handle($data);
 
         return to_route('sales.show', ['sale' => $sale, 'created' => 1]);
     }
@@ -136,16 +142,16 @@ class SaleController extends Controller
     /**
      * @return array<string, mixed>
      */
-    private function sellable(Product $product, $variant): array
+    private function sellable(Product $product, ?ProductVariant $variant): array
     {
         return [
-            'key' => $product->id.'-'.($variant?->id ?? 0),
+            'key' => $product->id.'-'.($variant->id ?? 0),
             'productId' => $product->id,
             'variantId' => $variant?->id,
             'name' => $product->name.($variant ? ' · '.$variant->name : ''),
             'category' => $product->category,
-            'priceCents' => $variant?->price_cents ?? $product->price_cents,
-            'stock' => $variant?->stock_qty ?? $product->stock_qty,
+            'priceCents' => $variant->price_cents ?? $product->price_cents,
+            'stock' => $variant->stock_qty ?? $product->stock_qty,
             'imageUrl' => ($path = $product->images->sortBy('position')->first()?->path) ? Storage::url($path) : null,
         ];
     }

@@ -7,10 +7,10 @@ use App\Models\Product;
 use App\Models\Promotion;
 use App\Models\ShopSetting;
 use App\Support\Tenant;
-use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class PublicCatalogController extends Controller
 {
@@ -45,7 +45,7 @@ class PublicCatalogController extends Controller
     }
 
     /**
-     * @return list<array<string, mixed>>
+     * @return array<int, array<string, mixed>>
      */
     private function products(): array
     {

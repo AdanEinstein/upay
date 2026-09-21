@@ -54,7 +54,7 @@ class CatalogIdentityController extends Controller
         $settings->fill($request->safe()->only(['welcome_text', 'whatsapp']));
 
         if ($request->hasFile('cover')) {
-            $settings->cover_path = $request->file('cover')->store('organizations/'.$organization->id, 'public');
+            $settings->cover_path = $request->file('cover')->store('organizations/'.$organization->id, 'public') ?: null;
         }
 
         $settings->save();

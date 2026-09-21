@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
  * @property bool $featured
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read int $organizations_count Only loaded via `withCount`.
  */
 #[Fillable(['slug', 'name', 'price_cents', 'annual_price_cents', 'limits', 'active', 'featured'])]
 class Plan extends Model

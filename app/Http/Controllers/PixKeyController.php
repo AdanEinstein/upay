@@ -15,7 +15,7 @@ class PixKeyController extends Controller
         $settings = ShopSetting::current();
 
         return Inertia::render('pix-key', [
-            'pixKeyType' => $settings->pix_key_type?->value ?? 'email',
+            'pixKeyType' => $settings->pix_key_type->value ?? 'email',
             'pixKey' => $settings->pix_key ?? '',
         ]);
     }

@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
  * @property string $on_primary_color
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read int $sales_month_count Only loaded via `withCount`.
  */
 #[Fillable(['name', 'slug', 'status', 'suspension_reason', 'accent_color', 'accent_color_hover', 'accent_color_soft', 'on_primary_color'])]
 class Organization extends Model

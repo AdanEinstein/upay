@@ -112,7 +112,9 @@ class ProductController extends Controller
 
     private function syncVariantsAndStock(Product $product, ProductRequest $request): void
     {
-        $variants = collect($request->validated('variants', []));
+        /** @var list<array{id?: int|string|null, name: string, stock_qty: int|string}> $rows */
+        $rows = $request->validated('variants', []);
+        $variants = collect($rows);
 
         if ($variants->isEmpty()) {
             $product->variants()->delete();
@@ -125,7 +127,7 @@ class ProductController extends Controller
 
         foreach ($variants as $row) {
             $variant = isset($row['id'])
-                ? $product->variants()->findOrFail($row['id'])
+                ? $product->variants()->findOrFail((int) $row['id'])
                 : $product->variants()->create(['name' => $row['name'], 'stock_qty' => 0]);
 
             $variant->update(['name' => $row['name']]);
@@ -178,10 +180,13 @@ class ProductController extends Controller
     }
 
     /**
-     * @return list<string>
+     * @return array<int, string>
      */
     private function categories(): array
     {
-        return Product::query()->whereNotNull('category')->distinct()->orderBy('category')->pluck('category')->all();
+        /** @var array<int, string> $categories */
+        $categories = Product::query()->whereNotNull('category')->distinct()->orderBy('category')->pluck('category')->all();
+
+        return $categories;
     }
 }

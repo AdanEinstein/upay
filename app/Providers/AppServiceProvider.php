@@ -6,6 +6,7 @@ use App\Auth\SuperAdminUserProvider;
 use App\Models\Organization;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,7 +122,13 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureSearchMacros(): void
     {
-        $likeOperator = fn (Builder $query): string => $query->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
+        $driverName = function (Builder $query): string {
+            /** @var Connection $connection */
+            $connection = $query->getConnection();
+
+            return $connection->getDriverName();
+        };
+        $likeOperator = fn (Builder $query): string => $driverName($query) === 'pgsql' ? 'ilike' : 'like';
 
         Builder::macro('whereLike', function (string $column, string $pattern) use ($likeOperator) {
             /** @var Builder $this */
@@ -133,15 +140,17 @@ class AppServiceProvider extends ServiceProvider
             return $this->orWhere($column, $likeOperator($this), $pattern);
         });
 
-        Builder::macro('searchText', function (array $likeColumns, string $term, ?string $vectorColumn = null) use ($likeOperator) {
+        Builder::macro('searchText', function (array $likeColumns, string $term, ?string $vectorColumn = null) use ($likeOperator, $driverName) {
             /** @var Builder $this */
-            $usePostgresFullText = $vectorColumn !== null && $this->getConnection()->getDriverName() === 'pgsql';
+            $usePostgresFullText = $vectorColumn !== null && $driverName($this) === 'pgsql';
 
             return $this->where(function (Builder $query) use ($likeColumns, $term, $vectorColumn, $usePostgresFullText, $likeOperator) {
                 if ($usePostgresFullText) {
                     $language = config('search.languages.'.app()->getLocale(), config('search.default_language'));
 
+                    // Column and language come from trusted callers/config, never user input.
                     $query->whereRaw(
+                        // @phpstan-ignore argument.type
                         "{$vectorColumn} @@ prefix_tsquery('{$language}', immutable_unaccent(?))",
                         [$term],
                     );

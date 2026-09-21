@@ -24,6 +24,7 @@ use Illuminate\Support\Str;
  * @property string $public_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read int $balance_cents Only loaded via `withBalance()`.
  */
 #[Fillable(['name', 'phone', 'document', 'address', 'notes'])]
 class Customer extends Model

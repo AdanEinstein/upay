@@ -17,11 +17,13 @@ use Illuminate\Validation\ValidationException;
 /**
  * Creates a sale with its items, stock movements, installments and any
  * immediate payment in a single transaction.
+ *
+ * @phpstan-type SaleData array{customer_id: int|null, items: list<array{product_id: int, variant_id: int|null, quantity: int}>, payment_type: string, payment_method: string, installments?: int|null, down_payment_cents?: int|null, first_due_date?: string|null}
  */
 class RegisterSale
 {
     /**
-     * @param  array{customer_id: int|null, items: list<array{product_id: int, variant_id: int|null, quantity: int}>, payment_type: string, payment_method: string, installments?: int|null, down_payment_cents?: int|null, first_due_date?: string|null}  $data
+     * @param  SaleData  $data
      */
     public function handle(array $data): Sale
     {
@@ -32,13 +34,13 @@ class RegisterSale
             foreach ($data['items'] as $index => $item) {
                 $product = Product::query()->findOrFail($item['product_id']);
                 $variant = $item['variant_id'] ? ProductVariant::query()->where('product_id', $product->id)->findOrFail($item['variant_id']) : null;
-                $available = $variant?->stock_qty ?? $product->stock_qty;
+                $available = $variant->stock_qty ?? $product->stock_qty;
 
                 if ($item['quantity'] > $available) {
                     throw ValidationException::withMessages(["items.{$index}.quantity" => __('Not enough stock.')]);
                 }
 
-                $unitPrice = $variant?->price_cents ?? $product->price_cents;
+                $unitPrice = $variant->price_cents ?? $product->price_cents;
                 $total += $unitPrice * $item['quantity'];
                 $lines[] = compact('product', 'variant', 'unitPrice') + ['quantity' => $item['quantity']];
             }
