@@ -5,7 +5,7 @@ Protótipos são `*.dc.html` mobile 390x844; o design system fica em `_ds/upay-d
 Decisão do usuário: frontend **e** backend reais, uma etapa por vez, validando cada uma.
 
 Legenda: `[x]` feito · `[~]` implementado mas não validado · `[ ]` pendente.
-Estado verificado em 2026-09-21 (`php artisan test`: 160/160 passando). **Nada está commitado** — tudo no working tree.
+Estado verificado em 2026-09-21 (`php artisan test`: 160/160 passando). Commitado localmente em fatias (sem push).
 
 ## Convenções que valem para toda etapa
 - i18n obrigatório: `t()`/`__()` + chave em pt-BR **e** en-US (`resources/js/lang/{pt-BR,en-US}/*.json`, `lang/{en,pt_BR}/*.php`). Lojista usa o namespace `shop`; público usa `public`.
