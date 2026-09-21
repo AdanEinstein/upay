@@ -29,7 +29,7 @@ return [
     ],
 
     'support' => [
-        'whatsapp' => env('SUPPORT_WHATSAPP'),
+        'whatsapp' => env('SUPPORT_WHATSAPP') ?: null,
     ],
 
     'slack' => [
