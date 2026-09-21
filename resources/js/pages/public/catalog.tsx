@@ -44,24 +44,26 @@ export default function Catalog({ store, notice, products }: Props) {
             {selected ? (
                 <ProductScreen product={selected} whatsapp={store.whatsapp} onBack={() => setSelectedId(null)} />
             ) : (
-                <MobileScreen>
-                    {notice && <div className={cn('px-5 py-2 text-[12.5px] font-semibold', NOTICE_STYLES[notice.type])}>{notice.text}</div>}
+                <MobileScreen className="lg:max-w-none">
+                    {notice && <div className={cn('px-5 py-2 text-[12.5px] font-semibold lg:px-6', NOTICE_STYLES[notice.type])}>{notice.text}</div>}
 
-                    <div className="flex flex-col gap-3.5 px-5 pt-3 pb-8">
-                        <div className="bg-brand h-[100px] overflow-hidden rounded-2xl">
+                    <div className="flex flex-col gap-3.5 px-5 pt-3 pb-8 lg:px-0 lg:pt-0">
+                        <div className="bg-brand h-[100px] overflow-hidden rounded-2xl lg:h-[120px] lg:rounded-none">
                             {store.coverUrl && <img src={store.coverUrl} alt="" className="size-full object-cover" />}
                         </div>
-                        <div className="-mt-7 flex items-center gap-2.5 pl-2.5">
-                            <div className="bg-card border-background text-muted-foreground flex size-[52px] items-center justify-center overflow-hidden rounded-xl border-[3px] text-[10px]">
+                        <div className="-mt-7 flex items-center gap-2.5 pl-2.5 lg:-mt-8 lg:gap-3 lg:pl-8">
+                            <div className="bg-card border-background text-muted-foreground flex size-[52px] lg:size-16 items-center justify-center overflow-hidden rounded-xl border-[3px] text-[10px]">
                                 {store.logoUrl ? <img src={store.logoUrl} alt="" className="size-full object-cover" /> : t('logo')}
                             </div>
                             <h1 className="mt-5 text-base font-bold">{store.name}</h1>
                         </div>
-                        {store.welcomeText && <p className="text-muted-foreground text-[13px]">{store.welcomeText}</p>}
+                        <div className="flex flex-col gap-3.5 lg:mx-auto lg:w-full lg:max-w-[900px] lg:gap-5 lg:px-8 lg:pt-3">
+                            {store.welcomeText && <p className="text-muted-foreground text-[13px]">{store.welcomeText}</p>}
 
-                        <Deferred data="products" fallback={<CatalogSkeleton />}>
-                            <Listing products={products ?? []} onOpen={setSelectedId} />
-                        </Deferred>
+                            <Deferred data="products" fallback={<CatalogSkeleton />}>
+                                <Listing products={products ?? []} onOpen={setSelectedId} />
+                            </Deferred>
+                        </div>
                     </div>
                 </MobileScreen>
             )}
@@ -96,7 +98,7 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder={t('searchProducts')}
                 aria-label={t('searchProducts')}
-                className="h-10"
+                className="h-10 lg:h-[42px] lg:w-[360px]"
             />
 
             {categories.length > 0 && (
@@ -113,9 +115,9 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
             {promos.length > 0 && (
                 <section>
                     <h2 className="text-muted-foreground mb-2 text-[12.5px] font-bold uppercase">{t('promotions')}</h2>
-                    <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none]">
+                    <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] lg:grid lg:grid-cols-5 lg:gap-4 lg:overflow-visible">
                         {promos.map((product) => (
-                            <ProductCard key={product.id} product={product} onOpen={onOpen} className="w-[150px] shrink-0" money={money} />
+                            <ProductCard key={product.id} product={product} onOpen={onOpen} className="w-[150px] shrink-0 lg:w-auto" money={money} />
                         ))}
                     </div>
                 </section>
@@ -124,7 +126,7 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
             {visible.length > 0 && (
                 <section>
                     <h2 className="text-muted-foreground mb-2 text-[12.5px] font-bold uppercase">{t('products')}</h2>
-                    <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-5 lg:gap-4">
                         {visible.map((product) => (
                             <ProductCard key={product.id} product={product} onOpen={onOpen} money={money} />
                         ))}
@@ -166,14 +168,14 @@ function ProductCard({
             className={cn('border-border overflow-hidden rounded-xl border text-left', className)}
         >
             <div className="relative">
-                <ProductImage url={product.images[0] ?? null} className="h-[100px]" />
+                <ProductImage url={product.images[0] ?? null} className="h-[100px] lg:h-[130px]" />
                 {percent !== null && (
                     <span className="bg-destructive absolute top-1.5 left-1.5 rounded-md px-1.5 py-0.5 text-[11px] font-bold text-white">
                         -{percent}%
                     </span>
                 )}
             </div>
-            <div className="p-2">
+            <div className="p-2 lg:p-2.5">
                 <p className="truncate text-xs font-semibold">{product.name}</p>
                 <Price product={product} money={money} className="mt-0.5 text-[11.5px]" />
             </div>
@@ -192,8 +194,9 @@ function ProductScreen({ product, whatsapp, onBack }: { product: Product; whatsa
         : t('orderMessage', { product: product.name, price: money(unitCents) });
 
     return (
-        <MobileScreen>
-            <div className="px-5 pt-3">
+        <MobileScreen className="lg:max-w-none lg:justify-center">
+          <div className="lg:mx-auto lg:w-[820px]">
+            <div className="px-5 pt-3 lg:px-0">
                 <button
                     type="button"
                     aria-label={t('back')}
@@ -204,16 +207,16 @@ function ProductScreen({ product, whatsapp, onBack }: { product: Product; whatsa
                 </button>
             </div>
 
-            <div className="flex flex-col gap-3.5 px-5 pt-3 pb-24">
-                <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none]">
+            <div className="flex flex-col gap-3.5 px-5 pt-3 pb-24 lg:grid lg:grid-cols-[400px_1fr] lg:content-start lg:gap-x-10 lg:gap-y-4 lg:px-0 lg:pb-8">
+                <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] lg:row-span-4">
                     {(product.images.length > 0 ? product.images : [null]).map((url, index) => (
-                        <ProductImage key={index} url={url} className="h-[220px] w-full shrink-0 snap-center rounded-2xl" />
+                        <ProductImage key={index} url={url} className="h-[220px] w-full shrink-0 snap-center rounded-2xl lg:h-[400px]" />
                     ))}
                 </div>
 
                 <div>
-                    <h1 className="text-[17px] font-bold">{product.name}</h1>
-                    <Price product={product} money={money} className="mt-1 text-sm" />
+                    <h1 className="text-[17px] font-bold lg:text-[22px]">{product.name}</h1>
+                    <Price product={product} money={money} className="mt-1 text-sm lg:mt-1.5 lg:text-lg" />
                 </div>
 
                 {product.variants.length > 0 && (
@@ -238,11 +241,10 @@ function ProductScreen({ product, whatsapp, onBack }: { product: Product; whatsa
                 {product.description && (
                     <p className="text-muted-foreground text-[13.5px] leading-relaxed whitespace-pre-line">{product.description}</p>
                 )}
-            </div>
 
             {whatsapp && (
-                <div className="bg-background border-border fixed inset-x-0 bottom-0 mx-auto w-full max-w-md border-t px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-                    <Button asChild className="h-12 w-full text-base">
+                <div className="bg-background border-border fixed inset-x-0 bottom-0 mx-auto w-full max-w-md border-t px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] lg:static lg:mx-0 lg:w-auto lg:max-w-none lg:border-0 lg:bg-transparent lg:p-0">
+                    <Button asChild className="h-12 w-full text-base lg:w-auto lg:self-start lg:px-7">
                         <a href={whatsappUrl(whatsapp, message)} target="_blank" rel="noreferrer">
                             <WhatsappLogoIcon />
                             {t('orderOnWhatsapp')}
@@ -250,6 +252,8 @@ function ProductScreen({ product, whatsapp, onBack }: { product: Product; whatsa
                     </Button>
                 </div>
             )}
+            </div>
+          </div>
         </MobileScreen>
     );
 }
