@@ -21,7 +21,7 @@ class CatalogIdentityController extends Controller
         return Inertia::render('catalog/identity', [
             'name' => $organization->name,
             'slug' => $organization->slug,
-            'link' => parse_url(config('app.url'), PHP_URL_HOST).'/'.$organization->slug,
+            'link' => preg_replace('#^https?://#', '', route('public.catalog', $organization->slug)),
             'logoUrl' => $organization->logo_path ? Storage::url($organization->logo_path) : null,
             'coverUrl' => $settings->cover_path ? Storage::url($settings->cover_path) : null,
             'welcomeText' => $settings->welcome_text ?? '',

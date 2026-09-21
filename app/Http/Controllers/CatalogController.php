@@ -19,7 +19,7 @@ class CatalogController extends Controller
         $slug = Tenant::current()->slug;
 
         return Inertia::render('catalog/show', [
-            'link' => parse_url(config('app.url'), PHP_URL_HOST).'/c/'.$slug,
+            'url' => route('public.catalog', $slug),
             'published' => $settings->catalog_public,
             'activePromotions' => Promotion::query()->active()->count(),
             'noticeLive' => $settings->hasLiveNotice(),
