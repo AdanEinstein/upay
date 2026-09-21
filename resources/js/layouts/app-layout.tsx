@@ -8,7 +8,10 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import InstallPrompt from '@/components/install-prompt';
 import MobileScreen from '@/components/mobile-screen';
 import BottomNav from '@/components/shop/bottom-nav';
+import PaymentClaimAlerts from '@/components/shop/payment-claim-alerts';
 import { useOnline } from '@/hooks/use-online';
+import { useTenant } from '@/hooks/use-tenant';
+import { echoEnabled } from '@/lib/echo';
 import { NAV_TABS } from '@/lib/nav-section';
 import { cn } from '@/lib/utils';
 import type { BreadcrumbItem } from '@/types';
@@ -25,10 +28,12 @@ export default function AppLayout({
     const { t } = useTranslation('shop');
     const { component } = usePage();
     const online = useOnline();
+    const tenant = useTenant();
     const showNav = component in NAV_TABS;
 
     return (
         <AppShell variant="sidebar">
+            {echoEnabled && tenant && <PaymentClaimAlerts organizationId={tenant.id} />}
             <AppSidebar />
             <AppContent variant="sidebar" className="min-w-0 overflow-x-clip">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />

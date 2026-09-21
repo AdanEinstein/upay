@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import SuperAdminLayout from '@/layouts/super-admin-layout';
+import '@/lib/echo';
 import { initializeI18n } from '@/lib/i18n';
 import { currentOrganization } from '@/lib/organization';
 import { useSyncLocale } from '@/lib/sync-locale';

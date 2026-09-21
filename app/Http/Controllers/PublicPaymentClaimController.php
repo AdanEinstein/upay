@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ClaimStatus;
+use App\Events\PaymentClaimCreated;
 use App\Http\Requests\PaymentClaimStoreRequest;
 use App\Models\Customer;
 use App\Models\Installment;
@@ -27,11 +28,13 @@ class PublicPaymentClaimController extends Controller
             return back();
         }
 
-        $installment->claims()->create([
+        $claim = $installment->claims()->create([
             'amount_cents' => $remaining,
             'status' => ClaimStatus::Pending,
             'receipt_path' => $request->file('receipt')?->store('receipts/'.$customer->organization_id, 'local'),
         ]);
+
+        PaymentClaimCreated::dispatch($claim->organization_id, $claim->id, $installment->sale_id, $customer->name, $claim->amount_cents, $claim->receipt_path !== null);
 
         return back();
     }

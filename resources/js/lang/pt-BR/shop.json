@@ -49,6 +49,10 @@
         "cash": "Dinheiro",
         "card": "Cartão"
     },
+    "claimAlert": {
+        "title": "{{customer}} avisou que pagou",
+        "view": "Ver venda"
+    },
     "home": {
         "greeting": "Olá, {{name}}",
         "subtitle": "Resumo do seu negócio",
@@ -61,6 +65,8 @@
         "lowStockItem_other": "{{name}} · {{count}} restantes",
         "owedTitle": "Quem me deve",
         "owedEmpty": "Ninguém com parcela vencida ou vencendo hoje.",
+        "claimsTitle": "Avisos de pagamento",
+        "claimsReceipt": "com comprovante",
         "charge": "Cobrar",
         "chargeMessage": "Olá, {{name}}! Passando para lembrar que sua parcela de {{amount}} vence hoje. Você pode pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
         "chargeOverdueMessage": "Olá, {{name}}! Passando para lembrar que sua parcela de {{amount}} está em atraso. Você pode pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",

@@ -50,6 +50,7 @@ class HandleInertiaRequests extends Middleware
             // SetOrganizationContext middleware has called Tenant::use() —
             // a closure defers evaluation until the response is built.
             'tenant' => fn () => ($organization = Tenant::current()) ? [
+                'id' => $organization->id,
                 'slug' => $organization->slug,
                 'name' => $organization->name,
                 'logoUrl' => $organization->logo_path ? Storage::url($organization->logo_path) : null,

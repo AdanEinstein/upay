@@ -4,6 +4,7 @@ import {
     ChartLineUpIcon,
     DotsThreeCircleIcon,
     StorefrontIcon,
+    ReceiptIcon,
     WarningIcon,
 } from '@phosphor-icons/react';
 import { useState } from 'react';
@@ -19,7 +20,7 @@ import { publicDebtUrl } from '@/lib/whatsapp';
 import { show as catalog } from '@/routes/catalog';
 import { index as finance } from '@/routes/finance';
 import { show as more } from '@/routes/more';
-import { create as createSale } from '@/routes/sales';
+import { create as createSale, show as showSale } from '@/routes/sales';
 
 type Owed = {
     id: number;
@@ -31,8 +32,18 @@ type Owed = {
     isOverdue: boolean;
 };
 
+type PendingClaim = {
+    id: number;
+    saleId: number;
+    customer: string | null;
+    amountCents: number;
+    hasReceipt: boolean;
+};
+
 type Props = {
     hasSales: boolean;
+    pendingClaims: PendingClaim[];
+    pendingClaimsCount: number;
     salesTodayCents: number;
     monthProfitCents: number;
     receivableTodayCents: number;
@@ -54,6 +65,8 @@ function Stat({ label, value, danger }: { label: string; value: string; danger?:
 
 export default function Home({
     hasSales,
+    pendingClaims,
+    pendingClaimsCount,
     salesTodayCents,
     monthProfitCents,
     receivableTodayCents,
@@ -151,6 +164,43 @@ export default function Home({
                                 ))}
                             </AlertDescription>
                         </Alert>
+                    )}
+
+                    {pendingClaimsCount > 0 && (
+                        <section className="flex flex-col gap-2 lg:gap-2.5">
+                            <h2 className="flex items-center gap-2 text-sm font-semibold lg:text-[15px]">
+                                {t('home.claimsTitle')}
+                                <span className="bg-brand text-brand-foreground rounded-full px-2 py-0.5 text-[11.5px] font-bold tabular-nums">
+                                    {pendingClaimsCount}
+                                </span>
+                            </h2>
+                            <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
+                                {pendingClaims.map((claim) => (
+                                    <Link
+                                        key={claim.id}
+                                        href={showSale.url({
+                                            sale: claim.saleId,
+                                        })}
+                                        className="hover:bg-muted flex items-center gap-2.5 p-3 lg:px-4 lg:py-3.5"
+                                    >
+                                        <div className="min-w-0 flex-1">
+                                            <p className="truncate text-sm font-medium lg:text-[14.5px]">
+                                                {claim.customer}
+                                            </p>
+                                            {claim.hasReceipt && (
+                                                <p className="text-muted-foreground flex items-center gap-1 text-xs lg:text-[12.5px]">
+                                                    <ReceiptIcon className="size-3.5" />
+                                                    {t('home.claimsReceipt')}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <span className="text-sm font-semibold lg:text-[14.5px]">
+                                            {money(claim.amountCents)}
+                                        </span>
+                                    </Link>
+                                ))}
+                            </div>
+                        </section>
                     )}
 
                     <section className="flex flex-col gap-2 lg:gap-2.5">

@@ -49,6 +49,10 @@
         "cash": "Cash",
         "card": "Card"
     },
+    "claimAlert": {
+        "title": "{{customer}} says they paid",
+        "view": "View sale"
+    },
     "home": {
         "greeting": "Hi, {{name}}",
         "subtitle": "Your business at a glance",
@@ -61,6 +65,8 @@
         "lowStockItem_other": "{{name}} · {{count}} left",
         "owedTitle": "Who owes me",
         "owedEmpty": "No installments overdue or due today.",
+        "claimsTitle": "Payment notices",
+        "claimsReceipt": "with receipt",
         "charge": "Charge",
         "chargeMessage": "Hi, {{name}}! Just a reminder that your installment of {{amount}} is due today. You can pay by PIX here: {{link}} — any questions, just ask!",
         "chargeOverdueMessage": "Hi, {{name}}! Just a reminder that your installment of {{amount}} is overdue. You can pay by PIX here: {{link}} — any questions, just ask!",

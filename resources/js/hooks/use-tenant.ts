@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react';
 
 export type Tenant = {
+    id: number;
     slug: string;
     name: string;
     logoUrl: string | null;

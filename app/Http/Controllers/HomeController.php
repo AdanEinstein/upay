@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClaimStatus;
 use App\Models\Installment;
+use App\Models\PaymentClaim;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Support\Ledger;
@@ -13,7 +15,23 @@ class HomeController extends Controller
 {
     public function __invoke(): Response
     {
+        $pendingClaims = PaymentClaim::query()->where('status', ClaimStatus::Pending);
+
         return Inertia::render('home', [
+            'pendingClaimsCount' => (clone $pendingClaims)->count(),
+            'pendingClaims' => (clone $pendingClaims)
+                ->with('installment.customer:id,name')
+                ->latest()
+                ->limit(5)
+                ->get()
+                ->map(fn (PaymentClaim $claim) => [
+                    'id' => $claim->id,
+                    'saleId' => $claim->installment->sale_id,
+                    'customer' => $claim->installment->customer?->name,
+                    'amountCents' => $claim->amount_cents,
+                    'hasReceipt' => $claim->receipt_path !== null,
+                    'createdAt' => $claim->created_at->toIso8601String(),
+                ]),
             'hasSales' => Sale::query()->exists(),
             'salesTodayCents' => (int) Sale::query()->whereDate('sold_at', today())->sum('total_cents'),
             'monthProfitCents' => Ledger::profit(now()->startOfMonth(), now()->endOfMonth()),
