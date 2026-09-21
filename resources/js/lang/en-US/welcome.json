@@ -1,15 +1,88 @@
 {
-    "title": "Your sales and payments, in one place",
-    "subtitle": "Log sales, track the installments you're owed and send a payment reminder on WhatsApp — all from your phone.",
-    "form": {
-        "label": "Your store address",
-        "placeholder": "my-store",
-        "submit": "Go to my store",
-        "error": "Enter your store address, using only letters, numbers and hyphens."
+    "title": "Organize your store and sell more, all from your phone.",
+    "subtitle": "Catalog, sales, customers and finances in one place. No spreadsheets, no hassle.",
+    "badge": "Built for the small shop owner",
+    "nav": {
+        "features": "Features",
+        "plans": "Plans",
+        "login": "Log in"
     },
-    "platformAccess": "Platform access",
+    "cta": {
+        "register": "Create account",
+        "seePlans": "See plans"
+    },
     "preview": {
-        "store": "Ana's Boutique",
-        "item": "Floral dress"
-    }
+        "greeting": "Hi, Ana's Boutique",
+        "heading": "Your business at a glance",
+        "salesToday": "Sales today",
+        "profitMonth": "Profit this month",
+        "owedToday": "Who owes me today",
+        "charge": "Collect",
+        "debtor": "Maria Souza"
+    },
+    "features": {
+        "title": "Everything your store needs, in one app",
+        "subtitle": "No loose spreadsheets or separate tools for every task.",
+        "catalog": {
+            "title": "Online catalog",
+            "text": "Build your catalog with photos and prices and share it with customers in seconds."
+        },
+        "sales": {
+            "title": "Point of sale",
+            "text": "Log every sale right from your phone, on the spot, no notebook or paper."
+        },
+        "customers": {
+            "title": "Customers and payments",
+            "text": "See who owes you, when it's due and collect with one tap, staying in control."
+        },
+        "finance": {
+            "title": "Finances at hand",
+            "text": "Track profit, today's sales and what you're still owed, without a spreadsheet."
+        }
+    },
+    "steps": {
+        "title": "Start selling in 3 steps",
+        "one": {
+            "title": "Sign up your store",
+            "text": "Takes under 2 minutes, no red tape."
+        },
+        "two": {
+            "title": "Build your catalog",
+            "text": "Add your products with photos and prices."
+        },
+        "three": {
+            "title": "Start selling",
+            "text": "Log sales, collect from customers and follow your finances."
+        }
+    },
+    "plans": {
+        "title": "Plans for every store size",
+        "subtitle": "Pick the plan that fits your store and start today.",
+        "popular": "Most popular",
+        "perMonth": "{{price}}/month",
+        "choose": "Choose {{name}}",
+        "customersUpTo": "Up to {{count}} customers",
+        "customersUnlimited": "Unlimited customers",
+        "productsUpTo": "Up to {{count}} products",
+        "productsUnlimited": "Unlimited products",
+        "usersUpTo": "Up to {{count}} users",
+        "usersUnlimited": "Unlimited users"
+    },
+    "login": {
+        "title": "Already have a store?",
+        "form": {
+            "label": "Your store address",
+            "placeholder": "my-store",
+            "submit": "Go to my store",
+            "error": "Enter your store address, using only letters, numbers and hyphens."
+        }
+    },
+    "finalCta": {
+        "title": "Ready to organize your store?",
+        "text": "Create your account and start selling today."
+    },
+    "footer": {
+        "rights": "© {{year}} {{name}}. All rights reserved."
+    },
+    "platformAccess": "Platform access"
 }

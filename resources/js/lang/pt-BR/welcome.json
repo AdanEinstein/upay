@@ -1,15 +1,88 @@
 {
-    "title": "Suas vendas e recebimentos, num só lugar",
-    "subtitle": "Registre vendas, acompanhe as parcelas a receber e envie o lembrete de pagamento pelo WhatsApp — tudo pelo celular.",
-    "form": {
-        "label": "Endereço da sua loja",
-        "placeholder": "minha-loja",
-        "submit": "Entrar na minha loja",
-        "error": "Digite o endereço da sua loja, só letras, números e hífen."
+    "title": "Organize sua loja e venda mais, tudo pelo celular.",
+    "subtitle": "Catálogo, vendas, clientes e financeiro em um só lugar. Sem planilha, sem complicação.",
+    "badge": "Feito para o pequeno lojista",
+    "nav": {
+        "features": "Recursos",
+        "plans": "Planos",
+        "login": "Entrar"
     },
-    "platformAccess": "Acesso da plataforma",
+    "cta": {
+        "register": "Criar conta",
+        "seePlans": "Ver planos"
+    },
     "preview": {
-        "store": "Loja da Ana",
-        "item": "Vestido floral"
-    }
+        "greeting": "Olá, Loja da Ana",
+        "heading": "Resumo do seu negócio",
+        "salesToday": "Vendas hoje",
+        "profitMonth": "Lucro do mês",
+        "owedToday": "Quem me deve hoje",
+        "charge": "Cobrar",
+        "debtor": "Maria Souza"
+    },
+    "features": {
+        "title": "Tudo que sua loja precisa, em um app",
+        "subtitle": "Sem planilhas soltas nem sistemas separados para cada coisa.",
+        "catalog": {
+            "title": "Catálogo online",
+            "text": "Monte seu catálogo com fotos e preços e compartilhe com seus clientes em segundos."
+        },
+        "sales": {
+            "title": "Vendas no PDV",
+            "text": "Registre cada venda direto do celular, na hora, sem caderno nem papel."
+        },
+        "customers": {
+            "title": "Clientes e cobranças",
+            "text": "Veja quem te deve, quando vence e cobre com um toque, sem perder o controle."
+        },
+        "finance": {
+            "title": "Financeiro na mão",
+            "text": "Acompanhe lucro, vendas do dia e o que ainda vai receber, sem planilha."
+        }
+    },
+    "steps": {
+        "title": "Comece a vender em 3 passos",
+        "one": {
+            "title": "Cadastre sua loja",
+            "text": "Leva menos de 2 minutos, sem burocracia."
+        },
+        "two": {
+            "title": "Monte seu catálogo",
+            "text": "Adicione seus produtos com fotos e preços."
+        },
+        "three": {
+            "title": "Comece a vender",
+            "text": "Registre vendas, cobre clientes e acompanhe o financeiro."
+        }
+    },
+    "plans": {
+        "title": "Planos para todo tamanho de loja",
+        "subtitle": "Escolha o plano que cabe na sua loja e comece hoje.",
+        "popular": "Mais popular",
+        "perMonth": "{{price}}/mês",
+        "choose": "Escolher {{name}}",
+        "customersUpTo": "Até {{count}} clientes",
+        "customersUnlimited": "Clientes ilimitados",
+        "productsUpTo": "Até {{count}} produtos",
+        "productsUnlimited": "Produtos ilimitados",
+        "usersUpTo": "Até {{count}} usuários",
+        "usersUnlimited": "Usuários ilimitados"
+    },
+    "login": {
+        "title": "Já tem uma loja?",
+        "form": {
+            "label": "Endereço da sua loja",
+            "placeholder": "minha-loja",
+            "submit": "Entrar na minha loja",
+            "error": "Digite o endereço da sua loja, só letras, números e hífen."
+        }
+    },
+    "finalCta": {
+        "title": "Pronto para organizar sua loja?",
+        "text": "Crie sua conta e comece a vender ainda hoje."
+    },
+    "footer": {
+        "rights": "© {{year}} {{name}}. Todos os direitos reservados."
+    },
+    "platformAccess": "Acesso da plataforma"
 }
