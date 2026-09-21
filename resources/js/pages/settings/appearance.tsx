@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import AppearanceTabs from '@/components/appearance-tabs';
 import Heading from '@/components/heading';
-import i18n from '@/lib/i18n';
 import { edit as editAppearance } from '@/routes/appearance';
 
 export default function Appearance() {
@@ -17,6 +16,7 @@ export default function Appearance() {
             <div className="space-y-6">
                 <Heading
                     variant="small"
+                    hideTitleOnMobile
                     title={t('settings:appearance.heading')}
                     description={t('settings:appearance.description')}
                 />
@@ -29,7 +29,7 @@ export default function Appearance() {
 Appearance.layout = {
     breadcrumbs: [
         {
-            title: i18n.t('settings:appearance.title'),
+            title: 'settings:appearance.title',
             href: editAppearance(),
         },
     ],

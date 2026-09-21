@@ -30,11 +30,16 @@ export default function ExpensesIndex({ expenses }: { expenses: Expense[] }) {
                 title={t('expenses.title')}
                 back={finance.url()}
                 action={
-                    <Button asChild size="icon-sm" aria-label={t('expenses.empty.action')}>
-                        <Link href={create.url()}>
-                            <PlusIcon />
-                        </Link>
-                    </Button>
+                    <>
+                        <Button asChild size="icon-sm" aria-label={t('expenses.empty.action')} className="lg:hidden">
+                            <Link href={create.url()}>
+                                <PlusIcon />
+                            </Link>
+                        </Button>
+                        <Button asChild className="hidden h-10 text-sm lg:inline-flex">
+                            <Link href={create.url()}>{t('expenses.empty.action')}</Link>
+                        </Button>
+                    </>
                 }
             />
 

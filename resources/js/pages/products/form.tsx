@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { CameraIcon, PlusIcon, XIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
@@ -86,7 +86,7 @@ export default function ProductForm({ product, categories }: { product: Product 
             <Head title={title} />
             <PageHeader title={title} back={product ? show.url({ product: product.id }) : index.url()} />
 
-            <form onSubmit={submit} className="flex flex-col gap-4 px-5 pt-2">
+            <form onSubmit={submit} className="flex flex-col gap-4 px-5 pt-2 lg:bg-card lg:border-border lg:mx-5 lg:mt-2 lg:max-w-[600px] lg:rounded-2xl lg:border lg:p-7">
                 <div>
                     <p className="text-muted-foreground mb-2 text-[13px] font-semibold">{t('products.form.photos')}</p>
                     <div className="grid grid-cols-4 gap-2">
@@ -117,7 +117,7 @@ export default function ProductForm({ product, categories }: { product: Product 
                             </div>
                         ))}
                         {slots < MAX_PHOTOS && (
-                            <label className="border-border text-muted-foreground flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-[11px]">
+                            <label className="border-border text-muted-foreground flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-[11px] hover:border-primary/50 has-[:focus-visible]:ring-ring/50 transition-colors has-[:focus-visible]:ring-[3px]">
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -240,9 +240,14 @@ export default function ProductForm({ product, categories }: { product: Product 
                     {t('products.form.catalogVisible')}
                 </label>
 
-                <Button type="submit" size="lg" className="h-12 text-base" disabled={form.processing}>
-                    {t('products.form.save')}
-                </Button>
+                <div className="flex gap-2.5">
+                    <Button asChild variant="ghost" className="hidden h-11 flex-1 lg:inline-flex">
+                        <Link href={product ? show.url({ product: product.id }) : index.url()}>{t('common.cancel')}</Link>
+                    </Button>
+                    <Button type="submit" size="lg" className="h-12 flex-1 text-base lg:h-11" disabled={form.processing}>
+                        {t('products.form.save')}
+                    </Button>
+                </div>
             </form>
         </>
     );

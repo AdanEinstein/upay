@@ -30,7 +30,7 @@ export default function Receivables({ groups }: { groups: Groups }) {
             <Head title={t('receivables.title')} />
             <PageHeader title={t('receivables.title')} back={sales.url()} />
 
-            <div className="flex flex-col gap-4 px-5 pt-2">
+            <div className="flex flex-col gap-4 px-5 pt-2 lg:max-w-[700px] lg:gap-5">
                 {empty && (
                     <p className="text-muted-foreground py-10 text-center text-sm">
                         {t('receivables.empty')}
@@ -49,7 +49,7 @@ export default function Receivables({ groups }: { groups: Groups }) {
                         {groups[key].map((row) => (
                             <div
                                 key={row.id}
-                                className="border-border flex items-center gap-2.5 rounded-xl border px-3 py-2.5"
+                                className="border-border flex items-center gap-2.5 rounded-xl border px-3 py-2.5 lg:gap-3 lg:px-3.5 lg:py-3"
                             >
                                 <button
                                     type="button"

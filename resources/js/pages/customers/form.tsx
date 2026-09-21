@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { CaretDownIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
@@ -50,7 +50,7 @@ export default function CustomerForm({ customer }: { customer: Customer | null }
             <Head title={title} />
             <PageHeader title={title} back={customer ? show.url({ customer: customer.id }) : index.url()} />
 
-            <form onSubmit={submit} className="flex flex-col gap-3.5 px-5 pt-2">
+            <form onSubmit={submit} className="flex flex-col gap-3.5 px-5 pt-2 lg:bg-card lg:border-border lg:mx-auto lg:mt-6 lg:w-[460px] lg:rounded-2xl lg:border lg:p-7">
                 <div className="flex flex-col gap-1.5">
                     <Label htmlFor="name">{t('customers.form.name')}</Label>
                     <Input id="name" value={form.data.name} onChange={(event) => form.setData('name', event.target.value)} placeholder={t('customers.form.namePlaceholder')} className="h-11" autoFocus />
@@ -84,9 +84,14 @@ export default function CustomerForm({ customer }: { customer: Customer | null }
                         </div>
                     </>
                 )}
-                <Button type="submit" size="lg" className="mt-2 h-12 text-base" disabled={form.processing}>
-                    {t('customers.form.save')}
-                </Button>
+                <div className="flex flex-col gap-3.5 lg:flex-row-reverse lg:gap-2.5">
+                    <Button type="submit" size="lg" className="mt-2 h-12 text-base lg:mt-0 lg:h-11 lg:flex-1" disabled={form.processing}>
+                        {t('customers.form.save')}
+                    </Button>
+                    <Button asChild variant="ghost" className="hidden h-11 lg:inline-flex lg:flex-1">
+                        <Link href={customer ? show.url({ customer: customer.id }) : index.url()}>{t('common.cancel')}</Link>
+                    </Button>
+                </div>
             </form>
         </>
     );

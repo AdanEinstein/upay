@@ -149,6 +149,9 @@
 }
 
 .dark {
+    /* O "soft" do tenant é um tom claro fixo; no escuro vira um véu da cor da marca sobre o card. */
+    --color-brand-soft: color-mix(in oklab, var(--tenant-primary) 22%, var(--card));
+
     --background:
         oklch(0.147 0.004 49.3);
     --foreground:
@@ -217,6 +220,12 @@
 @layer base {
     * {
         @apply border-border outline-ring/50;
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in oklab, var(--foreground) 20%, transparent) transparent;
+    }
+
+    *:hover {
+        scrollbar-color: color-mix(in oklab, var(--foreground) 38%, transparent) transparent;
     }
 
     body {
@@ -308,4 +317,7 @@
         calc(var(--radius) * 2.2);
     --radius-4xl:
         calc(var(--radius) * 2.6);
+}
+@utility no-scrollbar {
+    scrollbar-width: none;
 }

@@ -35,7 +35,15 @@ export default function PromotionsIndex({ tabs }: { tabs: Record<Tab, Promotion[
     return (
         <>
             <Head title={t('promotions.title')} />
-            <PageHeader title={t('promotions.title')} back={show.url()} />
+            <PageHeader
+                title={t('promotions.title')}
+                back={show.url()}
+                action={
+                    <Button asChild className="hidden lg:inline-flex">
+                        <Link href={create.url()}>{t('promotions.new')}</Link>
+                    </Button>
+                }
+            />
 
             <div className="flex gap-1.5 px-5 pb-2.5">
                 {TABS.map((key) => (
@@ -60,7 +68,7 @@ export default function PromotionsIndex({ tabs }: { tabs: Record<Tab, Promotion[
                     </Link>
                 ))}
                 {tabs[tab].length === 0 && <p className="text-muted-foreground py-6 text-center text-sm">{t('promotions.empty')}</p>}
-                <Button asChild size="lg" className="mt-1.5 h-11 text-[14.5px]">
+                <Button asChild size="lg" className="mt-1.5 h-11 text-[14.5px] lg:hidden">
                     <Link href={create.url()}>
                         <PlusIcon />
                         {t('promotions.new')}

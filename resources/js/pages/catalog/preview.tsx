@@ -44,7 +44,7 @@ export default function CatalogPreview({ store, notice, promotions, products }: 
                         <p className="text-muted-foreground text-[12.5px] font-bold uppercase">{t('catalog.previewPage.promotions')}</p>
                         <div className="flex gap-2.5 overflow-x-auto">
                             {promotions.map((promotion) => (
-                                <div key={promotion.id} className="border-border w-[120px] shrink-0 overflow-hidden rounded-xl border">
+                                <div key={promotion.id} className="border-border w-[120px] shrink-0 overflow-hidden rounded-xl border lg:w-[180px]">
                                     <ProductImage url={promotion.imageUrl} className="h-20" />
                                     <div className="p-2">
                                         <p className="truncate text-[11.5px] font-semibold">{promotion.name}</p>
@@ -59,7 +59,7 @@ export default function CatalogPreview({ store, notice, promotions, products }: 
                 )}
 
                 <p className="text-muted-foreground text-[12.5px] font-bold uppercase">{t('catalog.previewPage.products')}</p>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4 lg:gap-3.5">
                     {products.map((product) => (
                         <div key={product.id} className="border-border overflow-hidden rounded-xl border">
                             <ProductImage url={product.imageUrl} className="h-20" />
@@ -72,8 +72,8 @@ export default function CatalogPreview({ store, notice, promotions, products }: 
                 </div>
             </div>
 
-            <div className="bg-background border-border sticky bottom-0 mt-6 border-t px-5 py-3">
-                <Button size="lg" className="h-12 w-full text-base" onClick={() => router.put(publish.url())}>
+            <div className="bg-background border-border sticky bottom-0 mt-6 border-t px-5 py-3 lg:static lg:border-t-0 lg:px-5">
+                <Button size="lg" className="h-12 w-full text-base lg:w-auto lg:px-8" onClick={() => router.put(publish.url())}>
                     {t('catalog.previewPage.publish')}
                 </Button>
             </div>

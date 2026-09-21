@@ -52,8 +52,9 @@ export default function ShowProduct({ product, movements }: Props) {
                 }
             />
 
-            <div className="flex flex-col gap-4 px-5">
-                <ProductImage url={product.images[image] ?? null} className="h-[220px] w-full rounded-2xl" iconClassName="size-10" />
+            <div className="flex flex-col gap-4 px-5 lg:grid lg:grid-cols-[340px_1fr] lg:items-start lg:gap-8">
+                <div className="flex flex-col gap-4">
+                <ProductImage url={product.images[image] ?? null} className="h-[220px] w-full rounded-2xl lg:h-[280px]" iconClassName="size-10" />
                 {product.images.length > 1 && (
                     <div className="flex gap-2">
                         {product.images.map((url, position) => (
@@ -63,10 +64,12 @@ export default function ShowProduct({ product, movements }: Props) {
                         ))}
                     </div>
                 )}
+                </div>
 
+                <div className="flex flex-col gap-4">
                 <div>
-                    <p className="text-[17px] font-bold">{product.name}</p>
-                    <p className="mt-1 text-xl font-bold">{money(product.priceCents)}</p>
+                    <p className="text-[17px] font-bold lg:text-xl">{product.name}</p>
+                    <p className="mt-1 text-xl font-bold lg:text-2xl">{money(product.priceCents)}</p>
                     {margin !== null && (
                         <p className="text-muted-foreground mt-0.5 text-[12.5px]">
                             {t('products.detail.cost', { cost: money(product.costCents!), margin })}
@@ -78,7 +81,7 @@ export default function ShowProduct({ product, movements }: Props) {
                     <p className="text-muted-foreground mb-2 text-[13px] font-semibold">
                         {product.variants.length > 0 ? t('products.detail.stockByVariant') : t('products.detail.stock')}
                     </p>
-                    <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
+                    <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border lg:max-w-[320px]">
                         {(product.variants.length > 0 ? product.variants : [{ id: 0, name: product.name, stock: product.stock }]).map((row) => (
                             <div key={row.id} className="flex justify-between px-3 py-2.5 text-[13.5px]">
                                 <span>{row.name}</span>
@@ -90,7 +93,7 @@ export default function ShowProduct({ product, movements }: Props) {
                     </div>
                 </div>
 
-                <Button variant="outline" size="lg" className="h-11 text-[14.5px]" onClick={() => setOpen(true)}>
+                <Button variant="outline" size="lg" className="h-11 text-[14.5px] lg:self-start lg:px-5" onClick={() => setOpen(true)}>
                     {t('products.detail.restock')}
                 </Button>
 
@@ -119,6 +122,7 @@ export default function ShowProduct({ product, movements }: Props) {
                             ))}
                         </div>
                     )}
+                </div>
                 </div>
             </div>
 

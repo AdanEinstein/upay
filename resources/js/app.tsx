@@ -6,11 +6,11 @@ import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import ShopLayout from '@/layouts/shop-layout';
 import SuperAdminLayout from '@/layouts/super-admin-layout';
 import { initializeI18n } from '@/lib/i18n';
 import { currentOrganization } from '@/lib/organization';
 import { useSyncLocale } from '@/lib/sync-locale';
+import { useSyncTenantTheme } from '@/lib/sync-tenant-theme';
 import { setUrlDefaults } from '@/wayfinder';
 
 const SHOP_PAGES = [
@@ -51,6 +51,7 @@ initializeI18n(readInitialLocale());
 
 function AppProviders({ children }: { children: ReactNode }) {
     useSyncLocale();
+    useSyncTenantTheme();
 
     return (
         <TooltipProvider delayDuration={0}>
@@ -70,13 +71,14 @@ void createInertiaApp({
             case name.startsWith('public/'):
                 return null;
             case SHOP_PAGES.some((page) => name === page || name.startsWith(`${page}/`)):
-                return ShopLayout;
+                return AppLayout;
             case name === 'super-admin/login':
                 return AuthLayout;
             case name.startsWith('super/'):
                 return SuperAdminLayout;
             case name.startsWith('auth/'):
                 return AuthLayout;
+            case name === 'admin/organization-settings':
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
             default:

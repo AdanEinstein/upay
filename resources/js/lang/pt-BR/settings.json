@@ -2,6 +2,7 @@
     "title": "Configurações",
     "description": "Gerencie seu perfil e as configurações da conta",
     "nav": {
+        "shop": "Loja",
         "profile": "Perfil",
         "security": "Segurança",
         "appearance": "Aparência",

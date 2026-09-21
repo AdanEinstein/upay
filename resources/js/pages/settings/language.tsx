@@ -2,7 +2,6 @@ import { Head, router, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import i18n from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { edit, update } from '@/routes/locale';
 
@@ -29,6 +28,7 @@ export default function Language() {
             <div className="space-y-6">
                 <Heading
                     variant="small"
+                    hideTitleOnMobile
                     title={t('settings:language.heading')}
                     description={t('settings:language.description')}
                 />
@@ -57,7 +57,7 @@ export default function Language() {
 Language.layout = {
     breadcrumbs: [
         {
-            title: i18n.t('settings:language.title'),
+            title: 'settings:language.title',
             href: edit(),
         },
     ],

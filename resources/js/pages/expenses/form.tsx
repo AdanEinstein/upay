@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { CameraIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
@@ -57,7 +57,7 @@ export default function ExpenseForm({ expense }: { expense: Expense | null }) {
             <Head title={title} />
             <PageHeader title={title} back={index.url()} />
 
-            <form onSubmit={submit} className="flex flex-col gap-4 px-5 pt-2">
+            <form onSubmit={submit} className="flex flex-col gap-4 px-5 pt-2 lg:mx-auto lg:mt-4 lg:w-[460px] lg:rounded-2xl lg:border lg:bg-card lg:p-7">
                 <div className="flex flex-col gap-1.5">
                     <Label htmlFor="amount">{t('expenses.form.amount')}</Label>
                     <MoneyInput id="amount" cents={form.data.amount_cents} onCentsChange={(cents) => form.setData('amount_cents', cents)} placeholder={t('expenses.form.amountPlaceholder')} className="h-11" autoFocus />
@@ -86,7 +86,7 @@ export default function ExpenseForm({ expense }: { expense: Expense | null }) {
                 </div>
                 <div>
                     <p className="text-muted-foreground mb-2 text-[13px] font-semibold">{t('expenses.form.receipt')}</p>
-                    <label className="border-border text-muted-foreground flex h-[100px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed">
+                    <label className="border-border text-muted-foreground flex h-[100px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed hover:border-primary/50 has-[:focus-visible]:ring-ring/50 transition-colors has-[:focus-visible]:ring-[3px]">
                         <input
                             type="file"
                             accept="image/*"
@@ -119,9 +119,14 @@ export default function ExpenseForm({ expense }: { expense: Expense | null }) {
                     <Checkbox checked={form.data.paid} onCheckedChange={(checked) => form.setData('paid', checked === true)} />
                     {t('expenses.form.paid')}
                 </label>
-                <Button type="submit" size="lg" className="h-12 text-base" disabled={form.processing}>
-                    {t('expenses.form.save')}
-                </Button>
+                <div className="flex gap-2.5">
+                    <Button asChild variant="ghost" size="lg" className="hidden h-11 flex-1 lg:inline-flex">
+                        <Link href={index.url()}>{t('common.cancel')}</Link>
+                    </Button>
+                    <Button type="submit" size="lg" className="h-12 flex-1 text-base lg:h-11" disabled={form.processing}>
+                        {t('expenses.form.save')}
+                    </Button>
+                </div>
             </form>
         </>
     );

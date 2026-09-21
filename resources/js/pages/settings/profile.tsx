@@ -7,7 +7,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import i18n from '@/lib/i18n';
 import { edit } from '@/routes/profile';
 import type { Auth } from '@/types';
 
@@ -28,6 +27,7 @@ export default function Profile() {
             <div className="space-y-6">
                 <Heading
                     variant="small"
+                    hideTitleOnMobile
                     title={t('settings:profile.heading')}
                     description={t('settings:profile.description')}
                 />
@@ -105,7 +105,7 @@ export default function Profile() {
 Profile.layout = {
     breadcrumbs: [
         {
-            title: i18n.t('settings:profile.title'),
+            title: 'settings:profile.title',
             href: edit(),
         },
     ],

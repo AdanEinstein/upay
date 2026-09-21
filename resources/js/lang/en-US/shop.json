@@ -4,6 +4,9 @@
         "sales": "Sales",
         "customers": "Customers",
         "products": "Products",
+        "catalog": "Catalog",
+        "finance": "Finance",
+        "settings": "Settings",
         "newSale": "New sale",
         "quick": {
             "title": "What do you want to record?",
@@ -15,6 +18,7 @@
     },
     "common": {
         "back": "Back",
+        "cancel": "Cancel",
         "edit": "Edit",
         "save": "Save",
         "saving": "Saving…",
@@ -55,9 +59,11 @@
         "lowStock": "Low stock",
         "lowStockItem_one": "{{name}} · {{count}} left",
         "lowStockItem_other": "{{name}} · {{count}} left",
-        "dueTodayTitle": "Who owes me today",
+        "owedTitle": "Who owes me",
+        "owedEmpty": "No installments overdue or due today.",
         "charge": "Charge",
         "chargeMessage": "Hi, {{name}}! Just a reminder that your installment of {{amount}} is due today. You can pay by PIX here: {{link}} — any questions, just ask!",
+        "chargeOverdueMessage": "Hi, {{name}}! Just a reminder that your installment of {{amount}} is overdue. You can pay by PIX here: {{link}} — any questions, just ask!",
         "shortcuts": {
             "finance": "Finance",
             "catalog": "Catalog",
@@ -334,6 +340,11 @@
         "title": "Bills to pay",
         "markPaid": "Mark as paid",
         "empty": "No bills to pay. All caught up!",
+        "due": {
+            "overdue": "Was due {{date}}",
+            "today": "Due today",
+            "future": "Due {{date}}"
+        },
         "groups": {
             "overdue": "Overdue",
             "today": "Today",

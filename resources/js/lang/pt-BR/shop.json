@@ -4,6 +4,9 @@
         "sales": "Vendas",
         "customers": "Clientes",
         "products": "Produtos",
+        "catalog": "Catálogo",
+        "finance": "Financeiro",
+        "settings": "Configurações",
         "newSale": "Nova venda",
         "quick": {
             "title": "O que deseja registrar?",
@@ -15,6 +18,7 @@
     },
     "common": {
         "back": "Voltar",
+        "cancel": "Cancelar",
         "edit": "Editar",
         "save": "Salvar",
         "saving": "Salvando…",
@@ -55,9 +59,11 @@
         "lowStock": "Estoque baixo",
         "lowStockItem_one": "{{name}} · {{count}} restante",
         "lowStockItem_other": "{{name}} · {{count}} restantes",
-        "dueTodayTitle": "Quem me deve hoje",
+        "owedTitle": "Quem me deve",
+        "owedEmpty": "Ninguém com parcela vencida ou vencendo hoje.",
         "charge": "Cobrar",
         "chargeMessage": "Olá, {{name}}! Passando para lembrar que sua parcela de {{amount}} vence hoje. Você pode pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
+        "chargeOverdueMessage": "Olá, {{name}}! Passando para lembrar que sua parcela de {{amount}} está em atraso. Você pode pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
         "shortcuts": {
             "finance": "Financeiro",
             "catalog": "Catálogo",
@@ -334,6 +340,11 @@
         "title": "Contas a pagar",
         "markPaid": "Marcar como paga",
         "empty": "Nenhuma conta a pagar. Tudo em dia!",
+        "due": {
+            "overdue": "Venceu {{date}}",
+            "today": "Vence hoje",
+            "future": "Vence {{date}}"
+        },
         "groups": {
             "overdue": "Atrasadas",
             "today": "Hoje",

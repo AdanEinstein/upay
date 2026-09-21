@@ -28,49 +28,56 @@ export default function Finance({ period, revenueCents, expensesCents, profitCen
     const { money, shortDate } = useFormat();
     const max = Math.max(...series.map((point) => point.cents), 1);
 
+    const periodToggle = (className: string, tabClassName: string) => (
+        <div className={cn('bg-muted gap-1 rounded-[10px] p-[3px]', className)}>
+            {PERIODS.map((key) => (
+                <Link
+                    key={key}
+                    href={index.url(undefined, { query: { period: key } })}
+                    preserveScroll
+                    preserveState
+                    aria-current={period === key ? 'true' : undefined}
+                    className={cn(
+                        'rounded-lg py-2 text-center text-[13.5px] font-semibold',
+                        tabClassName,
+                        period === key ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground',
+                    )}
+                >
+                    {t(`finance.period.${key}`)}
+                </Link>
+            ))}
+        </div>
+    );
+
     return (
         <>
             <Head title={t('finance.title')} />
-            <ScreenTitle>{t('finance.title')}</ScreenTitle>
+            <ScreenTitle action={periodToggle('hidden lg:flex', 'px-4')}>{t('finance.title')}</ScreenTitle>
 
             <div className="flex flex-col gap-4 px-5">
-                <div className="bg-muted flex gap-1 rounded-[10px] p-[3px]">
-                    {PERIODS.map((key) => (
-                        <Link
-                            key={key}
-                            href={index.url(undefined, { query: { period: key } })}
-                            preserveScroll
-                            preserveState
-                            aria-current={period === key ? 'true' : undefined}
-                            className={cn(
-                                'flex-1 rounded-lg py-2 text-center text-[13.5px] font-semibold',
-                                period === key ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground',
-                            )}
-                        >
-                            {t(`finance.period.${key}`)}
-                        </Link>
-                    ))}
-                </div>
+                {periodToggle('flex lg:hidden', 'flex-1')}
 
                 {isEmpty ? (
                     <EmptyState icon={<CurrencyDollarIcon />} title={t('finance.empty.title')} description={t('finance.empty.description')} />
                 ) : (
                     <>
-                        <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-card border-border rounded-2xl border p-3">
-                                <p className="text-muted-foreground mb-1 text-xs">{t('finance.revenue')}</p>
-                                <p className="text-[17px] font-bold">{money(revenueCents)}</p>
+                        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3">
+                            <div className="grid grid-cols-2 gap-3 lg:contents">
+                                <div className="bg-card border-border rounded-2xl border p-3 lg:p-4">
+                                    <p className="text-muted-foreground mb-1 text-xs lg:text-[12.5px]">{t('finance.revenue')}</p>
+                                    <p className="text-[17px] font-bold lg:text-xl">{money(revenueCents)}</p>
+                                </div>
+                                <div className="bg-card border-border rounded-2xl border p-3 lg:p-4">
+                                    <p className="text-muted-foreground mb-1 text-xs lg:text-[12.5px]">{t('finance.expenses')}</p>
+                                    <p className="text-[17px] font-bold lg:text-xl">{money(expensesCents)}</p>
+                                </div>
                             </div>
-                            <div className="bg-card border-border rounded-2xl border p-3">
-                                <p className="text-muted-foreground mb-1 text-xs">{t('finance.expenses')}</p>
-                                <p className="text-[17px] font-bold">{money(expensesCents)}</p>
+                            <div className="bg-brand-soft text-brand rounded-2xl p-3.5 lg:p-4">
+                                <p className="mb-1 text-[12.5px]">{t('finance.profit')}</p>
+                                <p className="text-[22px] font-bold lg:text-xl">{money(profitCents)}</p>
                             </div>
                         </div>
-                        <div className="bg-brand-soft text-brand rounded-2xl p-3.5">
-                            <p className="mb-1 text-[12.5px]">{t('finance.profit')}</p>
-                            <p className="text-[22px] font-bold">{money(profitCents)}</p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-3 lg:max-w-[400px] lg:gap-4">
                             <div>
                                 <p className="text-muted-foreground mb-0.5 text-xs">{t('finance.receivable')}</p>
                                 <p className="text-[15px] font-semibold">{money(receivableCents)}</p>
@@ -82,7 +89,7 @@ export default function Finance({ period, revenueCents, expensesCents, profitCen
                         </div>
                         <div>
                             <p className="text-muted-foreground mb-2.5 text-[13px] font-semibold">{t('finance.chart')}</p>
-                            <div className="flex h-[90px] items-end gap-2">
+                            <div className="flex h-[90px] items-end gap-2 lg:h-[140px] lg:gap-3">
                                 {series.map((point) => (
                                     <div
                                         key={point.date}

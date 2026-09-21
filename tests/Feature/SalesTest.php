@@ -154,5 +154,16 @@ test('home sums today sales, the month profit and what is owed', function () {
         ->where('monthProfitCents', 20000)
         ->where('receivableTodayCents', 20000)
         ->where('receivableOverdueCents', 0)
-        ->has('dueToday', 1));
+        ->has('owed', 1)
+        ->where('owed.0.isOverdue', false));
+});
+
+test('home lists overdue installments among who owes me', function () {
+    $this->actingAs($this->user)->post(shopRoute('sales.store'), saleData(['payment_type' => 'fiado']));
+    Installment::query()->update(['due_date' => today()->subDay()->toDateString()]);
+
+    $this->actingAs($this->user)->get(shopRoute('dashboard'))->assertInertia(fn (Assert $page) => $page
+        ->has('owed', 1)
+        ->where('owed.0.isOverdue', true)
+        ->where('owed.0.dueDate', today()->subDay()->toDateString()));
 });

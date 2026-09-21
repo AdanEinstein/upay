@@ -94,12 +94,12 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
         return (
             <>
                 <Head title={t('sale.created.title')} />
-                <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 py-16 text-center">
+                <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 py-16 text-center lg:bg-card lg:border-border lg:mx-auto lg:my-auto lg:w-[420px] lg:flex-none lg:rounded-2xl lg:border lg:py-10 lg:shadow-lg">
                     <div className="bg-brand-soft text-brand flex size-[76px] items-center justify-center rounded-full">
                         <CheckIcon className="size-8" weight="bold" />
                     </div>
                     <h1 className="font-heading text-xl font-bold">{t('sale.created.title')}</h1>
-                    <div className="bg-muted flex w-full max-w-[280px] flex-col gap-1.5 rounded-2xl p-3.5 text-left">
+                    <div className="bg-muted flex w-full max-w-[280px] lg:max-w-none flex-col gap-1.5 rounded-2xl p-3.5 text-left">
                         <div className="text-muted-foreground flex justify-between text-[13px]">
                             <span>{t('sale.created.customer')}</span>
                             <span className="text-foreground font-medium">{sale.customer?.name ?? t('newSale.payment.noCustomer')}</span>
@@ -113,7 +113,7 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                             <span>{money(sale.totalCents)}</span>
                         </div>
                     </div>
-                    <div className="mt-2 flex w-full max-w-[280px] flex-col gap-2.5">
+                    <div className="mt-2 flex w-full max-w-[280px] lg:max-w-none flex-col gap-2.5">
                         {sale.customer && (
                             <Button asChild size="lg" className="h-12 gap-2 text-[15px]">
                                 <a
@@ -153,14 +153,14 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
             <Head title={t('sale.title', { id: sale.id })} />
             <PageHeader title={t('sale.title', { id: sale.id })} back={index.url()} />
 
-            <div className="flex flex-col gap-4 px-5 pt-2">
+            <div className="flex flex-col gap-4 px-5 pt-2 lg:grid lg:grid-cols-[1.3fr_1fr] lg:items-start lg:gap-x-8">
                 {sale.cancelled && (
-                    <p className="bg-muted text-muted-foreground rounded-xl px-3 py-2 text-[13px]">
+                    <p className="bg-muted text-muted-foreground rounded-xl px-3 py-2 text-[13px] lg:col-span-2">
                         {t('sale.cancelledNotice')}
                     </p>
                 )}
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between lg:col-span-2">
                     <div>
                         <p className="text-muted-foreground text-[13px]">{t('sale.customer')}</p>
                         <p className="mt-0.5 text-[15px] font-semibold">{sale.customer?.name ?? t('sale.counter')}</p>
@@ -168,6 +168,7 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                     <p className="text-[22px] font-bold">{money(sale.totalCents)}</p>
                 </div>
 
+                <div className="flex flex-col gap-4">
                 <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
                     {sale.items.map((item) => (
                         <div key={item.id} className="flex justify-between px-3 py-2.5 text-[13.5px]">
@@ -198,7 +199,9 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                                             <p className="text-muted-foreground text-xs">
                                                 {status === 'paid' && installment.paidAt
                                                     ? t('dueLabel.paid', { date: shortDate(installment.paidAt) })
-                                                    : t(status === 'overdue' ? 'dueLabel.overdue' : 'dueLabel.upcoming', { date: shortDate(installment.dueDate) })}
+                                                    : status === 'due_today'
+                                                      ? t('dueLabel.dueToday')
+                                                      : t(status === 'overdue' ? 'dueLabel.overdue' : 'dueLabel.upcoming', { date: shortDate(installment.dueDate) })}
                                             </p>
                                         </div>
                                         <span className="text-[13.5px] font-semibold">{money(installment.amountCents)}</span>
@@ -209,6 +212,7 @@ export default function ShowSale({ sale, justCreated }: { sale: Sale; justCreate
                         </div>
                     </div>
                 )}
+                </div>
 
                 {!sale.cancelled && (
                     <div className="flex flex-col gap-2">

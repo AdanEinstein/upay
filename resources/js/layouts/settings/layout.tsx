@@ -2,12 +2,14 @@ import { Link } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 import Heading from '@/components/heading';
+import PageHeader from '@/components/shop/page-header';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
 import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editLocale } from '@/routes/locale';
+import { show as more } from '@/routes/more';
+import { edit as editOrganization } from '@/routes/organization-settings';
 import { edit } from '@/routes/profile';
 import { edit as editSecurity } from '@/routes/security';
 import type { NavItem } from '@/types';
@@ -17,6 +19,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
 
     const sidebarNavItems: NavItem[] = [
+        {
+            title: t('settings:nav.shop'),
+            href: editOrganization(),
+            icon: null,
+        },
         {
             title: t('settings:nav.profile'),
             href: edit(),
@@ -39,15 +46,28 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         },
     ];
 
+    const current = sidebarNavItems.find((item) =>
+        isCurrentOrParentUrl(item.href),
+    );
+
     return (
-        <div className="px-4 py-6">
-            <Heading
-                title={t('settings:title')}
-                description={t('settings:description')}
-            />
+        <div className="lg:px-4 lg:py-6">
+            <div className="lg:hidden">
+                <PageHeader
+                    title={current?.title ?? t('settings:title')}
+                    back={more.url()}
+                />
+            </div>
+
+            <div className="hidden lg:block">
+                <Heading
+                    title={t('settings:title')}
+                    description={t('settings:description')}
+                />
+            </div>
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
-                <aside className="w-full max-w-xl lg:w-48">
+                <aside className="hidden w-full max-w-xl lg:block lg:w-48">
                     <nav
                         className="flex flex-col space-y-1 space-x-0"
                         aria-label="Settings"
@@ -73,9 +93,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                     </nav>
                 </aside>
 
-                <Separator className="my-6 lg:hidden" />
-
-                <div className="flex-1 md:max-w-2xl">
+                <div className="flex-1 px-5 pt-2 lg:max-w-2xl lg:px-0 lg:pt-0">
                     <section className="max-w-xl space-y-12">
                         {children}
                     </section>

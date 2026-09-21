@@ -3,11 +3,14 @@ import {
     CaretRightIcon,
     ChartLineUpIcon,
     CurrencyCircleDollarIcon,
-    GearIcon,
+    LockIcon,
+    PaletteIcon,
     QuestionIcon,
     ReceiptIcon,
     SignOutIcon,
     StorefrontIcon,
+    TranslateIcon,
+    UserIcon,
     WalletIcon,
     HouseLineIcon,
 } from '@phosphor-icons/react';
@@ -23,7 +26,10 @@ import { index as finance } from '@/routes/finance';
 import { edit as editOrganization } from '@/routes/organization-settings';
 import { index as payables } from '@/routes/payables';
 import { edit as editPixKey } from '@/routes/pix-key';
+import { edit as editAppearance } from '@/routes/appearance';
+import { edit as editLocale } from '@/routes/locale';
 import { edit as editProfile } from '@/routes/profile';
+import { edit as editSecurity } from '@/routes/security';
 import { index as receivables } from '@/routes/receivables';
 
 type Props = {
@@ -38,7 +44,7 @@ function Group({ rows }: { rows: Row[] }) {
     return (
         <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
             {rows.map(({ icon: Icon, label, hint, href }) => (
-                <Link key={href} href={href} className="flex items-center gap-3 px-3.5 py-3">
+                <Link key={href} href={href} className="flex items-center gap-3 px-3.5 py-3 lg:px-4 lg:py-3.5 lg:text-[14.5px]">
                     <Icon className="text-muted-foreground size-[18px]" />
                     <span className="min-w-0 flex-1">
                         <span className="block text-sm">{label}</span>
@@ -52,14 +58,17 @@ function Group({ rows }: { rows: Row[] }) {
 }
 
 export default function More({ pixKey, supportWhatsapp, plan }: Props) {
-    const { t } = useTranslation('shop');
+    const { t } = useTranslation(['shop', 'settings']);
 
     return (
         <>
             <Head title={t('more.title')} />
-            <ScreenTitle>{t('more.title')}</ScreenTitle>
+            <ScreenTitle>
+                <span className="lg:hidden">{t('more.title')}</span>
+                <span className="hidden lg:inline lg:text-2xl">{t('nav.settings')}</span>
+            </ScreenTitle>
 
-            <div className="flex flex-col gap-[18px] px-5">
+            <div className="flex flex-col gap-[18px] px-5 lg:max-w-[640px] lg:gap-5">
                 <Group
                     rows={[
                         { icon: HouseLineIcon, label: t('more.shop'), href: editOrganization.url() },
@@ -68,7 +77,7 @@ export default function More({ pixKey, supportWhatsapp, plan }: Props) {
                 />
 
                 {plan && (
-                    <div className="border-border flex flex-col gap-3 rounded-2xl border p-3.5">
+                    <div className="border-border flex flex-col gap-3 rounded-2xl border p-3.5 lg:gap-3.5 lg:p-[18px]">
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-semibold">{t('more.plan')}</span>
                             <span className="bg-brand-soft text-brand rounded-full px-2 py-0.5 text-[11.5px] font-bold">{plan.name}</span>
@@ -86,13 +95,13 @@ export default function More({ pixKey, supportWhatsapp, plan }: Props) {
                                 )}
                             </div>
                         ))}
-                        <Button asChild variant="outline" className="h-10 text-[13.5px]">
+                        <Button asChild variant="outline" className="h-10 text-[13.5px] lg:self-start lg:px-[18px]">
                             <Link href={editOrganization.url()}>{t('more.viewPlans')}</Link>
                         </Button>
                     </div>
                 )}
 
-                <div>
+                <div className="lg:hidden">
                     <p className="text-muted-foreground mb-2 text-[13px] font-semibold">{t('more.management')}</p>
                     <Group
                         rows={[
@@ -105,12 +114,19 @@ export default function More({ pixKey, supportWhatsapp, plan }: Props) {
                     />
                 </div>
 
+                <div>
+                    <p className="text-muted-foreground mb-2 text-[13px] font-semibold lg:hidden">{t('more.settings')}</p>
+                    <Group
+                        rows={[
+                            { icon: UserIcon, label: t('settings:nav.profile'), href: editProfile.url() },
+                            { icon: LockIcon, label: t('settings:nav.security'), href: editSecurity.url() },
+                            { icon: PaletteIcon, label: t('settings:nav.appearance'), href: editAppearance.url() },
+                            { icon: TranslateIcon, label: t('settings:nav.language'), href: editLocale.url() },
+                        ]}
+                    />
+                </div>
+
                 <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
-                    <Link href={editProfile.url()} className="flex items-center gap-3 px-3.5 py-3">
-                        <GearIcon className="text-muted-foreground size-[18px]" />
-                        <span className="flex-1 text-sm">{t('more.settings')}</span>
-                        <CaretRightIcon className="text-muted-foreground size-4" />
-                    </Link>
                     {supportWhatsapp && (
                         <a
                             href={whatsappUrl(supportWhatsapp, t('more.helpMessage'))}
@@ -120,7 +136,7 @@ export default function More({ pixKey, supportWhatsapp, plan }: Props) {
                         >
                             <QuestionIcon className="text-muted-foreground size-[18px]" />
                             <span className="flex-1 text-sm">{t('more.help')}</span>
-                            <CaretRightIcon className="text-muted-foreground size-4" />
+                            <CaretRightIcon className="text-muted-foreground size-4 lg:hidden" />
                         </a>
                     )}
                     <Link href={logout()} method="post" as="button" className="text-destructive flex w-full items-center gap-3 px-3.5 py-3 text-left">

@@ -80,7 +80,7 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
                             value={query}
                             onChange={(event) => setQuery(event.target.value)}
                             placeholder={t('sales.searchPlaceholder')}
-                            className="h-10"
+                            className="h-10 lg:w-[280px]"
                         />
                         <ChipRow>
                             {TABS.map((key) => (
@@ -96,10 +96,10 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
                             <li key={sale.id}>
                                 <Link
                                     href={show.url({ sale: sale.id })}
-                                    className="border-border flex items-center gap-2.5 rounded-2xl border p-3"
+                                    className="border-border flex items-center gap-2.5 rounded-2xl border p-3 lg:gap-3 lg:px-4 lg:py-3.5"
                                 >
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm font-semibold">
+                                        <p className="truncate text-sm font-semibold lg:text-[14.5px]">
                                             {sale.customer ?? t('sales.counter')}
                                         </p>
                                         <p className="text-muted-foreground mt-0.5 text-xs">

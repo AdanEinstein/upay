@@ -41,7 +41,7 @@ export default function Payables({ groups }: { groups: Groups }) {
                                 </button>
                                 <div className="min-w-0 flex-1">
                                     <p className="truncate text-[13.5px] font-medium">{row.description}</p>
-                                    <p className="text-muted-foreground text-xs">{shortDate(row.dueDate)}</p>
+                                    <p className="text-muted-foreground text-xs">{key === 'today' ? t('payables.due.today') : t(`payables.due.${key === 'overdue' ? 'overdue' : 'future'}`, { date: shortDate(row.dueDate) })}</p>
                                 </div>
                                 <span className="text-[13.5px] font-semibold">{money(row.amountCents)}</span>
                             </div>

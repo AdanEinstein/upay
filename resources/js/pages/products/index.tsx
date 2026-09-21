@@ -107,9 +107,10 @@ export default function ProductsIndex({ products }: { products: Product[] }) {
                                 </button>
                             ))}
                         </div>
-                        <Button asChild size="icon-sm" aria-label={t('products.empty.action')}>
+                        <Button asChild size="icon-sm" aria-label={t('products.empty.action')} className="lg:h-10 lg:w-auto lg:px-4 lg:text-sm">
                             <Link href={create.url()}>
-                                <PlusIcon />
+                                <PlusIcon className="lg:hidden" />
+                                <span className="hidden lg:inline">{t('products.empty.action')}</span>
                             </Link>
                         </Button>
                     </div>
@@ -118,8 +119,8 @@ export default function ProductsIndex({ products }: { products: Product[] }) {
                 {t('products.title')}
             </ScreenTitle>
 
-            <div className="flex flex-col gap-2.5 px-5">
-                <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('products.search')} className="h-10" />
+            <div className="flex flex-col gap-2.5 px-5 lg:flex-row lg:items-center lg:gap-2.5">
+                <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('products.search')} className="h-10 lg:w-[280px] lg:shrink-0" />
                 <ChipRow>
                     <Chip active={category === null && !onlyLow} onClick={() => { setCategory(null); setOnlyLow(false); }}>
                         {t('products.all')}
@@ -140,7 +141,7 @@ export default function ProductsIndex({ products }: { products: Product[] }) {
             )}
 
             {view === 'grid' ? (
-                <div className="grid grid-cols-2 gap-3 px-5 pt-2">
+                <div className="grid grid-cols-2 gap-3 px-5 pt-2 lg:grid-cols-4 lg:gap-4">
                     {visible.map((product) => {
                         const flag = badge(product);
 
@@ -151,7 +152,7 @@ export default function ProductsIndex({ products }: { products: Product[] }) {
                                         {flag.label}
                                     </span>
                                 )}
-                                <ProductImage url={product.imageUrl} className="h-[100px] w-full" />
+                                <ProductImage url={product.imageUrl} className="h-[100px] w-full lg:h-[130px]" />
                                 <div className="px-2.5 pt-2 pb-2.5">
                                     <p className="mb-0.5 text-[12.5px] leading-tight font-semibold">{product.name}</p>
                                     <p className="text-muted-foreground text-[12.5px]">{money(product.priceCents)}</p>

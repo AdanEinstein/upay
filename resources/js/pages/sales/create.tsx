@@ -137,7 +137,15 @@ export default function CreateSale({
         <>
             <Head title={t('nav.newSale')} />
 
-            <div className="flex items-center gap-2.5 px-4 py-3">
+            {/* Desktop: the flow is a modal over the app (prototype), mobile stays a full page. */}
+            <div className="flex flex-1 flex-col lg:fixed lg:inset-0 lg:z-40 lg:flex-row lg:items-center lg:justify-center lg:bg-black/45 lg:p-6">
+            <div
+                className={cn(
+                    'flex flex-1 flex-col lg:max-h-[700px] lg:flex-none lg:overflow-y-auto lg:rounded-2xl lg:bg-card lg:px-2 lg:py-6',
+                    step === 2 ? 'lg:w-[600px]' : 'lg:w-[480px]',
+                )}
+            >
+            <div className="flex items-center gap-2.5 px-4 py-3 lg:px-5 lg:pt-0">
                 <button
                     type="button"
                     onClick={back}
@@ -242,7 +250,7 @@ export default function CreateSale({
                             {t('newSale.customer.skip')}
                         </button>
                     </div>
-                    <div className="bg-background border-border sticky bottom-0 mt-auto border-t px-5 py-3">
+                    <div className="bg-background border-border sticky bottom-0 mt-auto border-t px-5 py-3 lg:static lg:border-t-0 lg:bg-transparent">
                         <Button
                             size="lg"
                             className="h-12 w-full text-base"
@@ -277,7 +285,7 @@ export default function CreateSale({
                                 ))}
                             </ChipRow>
                         )}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
                             {visibleSellables.map((item) => {
                                 const quantity = cart[item.key] ?? 0;
 
@@ -337,7 +345,7 @@ export default function CreateSale({
                             })}
                         </div>
                     </div>
-                    <div className="bg-background border-border sticky bottom-0 mt-auto flex items-center gap-3 border-t px-5 py-3">
+                    <div className="bg-background border-border sticky bottom-0 mt-auto flex items-center gap-3 border-t px-5 py-3 lg:static lg:bg-transparent">
                         <div className="flex-1">
                             <p className="text-muted-foreground text-[11px]">{itemCountLabel}</p>
                             <p className="text-base font-bold">{money(totalCents)}</p>
@@ -364,7 +372,7 @@ export default function CreateSale({
                         </div>
 
                         {paymentType === 'parcelado' && (
-                            <div className="bg-card border-border flex flex-col gap-3 rounded-2xl border p-3.5">
+                            <div className="bg-card border-border flex flex-col gap-3 rounded-2xl border p-3.5 lg:bg-background">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm font-semibold">{t('newSale.payment.installments')}</span>
                                     <div className="flex items-center gap-3">
@@ -437,13 +445,15 @@ export default function CreateSale({
                         </div>
                         <InputError message={error} />
                     </div>
-                    <div className="bg-background border-border sticky bottom-0 mt-auto border-t px-5 py-3">
+                    <div className="bg-background border-border sticky bottom-0 mt-auto border-t px-5 py-3 lg:static lg:border-t-0 lg:bg-transparent">
                         <Button size="lg" className="h-12 w-full text-base" disabled={sale.processing} onClick={confirm}>
                             {t('newSale.payment.confirm')}
                         </Button>
                     </div>
                 </>
             )}
+            </div>
+            </div>
         </>
     );
 }

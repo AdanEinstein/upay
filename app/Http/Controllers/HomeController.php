@@ -26,11 +26,12 @@ class HomeController extends Controller
                 ->limit(5)
                 ->get(['id', 'name', 'stock_qty'])
                 ->map(fn (Product $product) => ['id' => $product->id, 'name' => $product->name, 'quantity' => $product->stock_qty]),
-            'dueToday' => Installment::query()
+            'owed' => Installment::query()
                 ->unpaid()
                 ->withRemaining()
                 ->with('customer:id,name,phone,public_token')
-                ->whereDate('due_date', today())
+                ->whereDate('due_date', '<=', today())
+                ->orderBy('due_date')
                 ->whereNotNull('customer_id')
                 ->limit(5)
                 ->get()
@@ -40,6 +41,8 @@ class HomeController extends Controller
                     'phone' => $installment->customer->phone,
                     'publicToken' => $installment->customer->public_token,
                     'amountCents' => (int) $installment->remaining_cents,
+                    'dueDate' => $installment->due_date->toDateString(),
+                    'isOverdue' => $installment->due_date->isBefore(today()),
                 ]),
         ]);
     }

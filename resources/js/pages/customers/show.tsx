@@ -65,7 +65,7 @@ export default function ShowCustomer({ customer, sales }: Props) {
                 }
             />
 
-            <div className="flex flex-col gap-[18px] px-5">
+            <div className="flex flex-col gap-[18px] px-5 lg:grid lg:grid-cols-[1fr_1.3fr] lg:gap-x-8 lg:gap-y-4">
                 <div className="flex flex-col items-center gap-2.5 text-center">
                     <span className="bg-muted flex size-16 items-center justify-center rounded-full text-xl font-semibold">
                         {getInitials(customer.name)}
@@ -101,7 +101,7 @@ export default function ShowCustomer({ customer, sales }: Props) {
                     </div>
                 </div>
 
-                <div>
+                <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1">
                     <h2 className="mb-2 text-sm font-semibold">{t('customers.detail.history')}</h2>
                     {sales.length === 0 ? (
                         <p className="text-muted-foreground text-sm">{t('customers.detail.noHistory')}</p>

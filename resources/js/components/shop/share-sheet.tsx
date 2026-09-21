@@ -46,9 +46,9 @@ export default function ShareSheet({
                 onChange={(event) =>
                     setEdited({ ...edited, [current.key]: event.target.value })
                 }
-                className="min-h-28 leading-relaxed"
+                className="min-h-28 leading-relaxed lg:min-h-[120px]"
             />
-            <Button asChild size="lg" className="h-12 w-full text-base">
+            <Button asChild size="lg" className="h-12 w-full text-base lg:text-[15px]">
                 <a
                     href={whatsappUrl(phone, message)}
                     target="_blank"

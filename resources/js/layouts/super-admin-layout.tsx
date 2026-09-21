@@ -10,6 +10,7 @@ import {
 } from '@phosphor-icons/react';
 import type { ComponentType, PropsWithChildren, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
+import AppLogoIcon from '@/components/app-logo-icon';
 import AppearanceTabs from '@/components/appearance-tabs';
 import { Button } from '@/components/ui/button';
 import {
@@ -122,14 +123,23 @@ export default function SuperAdminLayout({ children }: PropsWithChildren) {
         </div>
     );
 
+    const brand = (
+        <>
+            <div className="bg-foreground text-background flex aspect-square size-8 items-center justify-center rounded-md">
+                <AppLogoIcon className="size-5" />
+            </div>
+            <span className="truncate">{t('super:brand')}</span>
+        </>
+    );
+
     return (
         <div className="bg-background min-h-svh lg:grid lg:grid-cols-[16rem_minmax(0,1fr)]">
             <aside className="hidden gap-0 border-r lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col">
                 <Link
                     href={dashboard()}
-                    className="flex h-14 items-center px-7 font-semibold"
+                    className="flex h-14 items-center gap-2 px-7 text-sm font-semibold"
                 >
-                    {t('super:brand')}
+                    {brand}
                 </Link>
                 {nav((link, key) => (
                     <div key={key} className="contents">
@@ -168,8 +178,11 @@ export default function SuperAdminLayout({ children }: PropsWithChildren) {
                             </SheetContent>
                         </Sheet>
 
-                        <Link href={dashboard()} className="font-semibold">
-                            {t('super:brand')}
+                        <Link
+                            href={dashboard()}
+                            className="flex items-center gap-2 text-sm font-semibold"
+                        >
+                            {brand}
                         </Link>
                     </div>
                 </header>

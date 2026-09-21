@@ -2,6 +2,7 @@
     "title": "Settings",
     "description": "Manage your profile and account settings",
     "nav": {
+        "shop": "Shop",
         "profile": "Profile",
         "security": "Security",
         "appearance": "Appearance",

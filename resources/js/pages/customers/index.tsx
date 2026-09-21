@@ -46,18 +46,23 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
             <Head title={t('customers.title')} />
             <ScreenTitle
                 action={
-                    <Button asChild size="icon-sm" aria-label={t('customers.empty.action')}>
-                        <Link href={create.url()}>
-                            <PlusIcon />
-                        </Link>
-                    </Button>
+                    <>
+                        <Button asChild size="icon-sm" aria-label={t('customers.empty.action')} className="lg:hidden">
+                            <Link href={create.url()}>
+                                <PlusIcon />
+                            </Link>
+                        </Button>
+                        <Button asChild className="hidden h-10 text-sm lg:inline-flex">
+                            <Link href={create.url()}>{t('customers.empty.action')}</Link>
+                        </Button>
+                    </>
                 }
             >
                 {t('customers.title')}
             </ScreenTitle>
 
-            <div className="flex flex-col gap-2.5 px-5">
-                <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('customers.search')} className="h-10" />
+            <div className="flex flex-col gap-2.5 px-5 lg:flex-row lg:items-center">
+                <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('customers.search')} className="h-10 lg:w-70" />
                 <div>
                     <Chip active={onlyDebt} onClick={() => setOnlyDebt(!onlyDebt)}>
                         {t('customers.withBalance')}
@@ -68,8 +73,8 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
             <ul className="flex flex-col gap-2 px-5 pt-3">
                 {visible.map((customer) => (
                     <li key={customer.id}>
-                        <Link href={show.url({ customer: customer.id })} className="border-border flex items-center gap-2.5 rounded-2xl border p-2.5">
-                            <span className="bg-muted flex size-[38px] shrink-0 items-center justify-center rounded-full text-[13px] font-semibold">
+                        <Link href={show.url({ customer: customer.id })} className="border-border flex items-center gap-2.5 rounded-2xl border p-2.5 lg:gap-3 lg:px-3.5 lg:py-3">
+                            <span className="bg-muted flex size-[38px] shrink-0 lg:size-10 items-center justify-center rounded-full text-[13px] font-semibold">
                                 {getInitials(customer.name)}
                             </span>
                             <span className="min-w-0 flex-1">
