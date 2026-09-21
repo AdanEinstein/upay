@@ -188,4 +188,5 @@ export default function Register({ plans }: { plans: Plan[] }) {
 Register.layout = {
     title: i18n.t('auth:register.title'),
     description: i18n.t('auth:register.description'),
+    panelTitle: i18n.t('auth:register.panelTitle'),
 };

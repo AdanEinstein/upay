@@ -9,6 +9,9 @@ export default function AuthSimpleLayout({
     children,
     title,
     description,
+    panelTitle,
+    panelDescription,
+    split = true,
 }: AuthLayoutProps) {
     const { name } = usePage().props;
 
@@ -16,26 +19,56 @@ export default function AuthSimpleLayout({
         <div
             className={cn(
                 'bg-background flex min-h-svh flex-col items-center p-6 md:justify-center md:p-10',
+                split && 'lg:flex-row lg:items-stretch lg:justify-start lg:p-0',
                 brandScope,
             )}
         >
-            <div className="flex w-full max-w-sm flex-col gap-6">
-                <Link href={home()} className="w-fit" aria-label={name}>
-                    <AppLogoIcon className="text-brand size-10" />
-                </Link>
-
-                {title && (
-                    <div className="space-y-1">
-                        <h1 className="font-heading text-[22px] font-bold">
-                            {title}
-                        </h1>
-                        <p className="text-muted-foreground text-sm">
-                            {description}
+            {split && (
+                <div className="bg-primary text-primary-foreground hidden shrink-0 flex-col items-center justify-center gap-4 p-10 text-center lg:flex lg:w-[44%]">
+                    <Link href={home()} aria-label={name}>
+                        <AppLogoIcon className="size-11" />
+                    </Link>
+                    {panelTitle && (
+                        <h2 className="font-heading text-[26px] font-bold text-balance">
+                            {panelTitle}
+                        </h2>
+                    )}
+                    {panelDescription && (
+                        <p className="max-w-[300px] text-[14.5px] opacity-85">
+                            {panelDescription}
                         </p>
-                    </div>
-                )}
+                    )}
+                </div>
+            )}
 
-                {children}
+            <div
+                className={cn(
+                    'flex w-full flex-col items-center',
+                    split && 'lg:flex-1 lg:justify-center lg:p-10',
+                )}
+            >
+                <div className="flex w-full max-w-sm flex-col gap-6">
+                    <Link
+                        href={home()}
+                        className={cn('w-fit', split && 'lg:hidden')}
+                        aria-label={name}
+                    >
+                        <AppLogoIcon className="text-brand size-10" />
+                    </Link>
+
+                    {title && (
+                        <div className="space-y-1">
+                            <h1 className="font-heading text-[22px] font-bold lg:text-2xl">
+                                {title}
+                            </h1>
+                            <p className="text-muted-foreground text-sm">
+                                {description}
+                            </p>
+                        </div>
+                    )}
+
+                    {children}
+                </div>
             </div>
         </div>
     );

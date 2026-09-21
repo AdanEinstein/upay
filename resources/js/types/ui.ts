@@ -18,4 +18,7 @@ export type AuthLayoutProps = {
     name?: string;
     title?: string;
     description?: string;
+    panelTitle?: string;
+    panelDescription?: string;
+    split?: boolean;
 };

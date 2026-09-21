@@ -62,4 +62,5 @@ export default function SuperAdminLogin() {
 SuperAdminLogin.layout = {
     title: i18n.t('super:login.title'),
     description: i18n.t('super:login.description'),
+    split: false,
 };

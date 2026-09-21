@@ -129,4 +129,6 @@ export default function Login({ status, canResetPassword }: Props) {
 Login.layout = {
     title: i18n.t('auth:login.title'),
     description: i18n.t('auth:login.description'),
+    panelTitle: i18n.t('auth:login.panelTitle'),
+    panelDescription: i18n.t('auth:login.panelDescription'),
 };

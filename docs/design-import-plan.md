@@ -21,6 +21,7 @@ Estado verificado em 2026-09-21 (`php artisan test`: 160/160 passando). Commitad
 ### [x] Etapa 0 — Comuns (`Comuns.dc.html`)
 Login, recuperar senha, cadastro + planos, onboarding, prompt PWA, tela de limite de plano.
 Arquivos: `pages/auth/*`, `pages/onboarding.tsx`, `pages/plan-limit.tsx`, `components/install-prompt.tsx`, `public/manifest.webmanifest`.
+Reimportada 2026-09-21: adicionado painel de marca desktop (split 44%) em `layouts/auth/auth-simple-layout.tsx` (login/cadastro com chamada; demais só logo; `split: false` no login do super admin). Splash não virou tela (sem rota de carregamento).
 
 ### [x] Etapa 1 — Super Admin (`SuperAdmin.dc.html`)
 Sidebar desktop, dashboard (MRR/churn), planos CRUD, organizações (plano, filtros, detalhe, trocar plano, bloquear com motivo).
