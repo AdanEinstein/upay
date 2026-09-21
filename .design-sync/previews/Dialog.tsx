@@ -1,4 +1,14 @@
-import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Input, Label } from 'upay';
+import {
+    Button,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    Input,
+    Label,
+} from 'upay';
 
 export const ConfirmDelete = () => (
     <Dialog open>
@@ -6,7 +16,8 @@ export const ConfirmDelete = () => (
             <DialogHeader>
                 <DialogTitle>Excluir cliente?</DialogTitle>
                 <DialogDescription>
-                    Essa ação remove Maria Souza e todas as vendas associadas. Não é possível desfazer.
+                    Essa ação remove Maria Souza e todas as vendas associadas.
+                    Não é possível desfazer.
                 </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -22,12 +33,17 @@ export const WithForm = () => (
         <DialogContent>
             <DialogHeader>
                 <DialogTitle>Novo produto</DialogTitle>
-                <DialogDescription>Informe os dados básicos do produto.</DialogDescription>
+                <DialogDescription>
+                    Informe os dados básicos do produto.
+                </DialogDescription>
             </DialogHeader>
             <div className="grid gap-3">
                 <div className="grid gap-1.5">
                     <Label htmlFor="produto-nome">Nome</Label>
-                    <Input id="produto-nome" placeholder="Ex.: Notebook 14 polegadas" />
+                    <Input
+                        id="produto-nome"
+                        placeholder="Ex.: Notebook 14 polegadas"
+                    />
                 </div>
                 <div className="grid gap-1.5">
                     <Label htmlFor="produto-preco">Preço</Label>

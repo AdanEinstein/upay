@@ -19,7 +19,10 @@ export function useSyncTenantTheme(): void {
             const style = document.documentElement.style;
 
             style.setProperty('--tenant-primary', tenant.accentColor);
-            style.setProperty('--tenant-primary-hover', tenant.accentColorHover);
+            style.setProperty(
+                '--tenant-primary-hover',
+                tenant.accentColorHover,
+            );
             style.setProperty('--tenant-primary-soft', tenant.accentColorSoft);
             style.setProperty('--tenant-on-primary', tenant.onPrimaryColor);
             document

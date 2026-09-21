@@ -1,4 +1,10 @@
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'upay';
+import {
+    Button,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from 'upay';
 
 export const Open = () => (
     <TooltipProvider>
@@ -7,7 +13,9 @@ export const Open = () => (
                 <TooltipTrigger asChild>
                     <Button variant="outline">Segunda via</Button>
                 </TooltipTrigger>
-                <TooltipContent>Gera um novo boleto para esta parcela</TooltipContent>
+                <TooltipContent>
+                    Gera um novo boleto para esta parcela
+                </TooltipContent>
             </Tooltip>
         </div>
     </TooltipProvider>

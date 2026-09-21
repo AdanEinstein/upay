@@ -32,7 +32,12 @@ const page = {
 };
 
 export function usePage<T = Record<string, unknown>>() {
-    return page as unknown as { component: string; url: string; version: string; props: T & typeof page.props };
+    return page as unknown as {
+        component: string;
+        url: string;
+        version: string;
+        props: T & typeof page.props;
+    };
 }
 
 type LinkProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
@@ -42,29 +47,60 @@ type LinkProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
     [key: string]: unknown;
 };
 
-export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-    { href, as, method, prefetch, preserveScroll, preserveState, replace, only, data, viewTransition, cacheFor, children, onClick, ...rest },
-    ref,
-) {
-    void [method, prefetch, preserveScroll, preserveState, replace, only, data, viewTransition, cacheFor];
-    const url = typeof href === 'string' ? href : (href?.url ?? '#');
-    const handle = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        onClick?.(e);
-    };
-    if (as === 'button') {
+export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+    function Link(
+        {
+            href,
+            as,
+            method,
+            prefetch,
+            preserveScroll,
+            preserveState,
+            replace,
+            only,
+            data,
+            viewTransition,
+            cacheFor,
+            children,
+            onClick,
+            ...rest
+        },
+        ref,
+    ) {
+        void [
+            method,
+            prefetch,
+            preserveScroll,
+            preserveState,
+            replace,
+            only,
+            data,
+            viewTransition,
+            cacheFor,
+        ];
+        const url = typeof href === 'string' ? href : (href?.url ?? '#');
+        const handle = (e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
+            onClick?.(e);
+        };
+        if (as === 'button') {
+            return (
+                <button
+                    type="button"
+                    ref={ref as unknown as React.Ref<HTMLButtonElement>}
+                    {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+                >
+                    {children}
+                </button>
+            );
+        }
         return (
-            <button type="button" ref={ref as unknown as React.Ref<HTMLButtonElement>} {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
+            <a ref={ref} href={url} onClick={handle} {...rest}>
                 {children}
-            </button>
+            </a>
         );
-    }
-    return (
-        <a ref={ref} href={url} onClick={handle} {...rest}>
-            {children}
-        </a>
-    );
-});
+    },
+);
 
 const noop = () => undefined;
 export const router = {
@@ -108,9 +144,22 @@ const formState: FormState = {
     setError: noop,
 };
 
-export function Form({ children, className, id }: { children?: React.ReactNode | ((state: FormState) => React.ReactNode); className?: string; id?: string; [key: string]: unknown }) {
+export function Form({
+    children,
+    className,
+    id,
+}: {
+    children?: React.ReactNode | ((state: FormState) => React.ReactNode);
+    className?: string;
+    id?: string;
+    [key: string]: unknown;
+}) {
     return (
-        <form className={className} id={id} onSubmit={(e) => e.preventDefault()}>
+        <form
+            className={className}
+            id={id}
+            onSubmit={(e) => e.preventDefault()}
+        >
             {typeof children === 'function' ? children(formState) : children}
         </form>
     );

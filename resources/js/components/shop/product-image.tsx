@@ -11,7 +11,12 @@ export default function ProductImage({
     iconClassName?: string;
 }) {
     return (
-        <div className={cn('bg-muted text-muted-foreground flex items-center justify-center overflow-hidden', className)}>
+        <div
+            className={cn(
+                'bg-muted text-muted-foreground flex items-center justify-center overflow-hidden',
+                className,
+            )}
+        >
             {url ? (
                 <img src={url} alt="" className="size-full object-cover" />
             ) : (

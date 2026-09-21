@@ -10,4 +10,6 @@ export const Empty = () => <DatePicker />;
 
 export const Filled = () => <DatePicker value={new Date(2026, 8, 20)} />;
 
-export const Disabled = () => <DatePicker disabled value={new Date(2026, 9, 10)} />;
+export const Disabled = () => (
+    <DatePicker disabled value={new Date(2026, 9, 10)} />
+);

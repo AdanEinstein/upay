@@ -6,4 +6,6 @@ export const Inline = () => (
     </p>
 );
 
-export const Standalone = () => <TextLink href="/esqueci-a-senha">Esqueci minha senha</TextLink>;
+export const Standalone = () => (
+    <TextLink href="/esqueci-a-senha">Esqueci minha senha</TextLink>
+);

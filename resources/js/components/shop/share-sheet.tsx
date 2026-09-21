@@ -23,11 +23,16 @@ export default function ShareSheet({
     const { t } = useTranslation('shop');
     const [key, setKey] = useState(templates[0]?.key);
     const [edited, setEdited] = useState<Record<string, string>>({});
-    const current = templates.find((template) => template.key === key) ?? templates[0];
+    const current =
+        templates.find((template) => template.key === key) ?? templates[0];
     const message = edited[current.key] ?? current.message;
 
     return (
-        <BottomSheet open={open} onOpenChange={onOpenChange} title={t('share.title')}>
+        <BottomSheet
+            open={open}
+            onOpenChange={onOpenChange}
+            title={t('share.title')}
+        >
             {templates.length > 1 && (
                 <div className="flex gap-2">
                     {templates.map((template) => (
@@ -48,7 +53,11 @@ export default function ShareSheet({
                 }
                 className="min-h-28 leading-relaxed lg:min-h-[120px]"
             />
-            <Button asChild size="lg" className="h-12 w-full text-base lg:text-[15px]">
+            <Button
+                asChild
+                size="lg"
+                className="h-12 w-full text-base lg:text-[15px]"
+            >
                 <a
                     href={whatsappUrl(phone, message)}
                     target="_blank"

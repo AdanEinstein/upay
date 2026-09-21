@@ -5,30 +5,30 @@ Dinheiro sempre em **centavos** (`unsignedInteger`/`bigInteger`). Tabelas marcad
 
 ## Globais (super admin)
 
-| Tabela | Colunas principais |
-| --- | --- |
-| `plans` | `slug` (único), `name`, `price_cents`, `annual_price_cents`, `limits` (json: `max_customers`, `max_products`, `max_photos_per_product`, `max_sales_per_month`, `max_users`; null/ausente = ilimitado), `active`, `featured` ("mais popular", só um) |
-| `subscriptions` | `organization_id`, `plan_id`, `status`, `price_cents` (congela o preço; base do MRR), `current_period_end`, `canceled_at` (status: active/past_due/canceled) |
-| `organizations` (existe) | + `plan_id` opcional; `status` já existe (ativar/bloquear), `suspension_reason` |
-| `users` (existe) | `organization_id`, `locale` |
+| Tabela                   | Colunas principais                                                                                                                                                                                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `plans`                  | `slug` (único), `name`, `price_cents`, `annual_price_cents`, `limits` (json: `max_customers`, `max_products`, `max_photos_per_product`, `max_sales_per_month`, `max_users`; null/ausente = ilimitado), `active`, `featured` ("mais popular", só um) |
+| `subscriptions`          | `organization_id`, `plan_id`, `status`, `price_cents` (congela o preço; base do MRR), `current_period_end`, `canceled_at` (status: active/past_due/canceled)                                                                                        |
+| `organizations` (existe) | + `plan_id` opcional; `status` já existe (ativar/bloquear), `suspension_reason`                                                                                                                                                                     |
+| `users` (existe)         | `organization_id`, `locale`                                                                                                                                                                                                                         |
 
 MRR = soma de `subscriptions.price_cents` com `status = active`.
 
 ## Tenant 🏢 (todas com `organization_id` indexado)
 
-| Tabela | Colunas principais |
-| --- | --- |
-| `customers` | `name`, `phone`, `notes`, `public_token` (único, aleatório ≥ 32 chars, rotacionável) |
-| `products` | `name`, `description`, `price_cents`, `stock_qty`, `min_stock`, `active` |
-| `product_variants` | `product_id`, `name`, `sku`, `price_cents` (null = herda), `stock_qty` |
-| `product_images` | `product_id`, `path`, `position` |
-| `sales` | `customer_id` (null = venda balcão), `total_cents`, `status`, `sold_at` |
-| `sale_items` | `sale_id`, `product_id`, `product_variant_id`, `quantity`, `unit_price_cents` |
-| `installments` | `sale_id`, `customer_id`, `number`, `amount_cents`, `due_date` (fiado = 1 parcela; parcelado = N) |
-| `payments` | `installment_id`, `amount_cents`, `method` (pix/cash/card), `paid_at` |
-| `expenses` | `description`, `amount_cents`, `category`, `paid_at` |
-| `stock_movements` | `product_id`, `product_variant_id`, `quantity_delta`, `reason` (sale/adjustment/return), `sale_id` (null) |
-| `shop_settings` | `pix_key`, `pix_key_type`, `catalog_public` (1 linha por organização) |
+| Tabela             | Colunas principais                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------- |
+| `customers`        | `name`, `phone`, `notes`, `public_token` (único, aleatório ≥ 32 chars, rotacionável)                      |
+| `products`         | `name`, `description`, `price_cents`, `stock_qty`, `min_stock`, `active`                                  |
+| `product_variants` | `product_id`, `name`, `sku`, `price_cents` (null = herda), `stock_qty`                                    |
+| `product_images`   | `product_id`, `path`, `position`                                                                          |
+| `sales`            | `customer_id` (null = venda balcão), `total_cents`, `status`, `sold_at`                                   |
+| `sale_items`       | `sale_id`, `product_id`, `product_variant_id`, `quantity`, `unit_price_cents`                             |
+| `installments`     | `sale_id`, `customer_id`, `number`, `amount_cents`, `due_date` (fiado = 1 parcela; parcelado = N)         |
+| `payments`         | `installment_id`, `amount_cents`, `method` (pix/cash/card), `paid_at`                                     |
+| `expenses`         | `description`, `amount_cents`, `category`, `paid_at`                                                      |
+| `stock_movements`  | `product_id`, `product_variant_id`, `quantity_delta`, `reason` (sale/adjustment/return), `sale_id` (null) |
+| `shop_settings`    | `pix_key`, `pix_key_type`, `catalog_public` (1 linha por organização)                                     |
 
 ## Relacionamentos
 

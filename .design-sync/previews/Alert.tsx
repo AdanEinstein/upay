@@ -6,7 +6,10 @@ export const Default = () => (
         <Alert>
             <InfoIcon />
             <AlertTitle>Parcelas atualizadas</AlertTitle>
-            <AlertDescription>As 6 parcelas da venda #1024 foram recalculadas com a nova taxa de juros.</AlertDescription>
+            <AlertDescription>
+                As 6 parcelas da venda #1024 foram recalculadas com a nova taxa
+                de juros.
+            </AlertDescription>
         </Alert>
     </div>
 );
@@ -16,7 +19,9 @@ export const Destructive = () => (
         <Alert variant="destructive">
             <WarningCircleIcon />
             <AlertTitle>Não foi possível registrar o pagamento</AlertTitle>
-            <AlertDescription>Verifique o valor informado e tente novamente.</AlertDescription>
+            <AlertDescription>
+                Verifique o valor informado e tente novamente.
+            </AlertDescription>
         </Alert>
     </div>
 );

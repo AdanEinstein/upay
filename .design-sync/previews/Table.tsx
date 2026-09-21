@@ -1,4 +1,14 @@
-import { Badge, Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from 'upay';
+import {
+    Badge,
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from 'upay';
 
 export const Installments = () => (
     <Table className="w-[36rem]">
@@ -15,19 +25,25 @@ export const Installments = () => (
             <TableRow>
                 <TableCell className="font-medium">1/3</TableCell>
                 <TableCell>10/08/2026</TableCell>
-                <TableCell><Badge>Paga</Badge></TableCell>
+                <TableCell>
+                    <Badge>Paga</Badge>
+                </TableCell>
                 <TableCell className="text-right">R$ 1.166,33</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell className="font-medium">2/3</TableCell>
                 <TableCell>10/09/2026</TableCell>
-                <TableCell><Badge variant="destructive">Atrasada</Badge></TableCell>
+                <TableCell>
+                    <Badge variant="destructive">Atrasada</Badge>
+                </TableCell>
                 <TableCell className="text-right">R$ 1.166,33</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell className="font-medium">3/3</TableCell>
                 <TableCell>10/10/2026</TableCell>
-                <TableCell><Badge variant="secondary">Em aberto</Badge></TableCell>
+                <TableCell>
+                    <Badge variant="secondary">Em aberto</Badge>
+                </TableCell>
                 <TableCell className="text-right">R$ 1.166,34</TableCell>
             </TableRow>
         </TableBody>

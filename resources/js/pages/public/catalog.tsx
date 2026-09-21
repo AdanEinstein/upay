@@ -1,5 +1,9 @@
 import { Deferred, Head } from '@inertiajs/react';
-import { CaretLeftIcon, PackageIcon, WhatsappLogoIcon } from '@phosphor-icons/react';
+import {
+    CaretLeftIcon,
+    PackageIcon,
+    WhatsappLogoIcon,
+} from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MobileScreen from '@/components/mobile-screen';
@@ -23,11 +27,22 @@ type Product = {
     priceCents: number;
     promoPriceCents: number | null;
     images: string[];
-    variants: { id: number; name: string; priceCents: number | null; inStock: boolean }[];
+    variants: {
+        id: number;
+        name: string;
+        priceCents: number | null;
+        inStock: boolean;
+    }[];
 };
 
 type Props = {
-    store: { name: string; logoUrl: string | null; coverUrl: string | null; welcomeText: string | null; whatsapp: string | null };
+    store: {
+        name: string;
+        logoUrl: string | null;
+        coverUrl: string | null;
+        welcomeText: string | null;
+        whatsapp: string | null;
+    };
     notice: { text: string; type: NoticeType } | null;
     products?: Product[];
 };
@@ -35,33 +50,73 @@ type Props = {
 export default function Catalog({ store, notice, products }: Props) {
     const { t } = useTranslation('public');
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const selected = products?.find((product) => product.id === selectedId) ?? null;
+    const selected =
+        products?.find((product) => product.id === selectedId) ?? null;
 
     return (
         <>
             <Head title={t('catalogTitle', { store: store.name })} />
 
             {selected ? (
-                <ProductScreen product={selected} whatsapp={store.whatsapp} onBack={() => setSelectedId(null)} />
+                <ProductScreen
+                    product={selected}
+                    whatsapp={store.whatsapp}
+                    onBack={() => setSelectedId(null)}
+                />
             ) : (
                 <MobileScreen className="lg:max-w-none">
-                    {notice && <div className={cn('px-5 py-2 text-[12.5px] font-semibold lg:px-6', NOTICE_STYLES[notice.type])}>{notice.text}</div>}
+                    {notice && (
+                        <div
+                            className={cn(
+                                'px-5 py-2 text-[12.5px] font-semibold lg:px-6',
+                                NOTICE_STYLES[notice.type],
+                            )}
+                        >
+                            {notice.text}
+                        </div>
+                    )}
 
                     <div className="flex flex-col gap-3.5 px-5 pt-3 pb-8 lg:px-0 lg:pt-0">
                         <div className="bg-brand h-[100px] overflow-hidden rounded-2xl lg:h-[120px] lg:rounded-none">
-                            {store.coverUrl && <img src={store.coverUrl} alt="" className="size-full object-cover" />}
+                            {store.coverUrl && (
+                                <img
+                                    src={store.coverUrl}
+                                    alt=""
+                                    className="size-full object-cover"
+                                />
+                            )}
                         </div>
                         <div className="-mt-7 flex items-center gap-2.5 pl-2.5 lg:-mt-8 lg:gap-3 lg:pl-8">
-                            <div className="bg-card border-background text-muted-foreground flex size-[52px] lg:size-16 items-center justify-center overflow-hidden rounded-xl border-[3px] text-[10px]">
-                                {store.logoUrl ? <img src={store.logoUrl} alt="" className="size-full object-cover" /> : t('logo')}
+                            <div className="bg-card border-background text-muted-foreground flex size-[52px] items-center justify-center overflow-hidden rounded-xl border-[3px] text-[10px] lg:size-16">
+                                {store.logoUrl ? (
+                                    <img
+                                        src={store.logoUrl}
+                                        alt=""
+                                        className="size-full object-cover"
+                                    />
+                                ) : (
+                                    t('logo')
+                                )}
                             </div>
-                            <h1 className="mt-5 text-base font-bold">{store.name}</h1>
+                            <h1 className="mt-5 text-base font-bold">
+                                {store.name}
+                            </h1>
                         </div>
                         <div className="flex flex-col gap-3.5 lg:mx-auto lg:w-full lg:max-w-[900px] lg:gap-5 lg:px-8 lg:pt-3">
-                            {store.welcomeText && <p className="text-muted-foreground text-[13px]">{store.welcomeText}</p>}
+                            {store.welcomeText && (
+                                <p className="text-muted-foreground text-[13px]">
+                                    {store.welcomeText}
+                                </p>
+                            )}
 
-                            <Deferred data="products" fallback={<CatalogSkeleton />}>
-                                <Listing products={products ?? []} onOpen={setSelectedId} />
+                            <Deferred
+                                data="products"
+                                fallback={<CatalogSkeleton />}
+                            >
+                                <Listing
+                                    products={products ?? []}
+                                    onOpen={setSelectedId}
+                                />
                             </Deferred>
                         </div>
                     </div>
@@ -71,7 +126,13 @@ export default function Catalog({ store, notice, products }: Props) {
     );
 }
 
-function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: number) => void }) {
+function Listing({
+    products,
+    onOpen,
+}: {
+    products: Product[];
+    onOpen: (id: number) => void;
+}) {
     const { t } = useTranslation('public');
     const { money } = useFormat();
     const [search, setSearch] = useState('');
@@ -79,16 +140,30 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
 
     if (products.length === 0) {
         return (
-            <EmptyState icon={<PackageIcon />} title={t('emptyCatalogTitle')} description={t('emptyCatalogDescription')} />
+            <EmptyState
+                icon={<PackageIcon />}
+                title={t('emptyCatalogTitle')}
+                description={t('emptyCatalogDescription')}
+            />
         );
     }
 
-    const categories = [...new Set(products.map((product) => product.category).filter((name): name is string => !!name))];
+    const categories = [
+        ...new Set(
+            products
+                .map((product) => product.category)
+                .filter((name): name is string => !!name),
+        ),
+    ];
     const query = search.trim().toLowerCase();
     const visible = products.filter(
-        (product) => (category === null || product.category === category) && product.name.toLowerCase().includes(query),
+        (product) =>
+            (category === null || product.category === category) &&
+            product.name.toLowerCase().includes(query),
     );
-    const promos = visible.filter((product) => product.promoPriceCents !== null);
+    const promos = visible.filter(
+        (product) => product.promoPriceCents !== null,
+    );
 
     return (
         <>
@@ -103,21 +178,44 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
 
             {categories.length > 0 && (
                 <ChipRow>
-                    <Chip active={category === null} onClick={() => setCategory(null)}>{t('allCategories')}</Chip>
+                    <Chip
+                        active={category === null}
+                        onClick={() => setCategory(null)}
+                    >
+                        {t('allCategories')}
+                    </Chip>
                     {categories.map((name) => (
-                        <Chip key={name} active={category === name} onClick={() => setCategory(name)}>{name}</Chip>
+                        <Chip
+                            key={name}
+                            active={category === name}
+                            onClick={() => setCategory(name)}
+                        >
+                            {name}
+                        </Chip>
                     ))}
                 </ChipRow>
             )}
 
-            {visible.length === 0 && <p className="text-muted-foreground py-6 text-center text-sm">{t('noResults')}</p>}
+            {visible.length === 0 && (
+                <p className="text-muted-foreground py-6 text-center text-sm">
+                    {t('noResults')}
+                </p>
+            )}
 
             {promos.length > 0 && (
                 <section>
-                    <h2 className="text-muted-foreground mb-2 text-[12.5px] font-bold uppercase">{t('promotions')}</h2>
-                    <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] lg:grid lg:grid-cols-5 lg:gap-4 lg:overflow-visible">
+                    <h2 className="text-muted-foreground mb-2 text-[12.5px] font-bold uppercase">
+                        {t('promotions')}
+                    </h2>
+                    <div className="flex [scrollbar-width:none] gap-2.5 overflow-x-auto pb-1 lg:grid lg:grid-cols-5 lg:gap-4 lg:overflow-visible">
                         {promos.map((product) => (
-                            <ProductCard key={product.id} product={product} onOpen={onOpen} className="w-[150px] shrink-0 lg:w-auto" money={money} />
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onOpen={onOpen}
+                                className="w-[150px] shrink-0 lg:w-auto"
+                                money={money}
+                            />
                         ))}
                     </div>
                 </section>
@@ -125,10 +223,17 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
 
             {visible.length > 0 && (
                 <section>
-                    <h2 className="text-muted-foreground mb-2 text-[12.5px] font-bold uppercase">{t('products')}</h2>
+                    <h2 className="text-muted-foreground mb-2 text-[12.5px] font-bold uppercase">
+                        {t('products')}
+                    </h2>
                     <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-5 lg:gap-4">
                         {visible.map((product) => (
-                            <ProductCard key={product.id} product={product} onOpen={onOpen} money={money} />
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onOpen={onOpen}
+                                money={money}
+                            />
                         ))}
                     </div>
                 </section>
@@ -137,14 +242,28 @@ function Listing({ products, onOpen }: { products: Product[]; onOpen: (id: numbe
     );
 }
 
-function Price({ product, money, className }: { product: Product; money: (cents: number) => string; className?: string }) {
+function Price({
+    product,
+    money,
+    className,
+}: {
+    product: Product;
+    money: (cents: number) => string;
+    className?: string;
+}) {
     return product.promoPriceCents !== null ? (
         <p className={className}>
-            <span className="text-muted-foreground line-through">{money(product.priceCents)}</span>{' '}
-            <span className="text-destructive font-bold">{money(product.promoPriceCents)}</span>
+            <span className="text-muted-foreground line-through">
+                {money(product.priceCents)}
+            </span>{' '}
+            <span className="text-destructive font-bold">
+                {money(product.promoPriceCents)}
+            </span>
         </p>
     ) : (
-        <p className={cn('text-muted-foreground', className)}>{money(product.priceCents)}</p>
+        <p className={cn('text-muted-foreground', className)}>
+            {money(product.priceCents)}
+        </p>
     );
 }
 
@@ -159,16 +278,27 @@ function ProductCard({
     money: (cents: number) => string;
     className?: string;
 }) {
-    const percent = product.promoPriceCents !== null ? Math.round((1 - product.promoPriceCents / product.priceCents) * 100) : null;
+    const percent =
+        product.promoPriceCents !== null
+            ? Math.round(
+                  (1 - product.promoPriceCents / product.priceCents) * 100,
+              )
+            : null;
 
     return (
         <button
             type="button"
             onClick={() => onOpen(product.id)}
-            className={cn('border-border overflow-hidden rounded-xl border text-left', className)}
+            className={cn(
+                'border-border overflow-hidden rounded-xl border text-left',
+                className,
+            )}
         >
             <div className="relative">
-                <ProductImage url={product.images[0] ?? null} className="h-[100px] lg:h-[130px]" />
+                <ProductImage
+                    url={product.images[0] ?? null}
+                    className="h-[100px] lg:h-[130px]"
+                />
                 {percent !== null && (
                     <span className="bg-destructive absolute top-1.5 left-1.5 rounded-md px-1.5 py-0.5 text-[11px] font-bold text-white">
                         -{percent}%
@@ -177,83 +307,131 @@ function ProductCard({
             </div>
             <div className="p-2 lg:p-2.5">
                 <p className="truncate text-xs font-semibold">{product.name}</p>
-                <Price product={product} money={money} className="mt-0.5 text-[11.5px]" />
+                <Price
+                    product={product}
+                    money={money}
+                    className="mt-0.5 text-[11.5px]"
+                />
             </div>
         </button>
     );
 }
 
-function ProductScreen({ product, whatsapp, onBack }: { product: Product; whatsapp: string | null; onBack: () => void }) {
+function ProductScreen({
+    product,
+    whatsapp,
+    onBack,
+}: {
+    product: Product;
+    whatsapp: string | null;
+    onBack: () => void;
+}) {
     const { t } = useTranslation('public');
     const { money } = useFormat();
     const [variantId, setVariantId] = useState<number | null>(null);
-    const variant = product.variants.find((item) => item.id === variantId) ?? null;
-    const unitCents = product.promoPriceCents ?? variant?.priceCents ?? product.priceCents;
+    const variant =
+        product.variants.find((item) => item.id === variantId) ?? null;
+    const unitCents =
+        product.promoPriceCents ?? variant?.priceCents ?? product.priceCents;
     const message = variant
-        ? t('orderMessageVariant', { product: product.name, variant: variant.name, price: money(unitCents) })
+        ? t('orderMessageVariant', {
+              product: product.name,
+              variant: variant.name,
+              price: money(unitCents),
+          })
         : t('orderMessage', { product: product.name, price: money(unitCents) });
 
     return (
         <MobileScreen className="lg:max-w-none lg:justify-center">
-          <div className="lg:mx-auto lg:w-[820px]">
-            <div className="px-5 pt-3 lg:px-0">
-                <button
-                    type="button"
-                    aria-label={t('back')}
-                    onClick={onBack}
-                    className="bg-card flex size-8 items-center justify-center rounded-full border"
-                >
-                    <CaretLeftIcon className="size-4" />
-                </button>
-            </div>
-
-            <div className="flex flex-col gap-3.5 px-5 pt-3 pb-24 lg:grid lg:grid-cols-[400px_1fr] lg:content-start lg:gap-x-10 lg:gap-y-4 lg:px-0 lg:pb-8">
-                <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] lg:row-span-4">
-                    {(product.images.length > 0 ? product.images : [null]).map((url, index) => (
-                        <ProductImage key={index} url={url} className="h-[220px] w-full shrink-0 snap-center rounded-2xl lg:h-[400px]" />
-                    ))}
+            <div className="lg:mx-auto lg:w-[820px]">
+                <div className="px-5 pt-3 lg:px-0">
+                    <button
+                        type="button"
+                        aria-label={t('back')}
+                        onClick={onBack}
+                        className="bg-card flex size-8 items-center justify-center rounded-full border"
+                    >
+                        <CaretLeftIcon className="size-4" />
+                    </button>
                 </div>
 
-                <div>
-                    <h1 className="text-[17px] font-bold lg:text-[22px]">{product.name}</h1>
-                    <Price product={product} money={money} className="mt-1 text-sm lg:mt-1.5 lg:text-lg" />
-                </div>
+                <div className="flex flex-col gap-3.5 px-5 pt-3 pb-24 lg:grid lg:grid-cols-[400px_1fr] lg:content-start lg:gap-x-10 lg:gap-y-4 lg:px-0 lg:pb-8">
+                    <div className="flex snap-x snap-mandatory [scrollbar-width:none] gap-2 overflow-x-auto lg:row-span-4">
+                        {(product.images.length > 0
+                            ? product.images
+                            : [null]
+                        ).map((url, index) => (
+                            <ProductImage
+                                key={index}
+                                url={url}
+                                className="h-[220px] w-full shrink-0 snap-center rounded-2xl lg:h-[400px]"
+                            />
+                        ))}
+                    </div>
 
-                {product.variants.length > 0 && (
-                    <section>
-                        <h2 className="text-muted-foreground mb-2 text-[13px] font-semibold">{t('options')}</h2>
-                        <div className="flex flex-wrap gap-2">
-                            {product.variants.map((item) => (
-                                <Chip
-                                    key={item.id}
-                                    active={variantId === item.id}
-                                    disabled={!item.inStock}
-                                    onClick={() => setVariantId(item.id)}
-                                    className={cn('px-3.5 py-2', !item.inStock && 'line-through opacity-50')}
+                    <div>
+                        <h1 className="text-[17px] font-bold lg:text-[22px]">
+                            {product.name}
+                        </h1>
+                        <Price
+                            product={product}
+                            money={money}
+                            className="mt-1 text-sm lg:mt-1.5 lg:text-lg"
+                        />
+                    </div>
+
+                    {product.variants.length > 0 && (
+                        <section>
+                            <h2 className="text-muted-foreground mb-2 text-[13px] font-semibold">
+                                {t('options')}
+                            </h2>
+                            <div className="flex flex-wrap gap-2">
+                                {product.variants.map((item) => (
+                                    <Chip
+                                        key={item.id}
+                                        active={variantId === item.id}
+                                        disabled={!item.inStock}
+                                        onClick={() => setVariantId(item.id)}
+                                        className={cn(
+                                            'px-3.5 py-2',
+                                            !item.inStock &&
+                                                'line-through opacity-50',
+                                        )}
+                                    >
+                                        {item.inStock
+                                            ? item.name
+                                            : `${item.name} · ${t('variantUnavailable')}`}
+                                    </Chip>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {product.description && (
+                        <p className="text-muted-foreground text-[13.5px] leading-relaxed whitespace-pre-line">
+                            {product.description}
+                        </p>
+                    )}
+
+                    {whatsapp && (
+                        <div className="bg-background border-border fixed inset-x-0 bottom-0 mx-auto w-full max-w-md border-t px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] lg:static lg:mx-0 lg:w-auto lg:max-w-none lg:border-0 lg:bg-transparent lg:p-0">
+                            <Button
+                                asChild
+                                className="h-12 w-full text-base lg:w-auto lg:self-start lg:px-7"
+                            >
+                                <a
+                                    href={whatsappUrl(whatsapp, message)}
+                                    target="_blank"
+                                    rel="noreferrer"
                                 >
-                                    {item.inStock ? item.name : `${item.name} · ${t('variantUnavailable')}`}
-                                </Chip>
-                            ))}
+                                    <WhatsappLogoIcon />
+                                    {t('orderOnWhatsapp')}
+                                </a>
+                            </Button>
                         </div>
-                    </section>
-                )}
-
-                {product.description && (
-                    <p className="text-muted-foreground text-[13.5px] leading-relaxed whitespace-pre-line">{product.description}</p>
-                )}
-
-            {whatsapp && (
-                <div className="bg-background border-border fixed inset-x-0 bottom-0 mx-auto w-full max-w-md border-t px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] lg:static lg:mx-0 lg:w-auto lg:max-w-none lg:border-0 lg:bg-transparent lg:p-0">
-                    <Button asChild className="h-12 w-full text-base lg:w-auto lg:self-start lg:px-7">
-                        <a href={whatsappUrl(whatsapp, message)} target="_blank" rel="noreferrer">
-                            <WhatsappLogoIcon />
-                            {t('orderOnWhatsapp')}
-                        </a>
-                    </Button>
+                    )}
                 </div>
-            )}
             </div>
-          </div>
         </MobileScreen>
     );
 }

@@ -43,7 +43,11 @@ export function StatusBadge({ status }: { status: SettlementStatus }) {
 export function useDueLabel() {
     const { t } = useTranslation('shop');
 
-    return (status: SettlementStatus, date: string | null, shortDate: (d: string) => string) => {
+    return (
+        status: SettlementStatus,
+        date: string | null,
+        shortDate: (d: string) => string,
+    ) => {
         switch (status) {
             case 'overdue':
                 return t('dueLabel.overdue', { date: shortDate(date!) });

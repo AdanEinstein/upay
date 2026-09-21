@@ -40,13 +40,48 @@ export function AppSidebar() {
     const section = sectionOf(component);
 
     const items: (NavItem & { section: NavSection })[] = [
-        { section: 'home', title: t('nav.home'), href: dashboard(), icon: Home },
-        { section: 'sales', title: t('nav.sales'), href: sales(), icon: ShoppingBag },
-        { section: 'customers', title: t('nav.customers'), href: customers(), icon: Users },
-        { section: 'products', title: t('nav.products'), href: products(), icon: Package },
-        { section: 'catalog', title: t('nav.catalog'), href: catalog(), icon: Eye },
-        { section: 'finance', title: t('nav.finance'), href: finance(), icon: Wallet },
-        { section: 'settings', title: t('nav.settings'), href: more(), icon: Settings },
+        {
+            section: 'home',
+            title: t('nav.home'),
+            href: dashboard(),
+            icon: Home,
+        },
+        {
+            section: 'sales',
+            title: t('nav.sales'),
+            href: sales(),
+            icon: ShoppingBag,
+        },
+        {
+            section: 'customers',
+            title: t('nav.customers'),
+            href: customers(),
+            icon: Users,
+        },
+        {
+            section: 'products',
+            title: t('nav.products'),
+            href: products(),
+            icon: Package,
+        },
+        {
+            section: 'catalog',
+            title: t('nav.catalog'),
+            href: catalog(),
+            icon: Eye,
+        },
+        {
+            section: 'finance',
+            title: t('nav.finance'),
+            href: finance(),
+            icon: Wallet,
+        },
+        {
+            section: 'settings',
+            title: t('nav.settings'),
+            href: more(),
+            icon: Settings,
+        },
     ];
 
     return (
@@ -73,7 +108,10 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <Button asChild className="w-full gap-1.5 group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:p-0">
+                <Button
+                    asChild
+                    className="w-full gap-1.5 group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:p-0"
+                >
                     <Link href={createSale()} aria-label={t('nav.newSale')}>
                         <Plus className="size-4" />
                         <span className="group-data-[collapsible=icon]:hidden">

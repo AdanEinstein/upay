@@ -12,9 +12,18 @@ import { useInitials } from '@/hooks/use-initials';
 import { formatPhone } from '@/lib/whatsapp';
 import { create, show } from '@/routes/customers';
 
-type Customer = { id: number; name: string; phone: string | null; balanceCents: number };
+type Customer = {
+    id: number;
+    name: string;
+    phone: string | null;
+    balanceCents: number;
+};
 
-export default function CustomersIndex({ customers }: { customers: Customer[] }) {
+export default function CustomersIndex({
+    customers,
+}: {
+    customers: Customer[];
+}) {
     const { t } = useTranslation('shop');
     const { money } = useFormat();
     const getInitials = useInitials();
@@ -32,9 +41,15 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
         return (
             <>
                 <Head title={t('customers.title')} />
-                <EmptyState icon={<UserPlusIcon />} title={t('customers.empty.title')} description={t('customers.empty.description')}>
+                <EmptyState
+                    icon={<UserPlusIcon />}
+                    title={t('customers.empty.title')}
+                    description={t('customers.empty.description')}
+                >
                     <Button asChild size="lg" className="h-12 px-6 text-[15px]">
-                        <Link href={create.url()}>{t('customers.empty.action')}</Link>
+                        <Link href={create.url()}>
+                            {t('customers.empty.action')}
+                        </Link>
                     </Button>
                 </EmptyState>
             </>
@@ -47,13 +62,23 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
             <ScreenTitle
                 action={
                     <>
-                        <Button asChild size="icon-sm" aria-label={t('customers.empty.action')} className="lg:hidden">
+                        <Button
+                            asChild
+                            size="icon-sm"
+                            aria-label={t('customers.empty.action')}
+                            className="lg:hidden"
+                        >
                             <Link href={create.url()}>
                                 <PlusIcon />
                             </Link>
                         </Button>
-                        <Button asChild className="hidden h-10 text-sm lg:inline-flex">
-                            <Link href={create.url()}>{t('customers.empty.action')}</Link>
+                        <Button
+                            asChild
+                            className="hidden h-10 text-sm lg:inline-flex"
+                        >
+                            <Link href={create.url()}>
+                                {t('customers.empty.action')}
+                            </Link>
                         </Button>
                     </>
                 }
@@ -62,9 +87,17 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
             </ScreenTitle>
 
             <div className="flex flex-col gap-2.5 px-5 lg:flex-row lg:items-center">
-                <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('customers.search')} className="h-10 lg:w-70" />
+                <Input
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder={t('customers.search')}
+                    className="h-10 lg:w-70"
+                />
                 <div>
-                    <Chip active={onlyDebt} onClick={() => setOnlyDebt(!onlyDebt)}>
+                    <Chip
+                        active={onlyDebt}
+                        onClick={() => setOnlyDebt(!onlyDebt)}
+                    >
                         {t('customers.withBalance')}
                     </Chip>
                 </div>
@@ -73,13 +106,20 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
             <ul className="flex flex-col gap-2 px-5 pt-3">
                 {visible.map((customer) => (
                     <li key={customer.id}>
-                        <Link href={show.url({ customer: customer.id })} className="border-border flex items-center gap-2.5 rounded-2xl border p-2.5 lg:gap-3 lg:px-3.5 lg:py-3">
-                            <span className="bg-muted flex size-[38px] shrink-0 lg:size-10 items-center justify-center rounded-full text-[13px] font-semibold">
+                        <Link
+                            href={show.url({ customer: customer.id })}
+                            className="border-border flex items-center gap-2.5 rounded-2xl border p-2.5 lg:gap-3 lg:px-3.5 lg:py-3"
+                        >
+                            <span className="bg-muted flex size-[38px] shrink-0 items-center justify-center rounded-full text-[13px] font-semibold lg:size-10">
                                 {getInitials(customer.name)}
                             </span>
                             <span className="min-w-0 flex-1">
-                                <span className="block truncate text-sm font-semibold">{customer.name}</span>
-                                <span className="text-muted-foreground mt-0.5 block text-xs">{formatPhone(customer.phone)}</span>
+                                <span className="block truncate text-sm font-semibold">
+                                    {customer.name}
+                                </span>
+                                <span className="text-muted-foreground mt-0.5 block text-xs">
+                                    {formatPhone(customer.phone)}
+                                </span>
                             </span>
                             {customer.balanceCents > 0 && (
                                 <span className="bg-destructive/15 text-destructive rounded-full px-2.5 py-0.5 text-[11.5px] font-semibold whitespace-nowrap">
@@ -90,7 +130,9 @@ export default function CustomersIndex({ customers }: { customers: Customer[] })
                     </li>
                 ))}
                 {visible.length === 0 && (
-                    <li className="text-muted-foreground py-10 text-center text-sm">{t('common.noResults')}</li>
+                    <li className="text-muted-foreground py-10 text-center text-sm">
+                        {t('common.noResults')}
+                    </li>
                 )}
             </ul>
         </>

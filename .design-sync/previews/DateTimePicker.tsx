@@ -8,4 +8,6 @@ export const OpenPicker = () => (
 
 export const Empty = () => <DateTimePicker />;
 
-export const Filled = () => <DateTimePicker value={new Date(2026, 8, 20, 14, 30)} />;
+export const Filled = () => (
+    <DateTimePicker value={new Date(2026, 8, 20, 14, 30)} />
+);

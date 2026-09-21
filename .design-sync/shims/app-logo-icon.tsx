@@ -6,6 +6,17 @@ import logoMark from '../../public/logo-mark.png';
 
 const mask = `url('${logoMark}') center / contain no-repeat`;
 
-export default function AppLogoIcon({ className = '', style, ...props }: HTMLAttributes<HTMLSpanElement>) {
-    return <span {...props} aria-hidden="true" className={`inline-block aspect-square bg-current ${className}`} style={{ mask, WebkitMask: mask, ...style }} />;
+export default function AppLogoIcon({
+    className = '',
+    style,
+    ...props
+}: HTMLAttributes<HTMLSpanElement>) {
+    return (
+        <span
+            {...props}
+            aria-hidden="true"
+            className={`inline-block aspect-square bg-current ${className}`}
+            style={{ mask, WebkitMask: mask, ...style }}
+        />
+    );
 }

@@ -25,7 +25,10 @@ export function Chip({
 export function ChipRow({ className, ...props }: ComponentProps<'div'>) {
     return (
         <div
-            className={cn('flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none]', className)}
+            className={cn(
+                'flex [scrollbar-width:none] gap-1.5 overflow-x-auto pb-1',
+                className,
+            )}
             {...props}
         />
     );

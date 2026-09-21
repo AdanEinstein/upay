@@ -13,9 +13,11 @@
 - Close-out sem `--remote` na primeira sync: o driver (`resync.mjs`) reporta `anchor: not_provided` e todos os 155 como `added`; é esperado.
 
 ## Known render warns
+
 - `Icon`: `[RENDER_THIN]` — só SVG, sem texto; screenshot confere (3 ícones visíveis). Benigno.
 
 ## Escopo (atualizado na revisão de 2026-09-20)
+
 - 164 componentes; 59 com preview autorado (todos `good`): 29 primitivos `ui/`, 24 de app e 6 novos só-DS (Calendar, DatePicker, TimePicker, TimeColumns, DateTimePicker, Popover).
 - Restam no floor card: subpartes dos compostos (CardHeader, DialogTitle…), `Toaster` (o `toast()` do sonner num preview usaria outra cópia do módulo) e os subcomponentes de Popover.
 - Componentes só do design system (NÃO existem no app): `.design-sync/components/*.tsx` (popover, calendar, date-picker, time-picker, date-time-picker). Sem dependência nova (Popover do pacote `radix-ui`; datas via `Intl`). Decisão do usuário: ficam fora do código do Upay.
@@ -26,6 +28,7 @@
 - Revisão humana (`.review.html`) ainda não confirmada pelo usuário.
 
 ## Re-sync risks
+
 - `dist/` é gerado por `build-inputs.mjs` a partir do fonte do app: qualquer novo arquivo `.tsx` em `resources/js/components` (ou `ui/`) entra automaticamente; mover/renomear arquivos regrupa componentes (grupo = nome do arquivo ui, ou `App`).
 - Exports `default` só são capturados pelo regex de `build-inputs.mjs` (`export default function X` / `export default X;`) — outras formas ficam de fora silenciosamente.
 - CSS depende de Tailwind 4.3.3 (`@tailwindcss/cli` isolado em `.ds-sync/`, versão fixada em separado da do app).
@@ -35,5 +38,6 @@
 - Calendar/pickers usam `Intl` com `locale="pt-BR"`; textos como "Selecione uma data" são props com default pt-BR (não passam pelo i18n do app).
 
 ## TimeColumns (2026-09-20, feedback do Claude Design)
+
 - Colunas Horas/Minutos usam altura flexível (`h-full max-h-80 min-h-56`, listbox `flex-1 min-h-0`) em vez de `h-56` fixo; itens `shrink-0` (sem isso encolhem quando o pai tem altura). Scrollbar fina via `scrollbar-width:thin` + `scrollbar-color`. Para expandir além de 20rem: `className="max-h-none"` num pai com altura definida (preview `ExpandedToParent`).
 - Relatórios já resolvidos: chaves i18n cruas → `i18n-init.ts`; Calendar/DatePicker/DateTimePicker/TimePicker custom existem (nada nativo do browser).

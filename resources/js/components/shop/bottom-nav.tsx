@@ -16,7 +16,10 @@ import BottomSheet from '@/components/shop/bottom-sheet';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
-import { create as createCustomer, index as customers } from '@/routes/customers';
+import {
+    create as createCustomer,
+    index as customers,
+} from '@/routes/customers';
 import { create as createExpense } from '@/routes/expenses';
 import { index as products } from '@/routes/products';
 import { create as createSale, index as sales } from '@/routes/sales';
@@ -24,10 +27,34 @@ import { create as createSale, index as sales } from '@/routes/sales';
 export type NavTab = 'home' | 'sales' | 'customers' | 'products' | null;
 
 const TABS = [
-    { key: 'home', icon: HouseIcon, label: 'nav.home', href: () => dashboard.url(), column: 'col-start-1' },
-    { key: 'sales', icon: BagIcon, label: 'nav.sales', href: () => sales.url(), column: 'col-start-2' },
-    { key: 'customers', icon: UsersIcon, label: 'nav.customers', href: () => customers.url(), column: 'col-start-4' },
-    { key: 'products', icon: PackageIcon, label: 'nav.products', href: () => products.url(), column: 'col-start-5' },
+    {
+        key: 'home',
+        icon: HouseIcon,
+        label: 'nav.home',
+        href: () => dashboard.url(),
+        column: 'col-start-1',
+    },
+    {
+        key: 'sales',
+        icon: BagIcon,
+        label: 'nav.sales',
+        href: () => sales.url(),
+        column: 'col-start-2',
+    },
+    {
+        key: 'customers',
+        icon: UsersIcon,
+        label: 'nav.customers',
+        href: () => customers.url(),
+        column: 'col-start-4',
+    },
+    {
+        key: 'products',
+        icon: PackageIcon,
+        label: 'nav.products',
+        href: () => products.url(),
+        column: 'col-start-5',
+    },
 ] as const satisfies readonly {
     key: string;
     icon: ComponentType<{ className?: string }>;
@@ -42,13 +69,21 @@ export default function BottomNav({ active }: { active: NavTab }) {
 
     const actions = [
         { icon: ReceiptIcon, label: 'nav.quick.sale', href: createSale.url() },
-        { icon: CurrencyCircleDollarIcon, label: 'nav.quick.expense', href: createExpense.url() },
-        { icon: UserPlusIcon, label: 'nav.quick.customer', href: createCustomer.url() },
+        {
+            icon: CurrencyCircleDollarIcon,
+            label: 'nav.quick.expense',
+            href: createExpense.url(),
+        },
+        {
+            icon: UserPlusIcon,
+            label: 'nav.quick.customer',
+            href: createCustomer.url(),
+        },
     ];
 
     return (
         <>
-            <nav className="bg-card border-border fixed inset-x-0 bottom-0 z-30 mx-auto h-[84px] max-w-md border-t lg:hidden pb-[env(safe-area-inset-bottom)]">
+            <nav className="bg-card border-border fixed inset-x-0 bottom-0 z-30 mx-auto h-[84px] max-w-md border-t pb-[env(safe-area-inset-bottom)] lg:hidden">
                 <div className="grid h-full grid-cols-5 items-start pt-2">
                     {TABS.map(({ key, icon: Icon, label, href, column }) => (
                         <Link
@@ -58,10 +93,15 @@ export default function BottomNav({ active }: { active: NavTab }) {
                             className={cn(
                                 'flex flex-col items-center gap-[3px] text-[11px]',
                                 column,
-                                active === key ? 'text-brand font-semibold' : 'text-muted-foreground font-medium',
+                                active === key
+                                    ? 'text-brand font-semibold'
+                                    : 'text-muted-foreground font-medium',
                             )}
                         >
-                            <Icon className="size-[22px]" weight={active === key ? 'fill' : 'regular'} />
+                            <Icon
+                                className="size-[22px]"
+                                weight={active === key ? 'fill' : 'regular'}
+                            />
                             {t(label)}
                         </Link>
                     ))}

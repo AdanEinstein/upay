@@ -52,11 +52,26 @@ type Props = {
     owed: Owed[];
 };
 
-function Stat({ label, value, danger }: { label: string; value: string; danger?: boolean }) {
+function Stat({
+    label,
+    value,
+    danger,
+}: {
+    label: string;
+    value: string;
+    danger?: boolean;
+}) {
     return (
         <div className="bg-card border-border rounded-2xl border p-3 lg:p-4">
-            <p className="text-muted-foreground mb-1 text-xs lg:mb-1.5 lg:text-[12.5px]">{label}</p>
-            <p className={cn('text-lg font-bold lg:text-[21px]', danger && 'text-destructive')}>
+            <p className="text-muted-foreground mb-1 text-xs lg:mb-1.5 lg:text-[12.5px]">
+                {label}
+            </p>
+            <p
+                className={cn(
+                    'text-lg font-bold lg:text-[21px]',
+                    danger && 'text-destructive',
+                )}
+            >
                 {value}
             </p>
         </div>
@@ -108,7 +123,9 @@ export default function Home({
                     description={t('home.empty.description')}
                 >
                     <Button asChild size="lg" className="h-12 px-6 text-[15px]">
-                        <Link href={createSale.url()}>{t('home.empty.action')}</Link>
+                        <Link href={createSale.url()}>
+                            {t('home.empty.action')}
+                        </Link>
                     </Button>
                 </EmptyState>
             ) : (
@@ -122,7 +139,7 @@ export default function Home({
                         </p>
                     </div>
 
-                    <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] lg:hidden">
+                    <div className="flex [scrollbar-width:none] gap-2 overflow-x-auto lg:hidden">
                         {shortcuts.map(({ icon: Icon, label, href }) => (
                             <Link
                                 key={label}
@@ -136,8 +153,14 @@ export default function Home({
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
-                        <Stat label={t('home.salesToday')} value={money(salesTodayCents)} />
-                        <Stat label={t('home.monthProfit')} value={money(monthProfitCents)} />
+                        <Stat
+                            label={t('home.salesToday')}
+                            value={money(salesTodayCents)}
+                        />
+                        <Stat
+                            label={t('home.monthProfit')}
+                            value={money(monthProfitCents)}
+                        />
                         <Stat
                             label={t('home.receivableToday')}
                             value={money(receivableTodayCents)}
@@ -214,7 +237,10 @@ export default function Home({
                         ) : (
                             <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
                                 {owed.map((item) => (
-                                    <div key={item.id} className="flex items-center gap-2.5 p-3 lg:px-4 lg:py-3.5">
+                                    <div
+                                        key={item.id}
+                                        className="flex items-center gap-2.5 p-3 lg:px-4 lg:py-3.5"
+                                    >
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm font-medium lg:text-[14.5px]">
                                                 {item.customer}
@@ -228,7 +254,11 @@ export default function Home({
                                                 )}
                                             >
                                                 {item.isOverdue
-                                                    ? t('dueLabel.overdue', { date: shortDate(item.dueDate) })
+                                                    ? t('dueLabel.overdue', {
+                                                          date: shortDate(
+                                                              item.dueDate,
+                                                          ),
+                                                      })
                                                     : t('dueLabel.dueToday')}
                                             </p>
                                         </div>

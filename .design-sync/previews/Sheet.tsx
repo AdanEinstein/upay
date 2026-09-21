@@ -1,11 +1,21 @@
-import { Button, Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from 'upay';
+import {
+    Button,
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+} from 'upay';
 
 export const Right = () => (
     <Sheet open>
         <SheetContent>
             <SheetHeader>
                 <SheetTitle>Detalhes do cliente</SheetTitle>
-                <SheetDescription>Maria Souza · cliente desde 2024</SheetDescription>
+                <SheetDescription>
+                    Maria Souza · cliente desde 2024
+                </SheetDescription>
             </SheetHeader>
             <div className="px-4 text-sm">3 vendas · 1 parcela em atraso</div>
             <SheetFooter>
@@ -21,7 +31,9 @@ export const Bottom = () => (
         <SheetContent side="bottom">
             <SheetHeader>
                 <SheetTitle>Filtrar vendas</SheetTitle>
-                <SheetDescription>Escolha o período e a situação das parcelas.</SheetDescription>
+                <SheetDescription>
+                    Escolha o período e a situação das parcelas.
+                </SheetDescription>
             </SheetHeader>
         </SheetContent>
     </Sheet>

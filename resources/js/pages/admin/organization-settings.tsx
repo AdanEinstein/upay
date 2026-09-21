@@ -33,7 +33,19 @@ const COLOR_FIELDS = [
 
 type ColorName = (typeof COLOR_FIELDS)[number]['name'];
 
-function FileDropzone({ id, name, currentUrl, alt, previewClassName }: { id: string; name: string; currentUrl: string | null; alt: string; previewClassName: string }) {
+function FileDropzone({
+    id,
+    name,
+    currentUrl,
+    alt,
+    previewClassName,
+}: {
+    id: string;
+    name: string;
+    currentUrl: string | null;
+    alt: string;
+    previewClassName: string;
+}) {
     const { t } = useTranslation('admin');
     const [preview, setPreview] = useState(currentUrl);
     const [fileName, setFileName] = useState<string | null>(null);
@@ -61,10 +73,16 @@ function FileDropzone({ id, name, currentUrl, alt, previewClassName }: { id: str
                         }
                     }}
                 />
-                {preview ? <img src={preview} alt={alt} className={previewClassName} /> : <UploadSimpleIcon className="size-6" />}
+                {preview ? (
+                    <img src={preview} alt={alt} className={previewClassName} />
+                ) : (
+                    <UploadSimpleIcon className="size-6" />
+                )}
                 <span>{fileName ?? t('organizationSettings.chooseImage')}</span>
             </label>
-            {removed && currentUrl && <input type="hidden" name={`remove_${name}`} value="1" />}
+            {removed && currentUrl && (
+                <input type="hidden" name={`remove_${name}`} value="1" />
+            )}
             {preview && (
                 <Button
                     type="button"
@@ -72,7 +90,9 @@ function FileDropzone({ id, name, currentUrl, alt, previewClassName }: { id: str
                     size="sm"
                     className="text-destructive justify-self-start"
                     onClick={() => {
-                        const input = document.getElementById(id) as HTMLInputElement;
+                        const input = document.getElementById(
+                            id,
+                        ) as HTMLInputElement;
 
                         input.value = '';
                         setPreview(null);
@@ -88,7 +108,10 @@ function FileDropzone({ id, name, currentUrl, alt, previewClassName }: { id: str
     );
 }
 
-export default function OrganizationSettings({ organization, defaultColors }: Props) {
+export default function OrganizationSettings({
+    organization,
+    defaultColors,
+}: Props) {
     const { t } = useTranslation(['admin', 'common']);
     const [colors, setColors] = useState<Record<ColorName, string>>({
         accent_color: organization.accentColor,
@@ -153,7 +176,9 @@ export default function OrganizationSettings({ organization, defaultColors }: Pr
                                     id="favicon"
                                     name="favicon"
                                     currentUrl={organization.faviconUrl}
-                                    alt={t('admin:organizationSettings.favicon')}
+                                    alt={t(
+                                        'admin:organizationSettings.favicon',
+                                    )}
                                     previewClassName="h-6 w-6"
                                 />
                                 <InputError message={errors.favicon} />
@@ -164,16 +189,26 @@ export default function OrganizationSettings({ organization, defaultColors }: Pr
                                     {COLOR_FIELDS.map(({ name, label }) => (
                                         <div key={name} className="grid gap-2">
                                             <Label htmlFor={name}>
-                                                {t(`admin:organizationSettings.${label}`)}
+                                                {t(
+                                                    `admin:organizationSettings.${label}`,
+                                                )}
                                             </Label>
                                             <Input
                                                 id={name}
                                                 name={name}
                                                 type="color"
                                                 value={colors[name]}
-                                                onChange={(event) => setColors((current) => ({ ...current, [name]: event.target.value }))}
+                                                onChange={(event) =>
+                                                    setColors((current) => ({
+                                                        ...current,
+                                                        [name]: event.target
+                                                            .value,
+                                                    }))
+                                                }
                                             />
-                                            <InputError message={errors[name]} />
+                                            <InputError
+                                                message={errors[name]}
+                                            />
                                         </div>
                                     ))}
                                 </div>
@@ -184,7 +219,9 @@ export default function OrganizationSettings({ organization, defaultColors }: Pr
                                     className="justify-self-start"
                                     onClick={() => setColors(defaultColors)}
                                 >
-                                    {t('admin:organizationSettings.resetColors')}
+                                    {t(
+                                        'admin:organizationSettings.resetColors',
+                                    )}
                                 </Button>
                             </div>
 

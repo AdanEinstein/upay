@@ -15,13 +15,13 @@ Upay is a shadcn/ui ("radix-maia") library on Tailwind v4 with Radix primitives.
 
 No CSS-in-JS and no style props: style with `className`. Never hardcode colors — use token utilities so the tenant theme works:
 
-| Family | Classes |
-|---|---|
-| Surfaces | `bg-background` `bg-card` `bg-muted` `bg-secondary` `bg-accent` `bg-primary` `bg-brand` `bg-brand-soft` |
-| Text | `text-foreground` `text-muted-foreground` `text-primary` `text-destructive` `text-brand` `text-primary-foreground` |
-| Border | `border` `border-border` (also `rounded-lg` `rounded-xl` `rounded-full`) |
-| Type | `text-xs` … `text-3xl`, `font-medium` `font-semibold` `font-heading` |
-| Layout | `flex` `grid` `grid-cols-{1,2,3,4,6,12}` `items-*` `justify-*` `gap-{0…16}` `p*-`/`m*-{0…16}` `w-*` `max-w-{sm…2xl}` |
+| Family   | Classes                                                                                                              |
+| -------- | -------------------------------------------------------------------------------------------------------------------- |
+| Surfaces | `bg-background` `bg-card` `bg-muted` `bg-secondary` `bg-accent` `bg-primary` `bg-brand` `bg-brand-soft`              |
+| Text     | `text-foreground` `text-muted-foreground` `text-primary` `text-destructive` `text-brand` `text-primary-foreground`   |
+| Border   | `border` `border-border` (also `rounded-lg` `rounded-xl` `rounded-full`)                                             |
+| Type     | `text-xs` … `text-3xl`, `font-medium` `font-semibold` `font-heading`                                                 |
+| Layout   | `flex` `grid` `grid-cols-{1,2,3,4,6,12}` `items-*` `justify-*` `gap-{0…16}` `p*-`/`m*-{0…16}` `w-*` `max-w-{sm…2xl}` |
 
 Raw variables for inline styles: `var(--background)`, `--foreground`, `--card`, `--primary`, `--muted-foreground`, `--destructive`, `--border`, `--ring`, `--radius`, `--sidebar*`. Tenant brand: `--tenant-primary`, `--tenant-primary-hover`, `--tenant-primary-soft`, `--tenant-on-primary` (re-skin by overriding these). Only classes present in `_ds_bundle.css` are styled — grep it before using an unusual utility.
 
@@ -32,20 +32,31 @@ Raw variables for inline styles: `var(--background)`, `--foreground`, `--card`, 
 ## Example
 
 ```jsx
-const { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Button } = window.Upay;
+const {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
+    CardFooter,
+    Badge,
+    Button,
+} = window.Upay;
 
 <Card className="w-96">
-  <CardHeader>
-    <CardTitle>Parcelas do mês</CardTitle>
-    <CardDescription>Cobranças com vencimento em setembro.</CardDescription>
-  </CardHeader>
-  <CardContent className="flex items-center justify-between">
-    <span className="text-3xl font-semibold">R$ 18.450,00</span>
-    <Badge variant="secondary">12 abertas</Badge>
-  </CardContent>
-  <CardFooter className="gap-2">
-    <Button size="sm">Ver parcelas</Button>
-    <Button size="sm" variant="outline">Exportar</Button>
-  </CardFooter>
-</Card>
+    <CardHeader>
+        <CardTitle>Parcelas do mês</CardTitle>
+        <CardDescription>Cobranças com vencimento em setembro.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+        <span className="text-3xl font-semibold">R$ 18.450,00</span>
+        <Badge variant="secondary">12 abertas</Badge>
+    </CardContent>
+    <CardFooter className="gap-2">
+        <Button size="sm">Ver parcelas</Button>
+        <Button size="sm" variant="outline">
+            Exportar
+        </Button>
+    </CardFooter>
+</Card>;
 ```

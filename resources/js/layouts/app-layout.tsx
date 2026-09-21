@@ -33,7 +33,9 @@ export default function AppLayout({
 
     return (
         <AppShell variant="sidebar">
-            {echoEnabled && tenant && <PaymentClaimAlerts organizationId={tenant.id} />}
+            {echoEnabled && tenant && (
+                <PaymentClaimAlerts organizationId={tenant.id} />
+            )}
             <AppSidebar />
             <AppContent variant="sidebar" className="min-w-0 overflow-x-clip">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />

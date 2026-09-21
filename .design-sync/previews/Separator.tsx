@@ -3,7 +3,9 @@ import { Separator } from 'upay';
 export const Horizontal = () => (
     <div className="w-72">
         <p className="text-sm font-medium">Resumo da venda</p>
-        <p className="text-muted-foreground text-sm">Venda #1024 · 6 parcelas</p>
+        <p className="text-muted-foreground text-sm">
+            Venda #1024 · 6 parcelas
+        </p>
         <Separator className="my-3" />
         <p className="text-sm">Total: R$ 3.499,00</p>
     </div>

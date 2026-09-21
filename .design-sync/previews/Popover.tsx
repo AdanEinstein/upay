@@ -1,4 +1,11 @@
-import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from 'upay';
+import {
+    Button,
+    Input,
+    Label,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from 'upay';
 
 export const Filters = () => (
     <div className="h-64 w-80">
@@ -12,7 +19,9 @@ export const Filters = () => (
                     <Input id="f-cliente" placeholder="Nome ou CPF" />
                 </div>
                 <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="sm">Limpar</Button>
+                    <Button variant="ghost" size="sm">
+                        Limpar
+                    </Button>
                     <Button size="sm">Aplicar</Button>
                 </div>
             </PopoverContent>

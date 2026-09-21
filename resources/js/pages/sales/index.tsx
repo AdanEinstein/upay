@@ -43,7 +43,9 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
         (sale) =>
             MATCH[tab](sale) &&
             (needle === '' ||
-                (sale.customer ?? t('sales.counter')).toLowerCase().includes(needle)),
+                (sale.customer ?? t('sales.counter'))
+                    .toLowerCase()
+                    .includes(needle)),
     );
 
     return (
@@ -57,7 +59,9 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
                     description={t('sales.empty.description')}
                 >
                     <Button asChild size="lg" className="h-12 px-6 text-[15px]">
-                        <Link href={create.url()}>{t('sales.empty.action')}</Link>
+                        <Link href={create.url()}>
+                            {t('sales.empty.action')}
+                        </Link>
                     </Button>
                 </EmptyState>
             ) : (
@@ -84,7 +88,11 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
                         />
                         <ChipRow>
                             {TABS.map((key) => (
-                                <Chip key={key} active={tab === key} onClick={() => setTab(key)}>
+                                <Chip
+                                    key={key}
+                                    active={tab === key}
+                                    onClick={() => setTab(key)}
+                                >
                                     {t(`sales.tabs.${key}`)}
                                 </Chip>
                             ))}
@@ -100,10 +108,15 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
                                 >
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-sm font-semibold lg:text-[14.5px]">
-                                            {sale.customer ?? t('sales.counter')}
+                                            {sale.customer ??
+                                                t('sales.counter')}
                                         </p>
                                         <p className="text-muted-foreground mt-0.5 text-xs">
-                                            {dueLabel(sale.status, sale.date, shortDate)}
+                                            {dueLabel(
+                                                sale.status,
+                                                sale.date,
+                                                shortDate,
+                                            )}
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-end gap-1">

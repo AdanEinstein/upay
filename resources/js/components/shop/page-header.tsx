@@ -20,7 +20,11 @@ export default function PageHeader({
     return (
         <header className="flex items-center gap-2.5 px-5 pt-4 pb-2">
             {back ? (
-                <Link href={back} className={className} aria-label={t('common.back')}>
+                <Link
+                    href={back}
+                    className={className}
+                    aria-label={t('common.back')}
+                >
                     <CaretLeftIcon className="size-4" />
                 </Link>
             ) : (
@@ -38,4 +42,3 @@ export default function PageHeader({
         </header>
     );
 }
-

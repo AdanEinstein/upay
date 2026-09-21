@@ -36,12 +36,14 @@ export function maskPixKey(type: PixKeyType, value: string): string {
     }
 
     const mask = masks.at(-1)!;
-    const limit = [...mask].filter((char) => char === '#').length;
+    const limit = mask.replaceAll(/[^#]/g, '').length;
     digits = digits.slice(0, limit);
 
     return applyMask(digits, digits.length <= 10 ? masks[0] : mask);
 }
 
-export function pixKeyInputMode(type: PixKeyType): 'email' | 'numeric' | 'text' {
+export function pixKeyInputMode(
+    type: PixKeyType,
+): 'email' | 'numeric' | 'text' {
     return type === 'email' ? 'email' : type === 'random' ? 'text' : 'numeric';
 }

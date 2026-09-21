@@ -10,7 +10,11 @@ export const Single = () => (
 
 export const Range = () => (
     <div className="w-fit rounded-2xl border p-3">
-        <Calendar mode="range" defaultMonth={setembro} selected={{ from: new Date(2026, 8, 8), to: new Date(2026, 8, 15) }} />
+        <Calendar
+            mode="range"
+            defaultMonth={setembro}
+            selected={{ from: new Date(2026, 8, 8), to: new Date(2026, 8, 15) }}
+        />
     </div>
 );
 

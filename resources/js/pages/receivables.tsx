@@ -7,7 +7,12 @@ import { cn } from '@/lib/utils';
 import { index as sales } from '@/routes/sales';
 import { store } from '@/routes/installments/payments';
 
-type Row = { id: number; customer: string | null; dueDate: string; amountCents: number };
+type Row = {
+    id: number;
+    customer: string | null;
+    dueDate: string;
+    amountCents: number;
+};
 type Groups = Record<'overdue' | 'today' | 'week' | 'later', Row[]>;
 
 const ORDER = ['overdue', 'today', 'week', 'later'] as const;
@@ -41,7 +46,9 @@ export default function Receivables({ groups }: { groups: Groups }) {
                         <h2
                             className={cn(
                                 'text-[12.5px] font-bold tracking-wide uppercase',
-                                key === 'overdue' ? 'text-destructive' : 'text-muted-foreground',
+                                key === 'overdue'
+                                    ? 'text-destructive'
+                                    : 'text-muted-foreground',
                             )}
                         >
                             {t(`receivables.groups.${key}`)}
@@ -57,11 +64,15 @@ export default function Receivables({ groups }: { groups: Groups }) {
                                     aria-label={t('receivables.markPaid')}
                                     className="border-border bg-card text-brand-foreground hover:bg-brand flex size-6 shrink-0 items-center justify-center rounded-full border-2"
                                 >
-                                    <CheckIcon className="size-3.5" weight="bold" />
+                                    <CheckIcon
+                                        className="size-3.5"
+                                        weight="bold"
+                                    />
                                 </button>
                                 <div className="min-w-0 flex-1">
                                     <p className="truncate text-[13.5px] font-medium">
-                                        {row.customer ?? t('receivables.counter')}
+                                        {row.customer ??
+                                            t('receivables.counter')}
                                     </p>
                                     <p className="text-muted-foreground text-xs">
                                         {shortDate(row.dueDate)}

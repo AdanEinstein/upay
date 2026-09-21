@@ -54,7 +54,7 @@ function PhotoPicker({
             />
             <span
                 className={cn(
-                    'border-border text-muted-foreground peer-focus-visible:ring-ring/50 group-hover:border-primary/50 flex transition-colors items-center justify-center overflow-hidden border-2 border-dashed peer-focus-visible:ring-[3px]',
+                    'border-border text-muted-foreground peer-focus-visible:ring-ring/50 group-hover:border-primary/50 flex items-center justify-center overflow-hidden border-2 border-dashed transition-colors peer-focus-visible:ring-[3px]',
                     round ? 'size-22 rounded-full' : 'size-24 rounded-2xl',
                 )}
             >

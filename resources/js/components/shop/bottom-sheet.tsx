@@ -32,7 +32,7 @@ export default function BottomSheet({
                     brandScope,
                     'mx-auto max-w-md gap-0 rounded-t-3xl pb-[env(safe-area-inset-bottom)]',
                     // Desktop: centered modal instead of a bottom sheet.
-                    'lg:data-[side=bottom]:inset-x-auto lg:data-[side=bottom]:top-1/2 lg:data-[side=bottom]:bottom-auto lg:data-[side=bottom]:left-1/2 lg:data-[side=bottom]:w-[440px] lg:data-[side=bottom]:-translate-x-1/2 lg:data-[side=bottom]:-translate-y-1/2 lg:data-[side=bottom]:rounded-2xl lg:data-[side=bottom]:border lg:pb-0',
+                    'lg:pb-0 lg:data-[side=bottom]:inset-x-auto lg:data-[side=bottom]:top-1/2 lg:data-[side=bottom]:bottom-auto lg:data-[side=bottom]:left-1/2 lg:data-[side=bottom]:w-[440px] lg:data-[side=bottom]:-translate-x-1/2 lg:data-[side=bottom]:-translate-y-1/2 lg:data-[side=bottom]:rounded-2xl lg:data-[side=bottom]:border',
                 )}
             >
                 <SheetHeader>
@@ -42,10 +42,14 @@ export default function BottomSheet({
                     {description ? (
                         <SheetDescription>{description}</SheetDescription>
                     ) : (
-                        <SheetDescription className="sr-only">{title}</SheetDescription>
+                        <SheetDescription className="sr-only">
+                            {title}
+                        </SheetDescription>
                     )}
                 </SheetHeader>
-                <div className="flex flex-col gap-3.5 px-5 pb-5">{children}</div>
+                <div className="flex flex-col gap-3.5 px-5 pb-5">
+                    {children}
+                </div>
             </SheetContent>
         </Sheet>
     );

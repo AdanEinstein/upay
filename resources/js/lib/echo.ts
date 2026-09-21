@@ -16,7 +16,10 @@ if (echoEnabled) {
     configureEcho({
         broadcaster: 'reverb',
         authorizer: (channel: { name: string }) => ({
-            authorize: (socketId: string, callback: ChannelAuthorizationCallback) => {
+            authorize: (
+                socketId: string,
+                callback: ChannelAuthorizationCallback,
+            ) => {
                 fetch('/broadcasting/auth', {
                     method: 'POST',
                     credentials: 'same-origin',
@@ -30,7 +33,13 @@ if (echoEnabled) {
                         channel_name: channel.name,
                     }),
                 })
-                    .then((response) => (response.ok ? response.json() : Promise.reject(new Error(String(response.status)))))
+                    .then((response) =>
+                        response.ok
+                            ? response.json()
+                            : Promise.reject(
+                                  new Error(String(response.status)),
+                              ),
+                    )
                     .then((data) => callback(null, data))
                     .catch((error: Error) => callback(error, null));
             },

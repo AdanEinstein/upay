@@ -44,10 +44,14 @@ export default function ShowCustomer({ customer, sales }: Props) {
         }
 
         if (sale.installmentCount > 1) {
-            return t('customers.detail.installments', { count: sale.installmentCount });
+            return t('customers.detail.installments', {
+                count: sale.installmentCount,
+            });
         }
 
-        return sale.status === 'paid' ? t('customers.detail.cash') : t('customers.detail.credit');
+        return sale.status === 'paid'
+            ? t('customers.detail.cash')
+            : t('customers.detail.credit');
     };
 
     return (
@@ -57,7 +61,12 @@ export default function ShowCustomer({ customer, sales }: Props) {
                 title=""
                 back={index.url()}
                 action={
-                    <Button asChild variant="outline" size="icon-sm" aria-label={t('common.edit')}>
+                    <Button
+                        asChild
+                        variant="outline"
+                        size="icon-sm"
+                        aria-label={t('common.edit')}
+                    >
                         <Link href={edit.url({ customer: customer.id })}>
                             <PencilSimpleIcon />
                         </Link>
@@ -73,7 +82,12 @@ export default function ShowCustomer({ customer, sales }: Props) {
                     <div>
                         <p className="text-[17px] font-bold">{customer.name}</p>
                         <p className="text-muted-foreground mt-0.5 text-[13px]">
-                            {[formatPhone(customer.phone), t('customers.detail.since', { date: date(customer.since) })]
+                            {[
+                                formatPhone(customer.phone),
+                                t('customers.detail.since', {
+                                    date: date(customer.since),
+                                }),
+                            ]
                                 .filter(Boolean)
                                 .join(' · ')}
                         </p>
@@ -81,44 +95,74 @@ export default function ShowCustomer({ customer, sales }: Props) {
                 </div>
 
                 <div className="bg-muted rounded-2xl p-4 text-center">
-                    <p className="text-muted-foreground mb-1 text-[12.5px]">{t('customers.detail.balance')}</p>
-                    <p className={`text-[26px] font-bold ${customer.balanceCents > 0 ? 'text-destructive' : ''}`}>
+                    <p className="text-muted-foreground mb-1 text-[12.5px]">
+                        {t('customers.detail.balance')}
+                    </p>
+                    <p
+                        className={`text-[26px] font-bold ${customer.balanceCents > 0 ? 'text-destructive' : ''}`}
+                    >
                         {money(customer.balanceCents)}
                     </p>
                 </div>
 
                 <div className="flex flex-col gap-2">
                     <Button asChild size="lg" className="h-11 text-[14.5px]">
-                        <Link href={createSale.url(undefined, { query: { customer: customer.id } })}>{t('customers.detail.newSale')}</Link>
+                        <Link
+                            href={createSale.url(undefined, {
+                                query: { customer: customer.id },
+                            })}
+                        >
+                            {t('customers.detail.newSale')}
+                        </Link>
                     </Button>
                     <div className="grid grid-cols-2 gap-2">
-                        <Button variant="outline" className="h-10 text-[13.5px]" onClick={() => setSharing('charge')}>
+                        <Button
+                            variant="outline"
+                            className="h-10 text-[13.5px]"
+                            onClick={() => setSharing('charge')}
+                        >
                             {t('customers.detail.chargeWhatsapp')}
                         </Button>
-                        <Button variant="outline" className="h-10 text-[13.5px]" onClick={() => setSharing('link')}>
+                        <Button
+                            variant="outline"
+                            className="h-10 text-[13.5px]"
+                            onClick={() => setSharing('link')}
+                        >
                             {t('customers.detail.sendLink')}
                         </Button>
                     </div>
                 </div>
 
                 <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1">
-                    <h2 className="mb-2 text-sm font-semibold">{t('customers.detail.history')}</h2>
+                    <h2 className="mb-2 text-sm font-semibold">
+                        {t('customers.detail.history')}
+                    </h2>
                     {sales.length === 0 ? (
-                        <p className="text-muted-foreground text-sm">{t('customers.detail.noHistory')}</p>
+                        <p className="text-muted-foreground text-sm">
+                            {t('customers.detail.noHistory')}
+                        </p>
                     ) : (
                         <div className="border-border divide-border divide-y overflow-hidden rounded-2xl border">
                             {sales.map((sale) => (
-                                <Link key={sale.id} href={showSale.url({ sale: sale.id })} className="flex items-center justify-between gap-3 px-3 py-2.5">
+                                <Link
+                                    key={sale.id}
+                                    href={showSale.url({ sale: sale.id })}
+                                    className="flex items-center justify-between gap-3 px-3 py-2.5"
+                                >
                                     <div className="min-w-0">
                                         <p className="truncate text-[13.5px] font-medium">
                                             {sale.items[0]}
-                                            {sale.items.length > 1 && ` + ${sale.items.length - 1}`}
+                                            {sale.items.length > 1 &&
+                                                ` + ${sale.items.length - 1}`}
                                         </p>
                                         <p className="text-muted-foreground text-xs">
-                                            {shortDate(sale.soldAt)} · {kind(sale)}
+                                            {shortDate(sale.soldAt)} ·{' '}
+                                            {kind(sale)}
                                         </p>
                                     </div>
-                                    <span className="text-[13.5px] font-semibold">{money(sale.totalCents)}</span>
+                                    <span className="text-[13.5px] font-semibold">
+                                        {money(sale.totalCents)}
+                                    </span>
                                 </Link>
                             ))}
                         </div>
@@ -136,8 +180,15 @@ export default function ShowCustomer({ customer, sales }: Props) {
                         label: t('share.charge'),
                         message:
                             sharing === 'link'
-                                ? t('customers.detail.linkMessage', { name: customer.name, link })
-                                : t('share.chargeMessage', { name: customer.name, amount: money(customer.balanceCents), link }),
+                                ? t('customers.detail.linkMessage', {
+                                      name: customer.name,
+                                      link,
+                                  })
+                                : t('share.chargeMessage', {
+                                      name: customer.name,
+                                      amount: money(customer.balanceCents),
+                                      link,
+                                  }),
                     },
                 ]}
             />

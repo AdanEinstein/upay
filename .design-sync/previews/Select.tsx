@@ -1,8 +1,18 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from 'upay';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from 'upay';
 
 export const Closed = () => (
     <Select defaultValue="pix">
-        <SelectTrigger className="w-56"><SelectValue placeholder="Forma de pagamento" /></SelectTrigger>
+        <SelectTrigger className="w-56">
+            <SelectValue placeholder="Forma de pagamento" />
+        </SelectTrigger>
         <SelectContent>
             <SelectItem value="pix">Pix</SelectItem>
             <SelectItem value="boleto">Boleto</SelectItem>
@@ -12,7 +22,9 @@ export const Closed = () => (
 
 export const Placeholder = () => (
     <Select>
-        <SelectTrigger className="w-56"><SelectValue placeholder="Selecione o cliente" /></SelectTrigger>
+        <SelectTrigger className="w-56">
+            <SelectValue placeholder="Selecione o cliente" />
+        </SelectTrigger>
         <SelectContent>
             <SelectItem value="1">Maria Souza</SelectItem>
         </SelectContent>
@@ -22,7 +34,9 @@ export const Placeholder = () => (
 export const OpenList = () => (
     <div className="h-52 w-56">
         <Select open defaultValue="boleto">
-            <SelectTrigger className="w-56"><SelectValue placeholder="Forma de pagamento" /></SelectTrigger>
+            <SelectTrigger className="w-56">
+                <SelectValue placeholder="Forma de pagamento" />
+            </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>Forma de pagamento</SelectLabel>

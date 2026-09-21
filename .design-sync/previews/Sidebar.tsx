@@ -1,19 +1,53 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarProvider } from 'upay';
-import { HouseIcon, UsersIcon, PackageIcon, ShoppingCartIcon, GearIcon } from '@phosphor-icons/react';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuBadge,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarProvider,
+} from 'upay';
+import {
+    HouseIcon,
+    UsersIcon,
+    PackageIcon,
+    ShoppingCartIcon,
+    GearIcon,
+} from '@phosphor-icons/react';
 
 export const Navigation = () => (
-    <SidebarProvider className="min-h-0 h-[23rem]">
+    <SidebarProvider className="h-[23rem] min-h-0">
         <Sidebar collapsible="none" className="border-r">
-            <SidebarHeader className="px-4 py-3 text-base font-semibold">Upay</SidebarHeader>
+            <SidebarHeader className="px-4 py-3 text-base font-semibold">
+                Upay
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Operação</SidebarGroupLabel>
                     <SidebarMenu>
-                        <SidebarMenuItem><SidebarMenuButton isActive><HouseIcon /> Painel</SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><UsersIcon /> Clientes</SidebarMenuButton></SidebarMenuItem>
-                        <SidebarMenuItem><SidebarMenuButton><PackageIcon /> Produtos</SidebarMenuButton></SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton><ShoppingCartIcon /> Vendas</SidebarMenuButton>
+                            <SidebarMenuButton isActive>
+                                <HouseIcon /> Painel
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton>
+                                <UsersIcon /> Clientes
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton>
+                                <PackageIcon /> Produtos
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton>
+                                <ShoppingCartIcon /> Vendas
+                            </SidebarMenuButton>
                             <SidebarMenuBadge>12</SidebarMenuBadge>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -21,7 +55,11 @@ export const Navigation = () => (
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
-                    <SidebarMenuItem><SidebarMenuButton><GearIcon /> Configurações</SidebarMenuButton></SidebarMenuItem>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton>
+                            <GearIcon /> Configurações
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>

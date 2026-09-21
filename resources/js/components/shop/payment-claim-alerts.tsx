@@ -15,25 +15,34 @@ type PaymentClaimPayload = {
 
 // Listens on the store's private channel; renders nothing. Must only be mounted
 // when Echo is configured and a tenant is active (see AppLayout).
-export default function PaymentClaimAlerts({ organizationId }: { organizationId: number }) {
+export default function PaymentClaimAlerts({
+    organizationId,
+}: {
+    organizationId: number;
+}) {
     const { t } = useTranslation('shop');
     const { money } = useFormat();
 
-    useEcho<PaymentClaimPayload>(`organization.${organizationId}`, '.payment-claim.created', (event) => {
-        toast(t('claimAlert.title', { customer: event.customer }), {
-            // Same id updates the toast in place, so a repeated delivery never stacks a second one.
-            id: `payment-claim-${event.claimId}`,
-            description: money(event.amountCents),
-            action: {
-                label: t('claimAlert.view'),
-                onClick: () => router.visit(show.url({ sale: event.saleId })),
-            },
-        });
+    useEcho<PaymentClaimPayload>(
+        `organization.${organizationId}`,
+        '.payment-claim.created',
+        (event) => {
+            toast(t('claimAlert.title', { customer: event.customer }), {
+                // Same id updates the toast in place, so a repeated delivery never stacks a second one.
+                id: `payment-claim-${event.claimId}`,
+                description: money(event.amountCents),
+                action: {
+                    label: t('claimAlert.view'),
+                    onClick: () =>
+                        router.visit(show.url({ sale: event.saleId })),
+                },
+            });
 
-        router.reload({
-            only: ['pendingClaims', 'pendingClaimsCount', 'sale'],
-        });
-    });
+            router.reload({
+                only: ['pendingClaims', 'pendingClaimsCount', 'sale'],
+            });
+        },
+    );
 
     return null;
 }

@@ -8,5 +8,8 @@
         "outDir": "../dist/types",
         "rootDir": "../resources/js"
     },
-    "include": ["../resources/js/components/**/*.tsx", "../resources/js/**/*.d.ts"]
+    "include": [
+        "../resources/js/components/**/*.tsx",
+        "../resources/js/**/*.d.ts"
+    ]
 }

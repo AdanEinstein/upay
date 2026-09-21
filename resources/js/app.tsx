@@ -71,7 +71,9 @@ void createInertiaApp({
             case name === 'plan-limit':
             case name.startsWith('public/'):
                 return null;
-            case SHOP_PAGES.some((page) => name === page || name.startsWith(`${page}/`)):
+            case SHOP_PAGES.some(
+                (page) => name === page || name.startsWith(`${page}/`),
+            ):
                 return AppLayout;
             case name === 'super-admin/login':
                 return AuthLayout;
