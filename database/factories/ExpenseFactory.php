@@ -24,6 +24,7 @@ class ExpenseFactory extends Factory
             'amount_cents' => fake()->numberBetween(500, 30000),
             'category' => null,
             'paid_at' => now(),
+            'due_date' => now()->toDateString(),
         ];
     }
 }

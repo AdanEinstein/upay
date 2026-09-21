@@ -40,6 +40,33 @@ class Sale extends Model
     }
 
     /**
+     * Where the sale stands in terms of money. Needs `installments.payments` loaded.
+     *
+     * @return array{status: string, date: string|null}
+     */
+    public function settlement(): array
+    {
+        if ($this->status === SaleStatus::Cancelled) {
+            return ['status' => 'cancelled', 'date' => null];
+        }
+
+        $open = $this->installments
+            ->filter(fn (Installment $installment) => $installment->amount_cents > $installment->payments->sum('amount_cents'))
+            ->sortBy('due_date');
+
+        if ($open->isEmpty()) {
+            return ['status' => 'paid', 'date' => $this->installments->flatMap->payments->max('paid_at')?->toDateString()];
+        }
+
+        $due = $open->first()->due_date;
+
+        return [
+            'status' => $due->isToday() ? 'due_today' : ($due->isPast() ? 'overdue' : 'upcoming'),
+            'date' => $due->toDateString(),
+        ];
+    }
+
+    /**
      * @return BelongsTo<Customer, $this>
      */
     public function customer(): BelongsTo

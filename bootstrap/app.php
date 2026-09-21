@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SetOrganizationContext;
 use App\Http\Middleware\SetUserLocale;
 use App\Support\ErrorOccurrenceRecorder;
 use Illuminate\Foundation\Application;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -27,6 +29,20 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return route('super-admin.login');
         });
+
+        $middleware->redirectUsersTo(function (Request $request) {
+            $slug = $request->user()?->organization?->slug;
+
+            return $slug ? route('dashboard', ['organization' => $slug]) : route('home');
+        });
+
+        // Route model bindings on tenant-scoped models must resolve after the
+        // tenant is active, otherwise BelongsToTenant's scope is a no-op and a
+        // user could load another organization's records by id.
+        $middleware->prependToPriorityList(
+            before: SubstituteBindings::class,
+            prepend: SetOrganizationContext::class,
+        );
 
         $middleware->web(append: [
             HandleAppearance::class,

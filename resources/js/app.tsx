@@ -6,11 +6,27 @@ import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import ShopLayout from '@/layouts/shop-layout';
 import SuperAdminLayout from '@/layouts/super-admin-layout';
 import { initializeI18n } from '@/lib/i18n';
 import { currentOrganization } from '@/lib/organization';
 import { useSyncLocale } from '@/lib/sync-locale';
 import { setUrlDefaults } from '@/wayfinder';
+
+const SHOP_PAGES = [
+    'home',
+    'sales',
+    'receivables',
+    'customers',
+    'products',
+    'finance',
+    'expenses',
+    'payables',
+    'catalog',
+    'promotions',
+    'more',
+    'pix-key',
+];
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -49,8 +65,12 @@ void createInertiaApp({
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
+            case name === 'onboarding':
+            case name === 'plan-limit':
             case name.startsWith('public/'):
                 return null;
+            case SHOP_PAGES.some((page) => name === page || name.startsWith(`${page}/`)):
+                return ShopLayout;
             case name === 'super-admin/login':
                 return AuthLayout;
             case name.startsWith('super/'):

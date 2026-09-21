@@ -7,9 +7,9 @@ Dinheiro sempre em **centavos** (`unsignedInteger`/`bigInteger`). Tabelas marcad
 
 | Tabela | Colunas principais |
 | --- | --- |
-| `plans` | `name`, `price_cents`, `limits` (json: `max_products`, `max_customers`, `max_users`), `active` |
-| `subscriptions` | `organization_id`, `plan_id`, `status`, `price_cents` (congela o preço; base do MRR), `current_period_end` |
-| `organizations` (existe) | + `plan_id` opcional; `status` já existe (ativar/bloquear) |
+| `plans` | `slug` (único), `name`, `price_cents`, `annual_price_cents`, `limits` (json: `max_customers`, `max_products`, `max_photos_per_product`, `max_sales_per_month`, `max_users`; null/ausente = ilimitado), `active`, `featured` ("mais popular", só um) |
+| `subscriptions` | `organization_id`, `plan_id`, `status`, `price_cents` (congela o preço; base do MRR), `current_period_end`, `canceled_at` (status: active/past_due/canceled) |
+| `organizations` (existe) | + `plan_id` opcional; `status` já existe (ativar/bloquear), `suspension_reason` |
 | `users` (existe) | `organization_id`, `locale` |
 
 MRR = soma de `subscriptions.price_cents` com `status = active`.

@@ -4,12 +4,18 @@
     "delete": "Excluir",
     "confirm": "Confirmar",
     "name": "Nome",
-    "email": "Endereço de e-mail",
+    "email": "E-mail",
     "password": "Senha",
     "confirmPassword": "Confirmar senha",
     "currentPassword": "Senha atual",
     "newPassword": "Nova senha",
     "logIn": "Entrar",
     "logOut": "Sair",
-    "settings": "Configurações"
+    "settings": "Configurações",
+    "installApp": {
+        "title": "Instalar {{name}}",
+        "description": "Adicione à tela inicial para abrir mais rápido.",
+        "install": "Instalar",
+        "notNow": "Agora não"
+    }
 }

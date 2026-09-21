@@ -1,0 +1,473 @@
+{
+    "nav": {
+        "home": "Home",
+        "sales": "Sales",
+        "customers": "Customers",
+        "products": "Products",
+        "newSale": "New sale",
+        "quick": {
+            "title": "What do you want to record?",
+            "description": "Pick a quick action.",
+            "sale": "Record a sale",
+            "expense": "Record an expense",
+            "customer": "New customer"
+        }
+    },
+    "common": {
+        "back": "Back",
+        "edit": "Edit",
+        "save": "Save",
+        "saving": "Saving…",
+        "delete": "Delete",
+        "optional": "optional",
+        "offline": "No connection, showing saved data",
+        "noResults": "Nothing found.",
+        "today": "Today"
+    },
+    "status": {
+        "paid": "Paid",
+        "overdue": "Overdue",
+        "dueToday": "Due today",
+        "upcoming": "Upcoming",
+        "cancelled": "Cancelled",
+        "pending": "Pending"
+    },
+    "dueLabel": {
+        "overdue": "Was due {{date}}",
+        "dueToday": "Due today",
+        "upcoming": "Due {{date}}",
+        "paid": "Paid on {{date}}",
+        "paidNoDate": "Paid",
+        "cancelled": "Cancelled"
+    },
+    "methods": {
+        "pix": "PIX",
+        "cash": "Cash",
+        "card": "Card"
+    },
+    "home": {
+        "greeting": "Hi, {{name}}",
+        "subtitle": "Your business at a glance",
+        "salesToday": "Sales today",
+        "monthProfit": "Profit this month",
+        "receivableToday": "To collect today",
+        "receivableOverdue": "To collect, overdue",
+        "lowStock": "Low stock",
+        "lowStockItem_one": "{{name}} · {{count}} left",
+        "lowStockItem_other": "{{name}} · {{count}} left",
+        "dueTodayTitle": "Who owes me today",
+        "charge": "Charge",
+        "chargeMessage": "Hi, {{name}}! Just a reminder that your installment of {{amount}} is due today. You can pay by PIX here: {{link}} — any questions, just ask!",
+        "shortcuts": {
+            "finance": "Finance",
+            "catalog": "Catalog",
+            "more": "More"
+        },
+        "empty": {
+            "title": "Your shop is ready",
+            "description": "Record your first sale to start tracking sales and payments.",
+            "action": "Record a sale"
+        }
+    },
+    "sales": {
+        "title": "Sales",
+        "searchPlaceholder": "Search by customer",
+        "counter": "Counter",
+        "receivables": "To collect",
+        "tabs": {
+            "all": "All",
+            "receivable": "To collect",
+            "overdue": "Overdue",
+            "paid": "Paid"
+        },
+        "empty": {
+            "title": "No sales yet",
+            "description": "Your sales will show up here.",
+            "action": "Record a sale"
+        }
+    },
+    "sale": {
+        "title": "Sale #{{id}}",
+        "customer": "Customer",
+        "counter": "Counter (no customer)",
+        "installments": "Installments",
+        "installmentOf": "Installment {{number}}/{{total}}",
+        "downPayment": "Down payment",
+        "registerPayment": "Record payment",
+        "chargeWhatsapp": "Charge via WhatsApp",
+        "shareLink": "Share tracking link",
+        "cancel": "Cancel sale",
+        "cancelConfirm": "Cancel this sale? Stock goes back and recorded payments are removed.",
+        "cancelledNotice": "This sale was cancelled.",
+        "payment": {
+            "title": "Record payment",
+            "amount": "Amount",
+            "method": "Method",
+            "date": "Date",
+            "confirm": "Confirm payment"
+        },
+        "created": {
+            "title": "Sale recorded",
+            "customer": "Customer",
+            "items": "Items",
+            "total": "Total",
+            "sendReceipt": "Send receipt on WhatsApp",
+            "newSale": "New sale",
+            "view": "View sale",
+            "receiptMessage": "Hi, {{name}}! Thanks for shopping at {{store}}. Total: {{total}}. Track it here: {{link}}"
+        }
+    },
+    "newSale": {
+        "customer": {
+            "title": "Who is the customer?",
+            "search": "Search customers",
+            "recent": "Recent",
+            "new": "New customer",
+            "name": "Name",
+            "whatsapp": "WhatsApp",
+            "add": "Add",
+            "skip": "Continue without a customer (cash only)"
+        },
+        "products": {
+            "title": "Add products",
+            "search": "Search products",
+            "all": "All",
+            "add": "Add",
+            "remove": "Remove",
+            "outOfStock": "Out of stock",
+            "itemCount_one": "{{count}} item",
+            "itemCount_other": "{{count}} items"
+        },
+        "payment": {
+            "title": "How will you get paid?",
+            "types": {
+                "avista": "Paid now",
+                "fiado": "On credit",
+                "parcelado": "Installments"
+            },
+            "installments": "Number of installments",
+            "downPayment": "Down payment (optional)",
+            "firstDue": "First due date",
+            "preview": "Installment preview",
+            "previewLine": "Installment {{number}} · {{date}}",
+            "method": "Payment method",
+            "summaryCustomer": "Customer",
+            "summaryItems": "Items",
+            "summaryTotal": "Total",
+            "noCustomer": "—",
+            "confirm": "Confirm sale"
+        },
+        "continue": "Continue"
+    },
+    "receivables": {
+        "title": "To collect",
+        "markPaid": "Mark as paid",
+        "counter": "Counter",
+        "empty": "Nothing to collect. All caught up!",
+        "groups": {
+            "overdue": "Overdue",
+            "today": "Today",
+            "week": "This week",
+            "later": "Upcoming"
+        }
+    },
+    "customers": {
+        "title": "Customers",
+        "search": "Search customers",
+        "withBalance": "With a balance due",
+        "empty": {
+            "title": "No customers yet",
+            "description": "Add customers to track sales and credit.",
+            "action": "New customer"
+        },
+        "form": {
+            "newTitle": "New customer",
+            "editTitle": "Edit customer",
+            "name": "Name",
+            "namePlaceholder": "Maria Souza",
+            "whatsapp": "WhatsApp",
+            "whatsappPlaceholder": "(11) 99999-0000",
+            "notes": "Notes",
+            "notesPlaceholder": "E.g. prefers to be charged after 6pm",
+            "more": "More options",
+            "document": "CPF/CNPJ",
+            "documentPlaceholder": "000.000.000-00",
+            "address": "Address",
+            "addressPlaceholder": "Street, number, neighborhood",
+            "save": "Save customer"
+        },
+        "detail": {
+            "since": "customer since {{date}}",
+            "balance": "Balance due",
+            "newSale": "New sale",
+            "chargeWhatsapp": "Charge on WhatsApp",
+            "sendLink": "Send link",
+            "history": "Purchase history",
+            "noHistory": "No purchases yet.",
+            "installments": "{{count}}x",
+            "cash": "paid now",
+            "credit": "on credit",
+            "cancelled": "cancelled",
+            "linkMessage": "Hi, {{name}}! Follow your purchases and payments here: {{link}}"
+        }
+    },
+    "products": {
+        "title": "Products",
+        "search": "Search products",
+        "all": "All",
+        "alerts": "Stock alerts",
+        "grid": "Grid view",
+        "list": "List view",
+        "badge": {
+            "out": "Out of stock",
+            "low": "Low stock"
+        },
+        "empty": {
+            "title": "No products yet",
+            "description": "Add products to sell and track stock.",
+            "action": "New product"
+        },
+        "form": {
+            "newTitle": "New product",
+            "editTitle": "Edit product",
+            "photos": "Photos",
+            "cover": "Cover photo",
+            "addPhoto": "+ photo",
+            "removePhoto": "Remove photo",
+            "name": "Name",
+            "namePlaceholder": "Rosé Matte Lipstick",
+            "description": "Description",
+            "descriptionPlaceholder": "Rosé shade, matte finish, long lasting",
+            "price": "Sale price",
+            "pricePlaceholder": "R$ 39.90",
+            "cost": "Cost (optional)",
+            "costPlaceholder": "R$ 18.00",
+            "category": "Category",
+            "categoryPlaceholder": "E.g. Makeup",
+            "variants": "Variations",
+            "variantName": "Variation name",
+            "variantStock": "Stock",
+            "addVariant": "Add variation",
+            "removeVariant": "Remove variation",
+            "stock": "Current stock",
+            "minStock": "Minimum stock alert",
+            "catalogVisible": "Show in catalog",
+            "save": "Save product"
+        },
+        "detail": {
+            "cost": "Cost {{cost}} · {{margin}}% margin",
+            "stockByVariant": "Stock by variation",
+            "stock": "Stock",
+            "units": "{{count}} pcs",
+            "restock": "Restock",
+            "restockTitle": "Restock",
+            "restockVariant": "Variation",
+            "restockConfirm": "Confirm restock",
+            "history": "Stock history",
+            "noHistory": "No movements yet.",
+            "reason": {
+                "sale": "Sale #{{id}}",
+                "adjustment": "Stock adjustment",
+                "return": "Return (sale cancelled)"
+            }
+        }
+    },
+    "finance": {
+        "title": "Finance",
+        "period": {
+            "today": "Today",
+            "week": "Week",
+            "month": "Month"
+        },
+        "revenue": "Revenue",
+        "expenses": "Expenses",
+        "profit": "Real profit",
+        "receivable": "To collect",
+        "payable": "To pay",
+        "chart": "Revenue in the period",
+        "links": {
+            "expenses": "Expenses",
+            "payables": "Bills to pay",
+            "receivables": "To collect"
+        },
+        "empty": {
+            "title": "No activity in this period",
+            "description": "Recorded sales and expenses will show up here."
+        }
+    },
+    "expenses": {
+        "title": "Expenses",
+        "tabs": {
+            "all": "All",
+            "paid": "Paid",
+            "pending": "Pending"
+        },
+        "categories": {
+            "suppliers": "Suppliers",
+            "rent": "Rent",
+            "transport": "Transport",
+            "marketing": "Marketing",
+            "other": "Other"
+        },
+        "empty": {
+            "title": "No expenses recorded",
+            "description": "Record your expenses to see the month's real profit.",
+            "action": "New expense"
+        },
+        "form": {
+            "newTitle": "New expense",
+            "editTitle": "Edit expense",
+            "amount": "Amount",
+            "amountPlaceholder": "R$ 0.00",
+            "category": "Category",
+            "date": "Date",
+            "description": "Description / supplier",
+            "descriptionPlaceholder": "E.g. Beauty Supply Co.",
+            "receipt": "Receipt",
+            "receiptPhoto": "Receipt photo",
+            "recurring": "Recurring expense (monthly)",
+            "paid": "Already paid?",
+            "save": "Save expense"
+        }
+    },
+    "payables": {
+        "title": "Bills to pay",
+        "markPaid": "Mark as paid",
+        "empty": "No bills to pay. All caught up!",
+        "groups": {
+            "overdue": "Overdue",
+            "today": "Today",
+            "week": "This week",
+            "later": "Upcoming"
+        }
+    },
+    "catalog": {
+        "title": "Catalog",
+        "publicLink": "Shop public link",
+        "copy": "Copy link",
+        "copied": "Copied!",
+        "share": "Share",
+        "shareMessage": "Check out what's new at {{store}}: {{link}}",
+        "identity": "Visual identity",
+        "identityHint": "Logo, colors, welcome text",
+        "promotions": "Promotions",
+        "promotionsActive_one": "{{count}} active",
+        "promotionsActive_other": "{{count}} active",
+        "notice": "Urgent notice",
+        "noticeActive": "Active",
+        "noticeInactive": "Inactive",
+        "preview": "See as a customer",
+        "previewHint": "Catalog preview",
+        "identityForm": {
+            "title": "Visual identity",
+            "logo": "Logo",
+            "cover": "Cover",
+            "name": "Shop name",
+            "welcome": "Welcome text",
+            "whatsapp": "Contact WhatsApp",
+            "accent": "Accent color",
+            "accentOption": "Color {{color}}",
+            "link": "Catalog link",
+            "save": "Save"
+        },
+        "noticeForm": {
+            "title": "Urgent notice",
+            "previewLabel": "Banner preview",
+            "text": "Text",
+            "type": "Type",
+            "types": {
+                "info": "Information",
+                "warning": "Warning",
+                "urgent": "Urgent"
+            },
+            "expires": "Expires on",
+            "active": "Notice active",
+            "placeholder": "E.g. Free shipping on orders over R$150 until Sunday!",
+            "save": "Save"
+        },
+        "previewPage": {
+            "title": "How customers see it",
+            "promotions": "Promotions",
+            "products": "Products",
+            "logo": "Logo",
+            "publish": "Publish / Update",
+            "published": "Published"
+        }
+    },
+    "promotions": {
+        "title": "Promotions",
+        "tabs": {
+            "active": "Active",
+            "scheduled": "Scheduled",
+            "expired": "Expired"
+        },
+        "new": "New promotion",
+        "empty": "No promotions here.",
+        "noEnd": "no end date",
+        "until": "until {{date}}",
+        "from": "from {{date}}",
+        "endedOn": "ended {{date}}",
+        "products_one": "{{count}} product",
+        "products_other": "{{count}} products",
+        "priceBadge": "WAS/NOW",
+        "form": {
+            "newTitle": "New promotion",
+            "editTitle": "Edit promotion",
+            "products": "Products",
+            "type": "Type",
+            "types": {
+                "percent": "% off",
+                "price": "Was/now price"
+            },
+            "discount": "Discount",
+            "from": "Was",
+            "to": "Now",
+            "validity": "Validity (optional)",
+            "start": "Start",
+            "end": "End",
+            "badgePreview": "Badge preview",
+            "priceBadgePreview": "Was {{from}} now {{to}}",
+            "save": "Save promotion",
+            "delete": "Delete promotion"
+        }
+    },
+    "more": {
+        "title": "More",
+        "shop": "Shop details",
+        "pix": "PIX key",
+        "pixNotSet": "Not set",
+        "plan": "My plan",
+        "usage": {
+            "customers": "Customers",
+            "products": "Products",
+            "sales": "Sales this month"
+        },
+        "management": "Management",
+        "logout": "Log out",
+        "settings": "Settings",
+        "viewPlans": "View plans",
+        "help": "Help",
+        "helpMessage": "Hi! I need help with Upay."
+    },
+    "pix": {
+        "title": "PIX key",
+        "type": "Key type",
+        "types": {
+            "email": "Email",
+            "phone": "Phone",
+            "cpf": "CPF",
+            "cnpj": "CNPJ",
+            "random": "Random"
+        },
+        "key": "PIX key",
+        "save": "Save"
+    },
+    "share": {
+        "title": "Share",
+        "charge": "Charge",
+        "invite": "Catalog invite",
+        "open": "Open WhatsApp",
+        "chargeMessage": "Hi, {{name}}! Just a reminder about your balance of {{amount}}. You can follow and pay by PIX here: {{link}} — any questions, just ask!",
+        "inviteMessage": "Hi, {{name}}! Check out what's new at {{store}}: {{link}}"
+    }
+}

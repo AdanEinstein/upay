@@ -4,12 +4,18 @@
     "delete": "Delete",
     "confirm": "Confirm",
     "name": "Name",
-    "email": "Email address",
+    "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm password",
     "currentPassword": "Current password",
     "newPassword": "New password",
     "logIn": "Log in",
     "logOut": "Log out",
-    "settings": "Settings"
+    "settings": "Settings",
+    "installApp": {
+        "title": "Install {{name}}",
+        "description": "Add to your home screen to open faster.",
+        "install": "Install",
+        "notNow": "Not now"
+    }
 }

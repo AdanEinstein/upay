@@ -16,13 +16,16 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property string|null $description
  * @property int $price_cents
+ * @property int|null $cost_cents
+ * @property string|null $category
  * @property int $stock_qty
  * @property int $min_stock
  * @property bool $active
+ * @property bool $catalog_visible
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'description', 'price_cents', 'stock_qty', 'min_stock', 'active'])]
+#[Fillable(['name', 'description', 'category', 'price_cents', 'cost_cents', 'stock_qty', 'min_stock', 'active', 'catalog_visible'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
@@ -35,7 +38,13 @@ class Product extends Model
     {
         return [
             'active' => 'boolean',
+            'catalog_visible' => 'boolean',
         ];
+    }
+
+    public function isLowOnStock(): bool
+    {
+        return $this->stock_qty <= $this->min_stock;
     }
 
     /**

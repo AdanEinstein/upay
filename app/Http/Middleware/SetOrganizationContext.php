@@ -28,6 +28,10 @@ class SetOrganizationContext
             abort_unless($user->organization_id === $organization->id, 403);
         }
 
+        // Controllers type-hint route models, so the tenant slug must not be
+        // passed to them as a leading positional argument.
+        $request->route()->forgetParameter('organization');
+
         Tenant::use($organization);
         URL::defaults(['organization' => $organization->slug]);
 

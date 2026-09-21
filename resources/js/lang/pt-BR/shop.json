@@ -1,0 +1,473 @@
+{
+    "nav": {
+        "home": "Início",
+        "sales": "Vendas",
+        "customers": "Clientes",
+        "products": "Produtos",
+        "newSale": "Nova venda",
+        "quick": {
+            "title": "O que deseja registrar?",
+            "description": "Escolha uma ação rápida.",
+            "sale": "Registrar venda",
+            "expense": "Registrar despesa",
+            "customer": "Novo cliente"
+        }
+    },
+    "common": {
+        "back": "Voltar",
+        "edit": "Editar",
+        "save": "Salvar",
+        "saving": "Salvando…",
+        "delete": "Excluir",
+        "optional": "opcional",
+        "offline": "Sem conexão, mostrando dados salvos",
+        "noResults": "Nada encontrado.",
+        "today": "Hoje"
+    },
+    "status": {
+        "paid": "Pago",
+        "overdue": "Atrasado",
+        "dueToday": "Vence hoje",
+        "upcoming": "A vencer",
+        "cancelled": "Cancelada",
+        "pending": "Pendente"
+    },
+    "dueLabel": {
+        "overdue": "Venceu {{date}}",
+        "dueToday": "Vence hoje",
+        "upcoming": "Vence {{date}}",
+        "paid": "Pago em {{date}}",
+        "paidNoDate": "Pago",
+        "cancelled": "Cancelada"
+    },
+    "methods": {
+        "pix": "PIX",
+        "cash": "Dinheiro",
+        "card": "Cartão"
+    },
+    "home": {
+        "greeting": "Olá, {{name}}",
+        "subtitle": "Resumo do seu negócio",
+        "salesToday": "Vendas hoje",
+        "monthProfit": "Lucro do mês",
+        "receivableToday": "A receber hoje",
+        "receivableOverdue": "A receber atrasado",
+        "lowStock": "Estoque baixo",
+        "lowStockItem_one": "{{name}} · {{count}} restante",
+        "lowStockItem_other": "{{name}} · {{count}} restantes",
+        "dueTodayTitle": "Quem me deve hoje",
+        "charge": "Cobrar",
+        "chargeMessage": "Olá, {{name}}! Passando para lembrar que sua parcela de {{amount}} vence hoje. Você pode pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
+        "shortcuts": {
+            "finance": "Financeiro",
+            "catalog": "Catálogo",
+            "more": "Mais"
+        },
+        "empty": {
+            "title": "Sua loja está pronta",
+            "description": "Registre sua primeira venda para começar a acompanhar vendas e recebimentos.",
+            "action": "Registrar venda"
+        }
+    },
+    "sales": {
+        "title": "Vendas",
+        "searchPlaceholder": "Buscar por cliente",
+        "counter": "Balcão",
+        "receivables": "A receber",
+        "tabs": {
+            "all": "Todas",
+            "receivable": "A receber",
+            "overdue": "Atrasadas",
+            "paid": "Pagas"
+        },
+        "empty": {
+            "title": "Nenhuma venda ainda",
+            "description": "Suas vendas vão aparecer aqui.",
+            "action": "Registrar venda"
+        }
+    },
+    "sale": {
+        "title": "Venda #{{id}}",
+        "customer": "Cliente",
+        "counter": "Balcão (sem cliente)",
+        "installments": "Parcelas",
+        "installmentOf": "Parcela {{number}}/{{total}}",
+        "downPayment": "Entrada",
+        "registerPayment": "Registrar pagamento",
+        "chargeWhatsapp": "Cobrar por WhatsApp",
+        "shareLink": "Compartilhar link de acompanhamento",
+        "cancel": "Cancelar venda",
+        "cancelConfirm": "Cancelar esta venda? O estoque volta e os pagamentos registrados são removidos.",
+        "cancelledNotice": "Esta venda foi cancelada.",
+        "payment": {
+            "title": "Registrar pagamento",
+            "amount": "Valor",
+            "method": "Forma",
+            "date": "Data",
+            "confirm": "Confirmar pagamento"
+        },
+        "created": {
+            "title": "Venda registrada",
+            "customer": "Cliente",
+            "items": "Itens",
+            "total": "Total",
+            "sendReceipt": "Enviar comprovante no WhatsApp",
+            "newSale": "Nova venda",
+            "view": "Ver venda",
+            "receiptMessage": "Olá, {{name}}! Obrigado pela compra na {{store}}. Total: {{total}}. Acompanhe aqui: {{link}}"
+        }
+    },
+    "newSale": {
+        "customer": {
+            "title": "Quem é o cliente?",
+            "search": "Buscar cliente",
+            "recent": "Recentes",
+            "new": "Novo cliente",
+            "name": "Nome",
+            "whatsapp": "WhatsApp",
+            "add": "Adicionar",
+            "skip": "Continuar sem cliente (só à vista)"
+        },
+        "products": {
+            "title": "Adicionar produtos",
+            "search": "Buscar produto",
+            "all": "Todos",
+            "add": "Adicionar",
+            "remove": "Remover",
+            "outOfStock": "Sem estoque",
+            "itemCount_one": "{{count}} item",
+            "itemCount_other": "{{count}} itens"
+        },
+        "payment": {
+            "title": "Como vai receber?",
+            "types": {
+                "avista": "À vista",
+                "fiado": "Fiado",
+                "parcelado": "Parcelado"
+            },
+            "installments": "Nº de parcelas",
+            "downPayment": "Entrada (opcional)",
+            "firstDue": "1º vencimento",
+            "preview": "Prévia das parcelas",
+            "previewLine": "Parcela {{number}} · {{date}}",
+            "method": "Forma de pagamento",
+            "summaryCustomer": "Cliente",
+            "summaryItems": "Itens",
+            "summaryTotal": "Total",
+            "noCustomer": "—",
+            "confirm": "Confirmar venda"
+        },
+        "continue": "Continuar"
+    },
+    "receivables": {
+        "title": "A receber",
+        "markPaid": "Marcar como paga",
+        "counter": "Balcão",
+        "empty": "Nada a receber. Tudo em dia!",
+        "groups": {
+            "overdue": "Atrasadas",
+            "today": "Hoje",
+            "week": "Esta semana",
+            "later": "Próximas"
+        }
+    },
+    "customers": {
+        "title": "Clientes",
+        "search": "Buscar cliente",
+        "withBalance": "Com saldo devedor",
+        "empty": {
+            "title": "Nenhum cliente ainda",
+            "description": "Cadastre clientes para acompanhar vendas e fiado.",
+            "action": "Novo cliente"
+        },
+        "form": {
+            "newTitle": "Novo cliente",
+            "editTitle": "Editar cliente",
+            "name": "Nome",
+            "namePlaceholder": "Maria Souza",
+            "whatsapp": "WhatsApp",
+            "whatsappPlaceholder": "(11) 99999-0000",
+            "notes": "Observações",
+            "notesPlaceholder": "Ex.: prefere receber cobrança depois das 18h",
+            "more": "Mais opções",
+            "document": "CPF/CNPJ",
+            "documentPlaceholder": "000.000.000-00",
+            "address": "Endereço",
+            "addressPlaceholder": "Rua, número, bairro",
+            "save": "Salvar cliente"
+        },
+        "detail": {
+            "since": "cliente desde {{date}}",
+            "balance": "Saldo devedor",
+            "newSale": "Nova venda",
+            "chargeWhatsapp": "Cobrar WhatsApp",
+            "sendLink": "Enviar link",
+            "history": "Histórico de compras",
+            "noHistory": "Nenhuma compra ainda.",
+            "installments": "{{count}}x",
+            "cash": "à vista",
+            "credit": "fiado",
+            "cancelled": "cancelada",
+            "linkMessage": "Olá, {{name}}! Aqui você acompanha suas compras e pagamentos: {{link}}"
+        }
+    },
+    "products": {
+        "title": "Produtos",
+        "search": "Buscar produto",
+        "all": "Todos",
+        "alerts": "Alertas de estoque",
+        "grid": "Ver em grade",
+        "list": "Ver em lista",
+        "badge": {
+            "out": "Sem estoque",
+            "low": "Estoque baixo"
+        },
+        "empty": {
+            "title": "Nenhum produto cadastrado",
+            "description": "Cadastre produtos para vender e controlar estoque.",
+            "action": "Novo produto"
+        },
+        "form": {
+            "newTitle": "Novo produto",
+            "editTitle": "Editar produto",
+            "photos": "Fotos",
+            "cover": "Foto de capa",
+            "addPhoto": "+ foto",
+            "removePhoto": "Remover foto",
+            "name": "Nome",
+            "namePlaceholder": "Batom Matte Rosé",
+            "description": "Descrição",
+            "descriptionPlaceholder": "Cor rosé, acabamento matte, longa duração",
+            "price": "Preço de venda",
+            "pricePlaceholder": "R$ 39,90",
+            "cost": "Custo (opcional)",
+            "costPlaceholder": "R$ 18,00",
+            "category": "Categoria",
+            "categoryPlaceholder": "Ex.: Maquiagem",
+            "variants": "Variações",
+            "variantName": "Nome da variação",
+            "variantStock": "Estoque",
+            "addVariant": "Adicionar variação",
+            "removeVariant": "Remover variação",
+            "stock": "Estoque atual",
+            "minStock": "Alerta de estoque mínimo",
+            "catalogVisible": "Mostrar no catálogo",
+            "save": "Salvar produto"
+        },
+        "detail": {
+            "cost": "Custo {{cost}} · margem {{margin}}%",
+            "stockByVariant": "Estoque por variação",
+            "stock": "Estoque",
+            "units": "{{count}} un.",
+            "restock": "Repor estoque",
+            "restockTitle": "Repor estoque",
+            "restockVariant": "Variação",
+            "restockConfirm": "Confirmar reposição",
+            "history": "Histórico de movimentação",
+            "noHistory": "Nenhuma movimentação ainda.",
+            "reason": {
+                "sale": "Venda #{{id}}",
+                "adjustment": "Ajuste de estoque",
+                "return": "Devolução (venda cancelada)"
+            }
+        }
+    },
+    "finance": {
+        "title": "Financeiro",
+        "period": {
+            "today": "Hoje",
+            "week": "Semana",
+            "month": "Mês"
+        },
+        "revenue": "Receitas",
+        "expenses": "Despesas",
+        "profit": "Lucro real",
+        "receivable": "A receber",
+        "payable": "A pagar",
+        "chart": "Receitas no período",
+        "links": {
+            "expenses": "Despesas",
+            "payables": "Contas a pagar",
+            "receivables": "A receber"
+        },
+        "empty": {
+            "title": "Sem movimentações neste período",
+            "description": "Vendas e despesas registradas vão aparecer aqui."
+        }
+    },
+    "expenses": {
+        "title": "Despesas",
+        "tabs": {
+            "all": "Todas",
+            "paid": "Pagas",
+            "pending": "Pendentes"
+        },
+        "categories": {
+            "suppliers": "Fornecedores",
+            "rent": "Aluguel",
+            "transport": "Transporte",
+            "marketing": "Marketing",
+            "other": "Outros"
+        },
+        "empty": {
+            "title": "Nenhuma despesa registrada",
+            "description": "Registre suas despesas para ver o lucro real do mês.",
+            "action": "Nova despesa"
+        },
+        "form": {
+            "newTitle": "Nova despesa",
+            "editTitle": "Editar despesa",
+            "amount": "Valor",
+            "amountPlaceholder": "R$ 0,00",
+            "category": "Categoria",
+            "date": "Data",
+            "description": "Descrição / fornecedor",
+            "descriptionPlaceholder": "Ex.: Beleza Total Distribuidora",
+            "receipt": "Comprovante",
+            "receiptPhoto": "Foto do comprovante",
+            "recurring": "Despesa recorrente (mensal)",
+            "paid": "Já paga?",
+            "save": "Salvar despesa"
+        }
+    },
+    "payables": {
+        "title": "Contas a pagar",
+        "markPaid": "Marcar como paga",
+        "empty": "Nenhuma conta a pagar. Tudo em dia!",
+        "groups": {
+            "overdue": "Atrasadas",
+            "today": "Hoje",
+            "week": "Esta semana",
+            "later": "Próximas"
+        }
+    },
+    "catalog": {
+        "title": "Catálogo",
+        "publicLink": "Link público da loja",
+        "copy": "Copiar link",
+        "copied": "Copiado!",
+        "share": "Compartilhar",
+        "shareMessage": "Dá uma olhada nas novidades da {{store}}: {{link}}",
+        "identity": "Identidade visual",
+        "identityHint": "Logo, cores, boas-vindas",
+        "promotions": "Promoções",
+        "promotionsActive_one": "{{count}} ativa",
+        "promotionsActive_other": "{{count}} ativas",
+        "notice": "Aviso urgente",
+        "noticeActive": "Ativo",
+        "noticeInactive": "Inativo",
+        "preview": "Ver como cliente",
+        "previewHint": "Prévia do catálogo",
+        "identityForm": {
+            "title": "Identidade visual",
+            "logo": "Logo",
+            "cover": "Capa",
+            "name": "Nome da loja",
+            "welcome": "Texto de boas-vindas",
+            "whatsapp": "WhatsApp de contato",
+            "accent": "Cor de destaque",
+            "accentOption": "Cor {{color}}",
+            "link": "Link do catálogo",
+            "save": "Salvar"
+        },
+        "noticeForm": {
+            "title": "Aviso urgente",
+            "previewLabel": "Prévia da faixa",
+            "text": "Texto",
+            "type": "Tipo",
+            "types": {
+                "info": "Informação",
+                "warning": "Atenção",
+                "urgent": "Urgente"
+            },
+            "expires": "Expira em",
+            "active": "Aviso ativo",
+            "placeholder": "Ex.: Frete grátis em compras acima de R$150 até domingo!",
+            "save": "Salvar"
+        },
+        "previewPage": {
+            "title": "Como o cliente vê",
+            "promotions": "Promoções",
+            "products": "Produtos",
+            "logo": "Logo",
+            "publish": "Publicar / Atualizar",
+            "published": "Publicado"
+        }
+    },
+    "promotions": {
+        "title": "Promoções",
+        "tabs": {
+            "active": "Ativas",
+            "scheduled": "Agendadas",
+            "expired": "Expiradas"
+        },
+        "new": "Nova promoção",
+        "empty": "Nenhuma promoção aqui.",
+        "noEnd": "sem prazo",
+        "until": "até {{date}}",
+        "from": "a partir de {{date}}",
+        "endedOn": "terminou {{date}}",
+        "products_one": "{{count}} produto",
+        "products_other": "{{count}} produtos",
+        "priceBadge": "DE/POR",
+        "form": {
+            "newTitle": "Nova promoção",
+            "editTitle": "Editar promoção",
+            "products": "Produtos",
+            "type": "Tipo",
+            "types": {
+                "percent": "% de desconto",
+                "price": "Preço de/por"
+            },
+            "discount": "Desconto",
+            "from": "De",
+            "to": "Por",
+            "validity": "Validade (opcional)",
+            "start": "Início",
+            "end": "Fim",
+            "badgePreview": "Prévia do selo",
+            "priceBadgePreview": "De {{from}} por {{to}}",
+            "save": "Salvar promoção",
+            "delete": "Excluir promoção"
+        }
+    },
+    "more": {
+        "title": "Mais",
+        "shop": "Dados da loja",
+        "pix": "Chave PIX",
+        "pixNotSet": "Não configurada",
+        "plan": "Meu plano",
+        "usage": {
+            "customers": "Clientes",
+            "products": "Produtos",
+            "sales": "Vendas no mês"
+        },
+        "management": "Gestão",
+        "logout": "Sair",
+        "settings": "Configurações",
+        "viewPlans": "Ver planos",
+        "help": "Ajuda",
+        "helpMessage": "Olá! Preciso de ajuda com o Upay."
+    },
+    "pix": {
+        "title": "Chave PIX",
+        "type": "Tipo de chave",
+        "types": {
+            "email": "E-mail",
+            "phone": "Celular",
+            "cpf": "CPF",
+            "cnpj": "CNPJ",
+            "random": "Aleatória"
+        },
+        "key": "Chave PIX",
+        "save": "Salvar"
+    },
+    "share": {
+        "title": "Compartilhar",
+        "charge": "Cobrança",
+        "invite": "Convite ao catálogo",
+        "open": "Abrir WhatsApp",
+        "chargeMessage": "Olá, {{name}}! Passando para lembrar do seu saldo de {{amount}}. Você pode acompanhar e pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
+        "inviteMessage": "Olá, {{name}}! Dá uma olhada nas novidades da {{store}}: {{link}}"
+    }
+}
