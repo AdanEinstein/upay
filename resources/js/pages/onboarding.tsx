@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { maskPixKey, pixKeyInputMode } from '@/lib/pix';
 import { cn } from '@/lib/utils';
 import { store } from '@/routes/onboarding';
 
@@ -37,7 +38,7 @@ function PhotoPicker({
     const [preview, setPreview] = useState<string | null>(null);
 
     return (
-        <label className="flex cursor-pointer flex-col items-center gap-2 self-center">
+        <label className="group flex cursor-pointer flex-col items-center gap-2 self-center">
             <input
                 type="file"
                 accept="image/*"
@@ -53,7 +54,7 @@ function PhotoPicker({
             />
             <span
                 className={cn(
-                    'border-border text-muted-foreground peer-focus-visible:ring-ring/50 flex items-center justify-center overflow-hidden border-2 border-dashed peer-focus-visible:ring-[3px]',
+                    'border-border text-muted-foreground peer-focus-visible:ring-ring/50 group-hover:border-primary/50 flex transition-colors items-center justify-center overflow-hidden border-2 border-dashed peer-focus-visible:ring-[3px]',
                     round ? 'size-22 rounded-full' : 'size-24 rounded-2xl',
                 )}
             >
@@ -300,7 +301,14 @@ export default function Onboarding({
                                             form.data.pix_key_type === type
                                         }
                                         onClick={() =>
-                                            form.setData('pix_key_type', type)
+                                            form.setData((data) => ({
+                                                ...data,
+                                                pix_key_type: type,
+                                                pix_key: maskPixKey(
+                                                    type,
+                                                    data.pix_key,
+                                                ),
+                                            }))
                                         }
                                         className={cn(
                                             'focus-visible:ring-ring/50 rounded-full px-3.5 py-2 text-[13px] outline-none focus-visible:ring-[3px]',
@@ -328,10 +336,16 @@ export default function Onboarding({
                                     required
                                     autoFocus
                                     value={form.data.pix_key}
+                                    inputMode={pixKeyInputMode(
+                                        form.data.pix_key_type,
+                                    )}
                                     onChange={(event) =>
                                         form.setData(
                                             'pix_key',
-                                            event.target.value,
+                                            maskPixKey(
+                                                form.data.pix_key_type,
+                                                event.target.value,
+                                            ),
                                         )
                                     }
                                     placeholder={t(

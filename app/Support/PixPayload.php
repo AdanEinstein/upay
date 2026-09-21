@@ -19,6 +19,7 @@ class PixPayload
         $account = self::field('00', 'br.gov.bcb.pix').self::field('01', self::normalizeKey($type, $key));
 
         $payload = self::field('00', '01')
+            .self::field('01', '11')
             .self::field('26', $account)
             .self::field('52', '0000')
             .self::field('53', '986')
@@ -35,7 +36,7 @@ class PixPayload
 
     public static function qrSvg(string $payload): string
     {
-        $renderer = new ImageRenderer(new RendererStyle(320, 1), new SvgImageBackEnd);
+        $renderer = new ImageRenderer(new RendererStyle(320, 4), new SvgImageBackEnd);
 
         return (new Writer($renderer))->writeString($payload);
     }
@@ -51,7 +52,9 @@ class PixPayload
 
     private static function ascii(string $value, int $max): string
     {
-        return Str::upper(Str::limit(Str::ascii($value), $max, ''));
+        $clean = trim(preg_replace('/[^A-Za-z0-9 ]/', '', Str::ascii($value)));
+
+        return Str::upper(rtrim(Str::limit($clean, $max, ''))) ?: 'LOJA';
     }
 
     private static function field(string $id, string $value): string

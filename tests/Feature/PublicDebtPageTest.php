@@ -86,7 +86,14 @@ it('builds a PIX payload with a valid CRC16', function () {
 
     $payload = PixPayload::make(PixKeyType::Phone, '(11) 99999-0001', 'Loja da Ana', 1234);
 
-    expect($payload)->toStartWith('000201')
+    $dirty = PixPayload::make(PixKeyType::Email, 'loja@erikabe.com', 'Erikabe?', 1500);
+    $symbols = PixPayload::make(PixKeyType::Email, 'loja@erikabe.com', '?!', 1500);
+
+    expect($dirty)->toContain('5907ERIKABE6006')
+        ->and($symbols)->toContain('5904LOJA6006')
+        ->and($crc->invoke(null, substr($dirty, 0, -4)))->toBe(substr($dirty, -4));
+
+    expect($payload)->toStartWith('00020101021126')
         ->and($payload)->toContain('+5511999990001')
         ->and($payload)->toContain('540512.34')
         ->and($crc->invoke(null, substr($payload, 0, -4)))->toBe(substr($payload, -4));
