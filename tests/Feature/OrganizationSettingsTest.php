@@ -54,3 +54,52 @@ test('users cannot update another organizations settings', function () {
         ->get(route('organization-settings.edit', ['organization' => $otherOrganization->slug]))
         ->assertForbidden();
 });
+
+test('logo and favicon can be removed', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $logo = UploadedFile::fake()->image('logo.png')->store('organizations/'.$user->organization->id, 'public');
+    $favicon = UploadedFile::fake()->image('favicon.png')->store('organizations/'.$user->organization->id, 'public');
+    $user->organization->forceFill(['logo_path' => $logo, 'favicon_path' => $favicon])->save();
+
+    $this->actingAs($user)
+        ->put(route('organization-settings.update', ['organization' => $user->organization->slug]), [
+            'name' => $user->organization->name,
+            'remove_logo' => '1',
+            'remove_favicon' => '1',
+            ...Organization::DEFAULT_COLORS,
+        ])
+        ->assertSessionHasNoErrors();
+
+    $organization = $user->organization->fresh();
+
+    expect($organization->logo_path)->toBeNull();
+    expect($organization->favicon_path)->toBeNull();
+    Storage::disk('public')->assertMissing([$logo, $favicon]);
+});
+
+test('a new upload wins over the remove flag', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->put(route('organization-settings.update', ['organization' => $user->organization->slug]), [
+            'name' => $user->organization->name,
+            'logo' => UploadedFile::fake()->image('logo.png'),
+            'remove_logo' => '1',
+            ...Organization::DEFAULT_COLORS,
+        ])
+        ->assertSessionHasNoErrors();
+
+    expect($user->organization->fresh()->logo_path)->not->toBeNull();
+});
+
+test('the settings page exposes the default colors', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('organization-settings.edit', ['organization' => $user->organization->slug]))
+        ->assertInertia(fn (Assert $page) => $page->where('defaultColors', Organization::DEFAULT_COLORS));
+});

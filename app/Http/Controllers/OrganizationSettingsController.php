@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrganizationSettingsUpdateRequest;
+use App\Models\Organization;
 use App\Support\Tenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,7 @@ class OrganizationSettingsController extends Controller
                 'accentColorSoft' => $organization->accent_color_soft,
                 'onPrimaryColor' => $organization->on_primary_color,
             ],
+            'defaultColors' => Organization::DEFAULT_COLORS,
         ]);
     }
 
@@ -37,12 +39,15 @@ class OrganizationSettingsController extends Controller
             'name', 'accent_color', 'accent_color_hover', 'accent_color_soft', 'on_primary_color',
         ]));
 
-        if ($request->hasFile('logo')) {
-            $organization->logo_path = $request->file('logo')->store('organizations/'.$organization->id, 'public');
-        }
+        foreach (['logo', 'favicon'] as $image) {
+            $column = $image.'_path';
 
-        if ($request->hasFile('favicon')) {
-            $organization->favicon_path = $request->file('favicon')->store('organizations/'.$organization->id, 'public');
+            if ($request->hasFile($image)) {
+                $organization->{$column} = $request->file($image)->store('organizations/'.$organization->id, 'public');
+            } elseif ($request->boolean('remove_'.$image) && $organization->{$column}) {
+                Storage::disk('public')->delete($organization->{$column});
+                $organization->{$column} = null;
+            }
         }
 
         $organization->save();

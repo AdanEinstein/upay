@@ -1,4 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
+import { TrashIcon, UploadSimpleIcon } from '@phosphor-icons/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import OrganizationSettingsController from '@/actions/App/Http/Controllers/OrganizationSettingsController';
 import Heading from '@/components/heading';
@@ -6,7 +8,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import i18n from '@/lib/i18n';
 import { edit } from '@/routes/organization-settings';
 
 type Props = {
@@ -20,18 +21,92 @@ type Props = {
         accentColorSoft: string;
         onPrimaryColor: string;
     };
+    defaultColors: Record<ColorName, string>;
 };
 
-export default function OrganizationSettings({ organization }: Props) {
+const COLOR_FIELDS = [
+    { name: 'accent_color', label: 'accentColor' },
+    { name: 'accent_color_hover', label: 'accentColorHover' },
+    { name: 'accent_color_soft', label: 'accentColorSoft' },
+    { name: 'on_primary_color', label: 'onPrimaryColor' },
+] as const;
+
+type ColorName = (typeof COLOR_FIELDS)[number]['name'];
+
+function FileDropzone({ id, name, currentUrl, alt, previewClassName }: { id: string; name: string; currentUrl: string | null; alt: string; previewClassName: string }) {
+    const { t } = useTranslation('admin');
+    const [preview, setPreview] = useState(currentUrl);
+    const [fileName, setFileName] = useState<string | null>(null);
+    const [removed, setRemoved] = useState(false);
+
+    return (
+        <div className="grid gap-2">
+            <label
+                htmlFor={id}
+                className="border-border text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-5 text-center text-sm transition-colors has-[:focus-visible]:ring-[3px]"
+            >
+                <input
+                    id={id}
+                    name={name}
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={(event) => {
+                        const file = event.target.files?.[0];
+
+                        if (file) {
+                            setPreview(URL.createObjectURL(file));
+                            setFileName(file.name);
+                            setRemoved(false);
+                        }
+                    }}
+                />
+                {preview ? <img src={preview} alt={alt} className={previewClassName} /> : <UploadSimpleIcon className="size-6" />}
+                <span>{fileName ?? t('organizationSettings.chooseImage')}</span>
+            </label>
+            {removed && currentUrl && <input type="hidden" name={`remove_${name}`} value="1" />}
+            {preview && (
+                <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive justify-self-start"
+                    onClick={() => {
+                        const input = document.getElementById(id) as HTMLInputElement;
+
+                        input.value = '';
+                        setPreview(null);
+                        setFileName(null);
+                        setRemoved(true);
+                    }}
+                >
+                    <TrashIcon />
+                    {t('organizationSettings.removeImage')}
+                </Button>
+            )}
+        </div>
+    );
+}
+
+export default function OrganizationSettings({ organization, defaultColors }: Props) {
     const { t } = useTranslation(['admin', 'common']);
+    const [colors, setColors] = useState<Record<ColorName, string>>({
+        accent_color: organization.accentColor,
+        accent_color_hover: organization.accentColorHover,
+        accent_color_soft: organization.accentColorSoft,
+        on_primary_color: organization.onPrimaryColor,
+    });
 
     return (
         <>
             <Head title={t('admin:organizationSettings.title')} />
 
+            <h1 className="sr-only">{t('admin:organizationSettings.title')}</h1>
+
             <div className="space-y-6">
                 <Heading
                     variant="small"
+                    hideTitleOnMobile
                     title={t('admin:organizationSettings.heading')}
                     description={t('admin:organizationSettings.description')}
                 />
@@ -58,18 +133,13 @@ export default function OrganizationSettings({ organization }: Props) {
                                 <Label htmlFor="logo">
                                     {t('admin:organizationSettings.logo')}
                                 </Label>
-                                {organization.logoUrl && (
-                                    <img
-                                        src={organization.logoUrl}
-                                        alt="Current logo"
-                                        className="h-10 w-auto"
-                                    />
-                                )}
-                                <Input
+                                <FileDropzone
+                                    key={organization.logoUrl}
                                     id="logo"
                                     name="logo"
-                                    type="file"
-                                    accept="image/*"
+                                    currentUrl={organization.logoUrl}
+                                    alt={t('admin:organizationSettings.logo')}
+                                    previewClassName="h-10 w-auto"
                                 />
                                 <InputError message={errors.logo} />
                             </div>
@@ -78,94 +148,44 @@ export default function OrganizationSettings({ organization }: Props) {
                                 <Label htmlFor="favicon">
                                     {t('admin:organizationSettings.favicon')}
                                 </Label>
-                                {organization.faviconUrl && (
-                                    <img
-                                        src={organization.faviconUrl}
-                                        alt="Current favicon"
-                                        className="h-6 w-6"
-                                    />
-                                )}
-                                <Input
+                                <FileDropzone
+                                    key={organization.faviconUrl}
                                     id="favicon"
                                     name="favicon"
-                                    type="file"
-                                    accept="image/*"
+                                    currentUrl={organization.faviconUrl}
+                                    alt={t('admin:organizationSettings.favicon')}
+                                    previewClassName="h-6 w-6"
                                 />
                                 <InputError message={errors.favicon} />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="accent_color">
-                                        {t(
-                                            'admin:organizationSettings.accentColor',
-                                        )}
-                                    </Label>
-                                    <Input
-                                        id="accent_color"
-                                        name="accent_color"
-                                        type="color"
-                                        defaultValue={organization.accentColor}
-                                    />
-                                    <InputError message={errors.accent_color} />
+                            <div className="grid gap-3">
+                                <div className="grid grid-cols-2 gap-4">
+                                    {COLOR_FIELDS.map(({ name, label }) => (
+                                        <div key={name} className="grid gap-2">
+                                            <Label htmlFor={name}>
+                                                {t(`admin:organizationSettings.${label}`)}
+                                            </Label>
+                                            <Input
+                                                id={name}
+                                                name={name}
+                                                type="color"
+                                                value={colors[name]}
+                                                onChange={(event) => setColors((current) => ({ ...current, [name]: event.target.value }))}
+                                            />
+                                            <InputError message={errors[name]} />
+                                        </div>
+                                    ))}
                                 </div>
-
-                                <div className="grid gap-2">
-                                    <Label htmlFor="accent_color_hover">
-                                        {t(
-                                            'admin:organizationSettings.accentColorHover',
-                                        )}
-                                    </Label>
-                                    <Input
-                                        id="accent_color_hover"
-                                        name="accent_color_hover"
-                                        type="color"
-                                        defaultValue={
-                                            organization.accentColorHover
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.accent_color_hover}
-                                    />
-                                </div>
-
-                                <div className="grid gap-2">
-                                    <Label htmlFor="accent_color_soft">
-                                        {t(
-                                            'admin:organizationSettings.accentColorSoft',
-                                        )}
-                                    </Label>
-                                    <Input
-                                        id="accent_color_soft"
-                                        name="accent_color_soft"
-                                        type="color"
-                                        defaultValue={
-                                            organization.accentColorSoft
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.accent_color_soft}
-                                    />
-                                </div>
-
-                                <div className="grid gap-2">
-                                    <Label htmlFor="on_primary_color">
-                                        {t(
-                                            'admin:organizationSettings.onPrimaryColor',
-                                        )}
-                                    </Label>
-                                    <Input
-                                        id="on_primary_color"
-                                        name="on_primary_color"
-                                        type="color"
-                                        defaultValue={
-                                            organization.onPrimaryColor
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.on_primary_color}
-                                    />
-                                </div>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    className="justify-self-start"
+                                    onClick={() => setColors(defaultColors)}
+                                >
+                                    {t('admin:organizationSettings.resetColors')}
+                                </Button>
                             </div>
 
                             <Button disabled={processing}>
@@ -182,7 +202,7 @@ export default function OrganizationSettings({ organization }: Props) {
 OrganizationSettings.layout = {
     breadcrumbs: [
         {
-            title: i18n.t('admin:organizationSettings.heading'),
+            title: 'admin:organizationSettings.heading',
             href: edit(),
         },
     ],

@@ -43,6 +43,18 @@ class Organization extends Model
     public const array RESERVED_SLUGS = ['super-admin', 'p', 'c'];
 
     /**
+     * Brand colors every organization starts with (same as the column defaults).
+     *
+     * @var array<string, string>
+     */
+    public const array DEFAULT_COLORS = [
+        'accent_color' => '#3667f6',
+        'accent_color_hover' => '#2454e0',
+        'accent_color_soft' => '#eef3ff',
+        'on_primary_color' => '#ffffff',
+    ];
+
+    /**
      * Accent colors offered in the catalog identity screen, with the derived tokens.
      *
      * @var array<string, array{hover: string, soft: string, on_primary: string}>

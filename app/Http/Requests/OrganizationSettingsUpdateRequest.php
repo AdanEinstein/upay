@@ -15,6 +15,8 @@ class OrganizationSettingsUpdateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'max:1024'],
             'favicon' => ['nullable', 'image', 'max:512'],
+            'remove_logo' => ['boolean'],
+            'remove_favicon' => ['boolean'],
             'accent_color' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'accent_color_hover' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'accent_color_soft' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
