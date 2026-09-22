@@ -44,6 +44,11 @@ class Organization extends Model
     public const array RESERVED_SLUGS = ['super-admin', 'p', 'c'];
 
     /**
+     * Marker stored in suspension_reason when billing (not the super admin) suspended the store.
+     */
+    public const string BILLING_SUSPENSION_REASON = 'billing_overdue';
+
+    /**
      * Brand colors every organization starts with (same as the column defaults).
      *
      * @var array<string, string>
@@ -119,6 +124,14 @@ class Organization extends Model
     }
 
     /**
+     * @return HasMany<SubscriptionInvoice, $this>
+     */
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(SubscriptionInvoice::class);
+    }
+
+    /**
      * Slugified name, suffixed with -2, -3... until it is free and not reserved.
      */
     public static function uniqueSlugFor(string $name): string
@@ -151,6 +164,22 @@ class Organization extends Model
         $limit = $this->customerLimit();
 
         return $limit !== null && $this->customerCount() >= $limit;
+    }
+
+    /**
+     * Plan consumption shown to the merchant. A null limit means unlimited.
+     *
+     * @return list<array{key: string, used: int, limit: int|null}>
+     */
+    public function planUsage(): array
+    {
+        $limits = $this->subscription?->plan->limits ?? [];
+
+        return [
+            ['key' => 'customers', 'used' => $this->customerCount(), 'limit' => $limits['max_customers'] ?? null],
+            ['key' => 'products', 'used' => $this->products()->withoutTenant()->count(), 'limit' => $limits['max_products'] ?? null],
+            ['key' => 'sales', 'used' => $this->sales()->withoutTenant()->where('sold_at', '>=', now()->startOfMonth())->count(), 'limit' => $limits['max_sales_per_month'] ?? null],
+        ];
     }
 
     public function isActive(): bool

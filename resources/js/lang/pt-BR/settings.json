@@ -3,6 +3,7 @@
     "description": "Gerencie seu perfil e as configurações da conta",
     "nav": {
         "shop": "Loja",
+        "billing": "Assinatura",
         "profile": "Perfil",
         "security": "Segurança",
         "appearance": "Aparência",

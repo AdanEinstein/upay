@@ -11,7 +11,8 @@
         "errors": "Erros",
         "pulse": "Pulse",
         "dashboard": "Dashboard",
-        "plans": "Planos"
+        "plans": "Planos",
+        "billing": "Cobranças"
     },
     "organizations": {
         "title": "Organizações",
@@ -85,7 +86,9 @@
             "salesMonth": "Vendas no mês",
             "activate": "Ativar organização",
             "block": "Bloquear organização",
-            "blockedReason": "Motivo do bloqueio: {{reason}}"
+            "blockedReason": "Motivo do bloqueio: {{reason}}",
+            "cycle": "Ciclo de cobrança",
+            "billingOverdue": "Assinatura em atraso."
         },
         "blockDialog": {
             "title": "Bloquear {{name}}?",
@@ -187,6 +190,61 @@
         "toast": {
             "created": "Plano criado.",
             "updated": "Plano atualizado."
+        }
+    },
+    "billing": {
+        "title": "Cobranças",
+        "heading": "Cobranças",
+        "description": "Valide os pagamentos de assinatura dos lojistas",
+        "searchPlaceholder": "Buscar por loja",
+        "empty": "Nenhuma cobrança nesta lista.",
+        "kpis": {
+            "claimed": "Aguardando validação",
+            "open": "Em aberto",
+            "overdue": "Vencidas",
+            "received": "Recebido no mês"
+        },
+        "tabs": {
+            "claimed": "Aguardando validação",
+            "open": "Em aberto",
+            "overdue": "Vencidas",
+            "paid": "Pagas",
+            "all": "Todas"
+        },
+        "status": {
+            "open": "Em aberto",
+            "claimed": "Aguardando validação",
+            "paid": "Paga",
+            "canceled": "Cancelada",
+            "overdue": "Vencida"
+        },
+        "cycle": {
+            "monthly": "Mensal",
+            "annual": "Anual"
+        },
+        "row": {
+            "meta": "{{plan}} · {{cycle}} · vence {{date}}",
+            "hasReceipt": "Com comprovante"
+        },
+        "detail": {
+            "description": "Confira o pagamento antes de aprovar.",
+            "plan": "Plano",
+            "amount": "Valor",
+            "due": "Vencimento",
+            "claimedAt": "Aviso de pagamento",
+            "lastRejection": "Motivo da última recusa",
+            "viewReceipt": "Ver comprovante",
+            "noReceipt": "O lojista não enviou comprovante.",
+            "rejectReason": "Motivo da recusa (o lojista verá)",
+            "confirmReject": "Recusar pagamento",
+            "reject": "Recusar",
+            "approve": "Aprovar pagamento",
+            "markPaid": "Marcar como paga"
+        },
+        "pagination": {
+            "previous": "Anterior",
+            "next": "Próxima",
+            "summary": "Página {{current}} de {{last}}"
         }
     }
 }

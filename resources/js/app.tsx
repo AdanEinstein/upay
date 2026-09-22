@@ -82,6 +82,7 @@ void createInertiaApp({
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name === 'admin/organization-settings':
+            case name === 'billing/show':
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
             default:

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\InvoiceStatus;
 use App\Support\Tenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -58,6 +59,11 @@ class HandleInertiaRequests extends Middleware
                 'accentColorHover' => $organization->accent_color_hover,
                 'accentColorSoft' => $organization->accent_color_soft,
                 'onPrimaryColor' => $organization->on_primary_color,
+            ] : null,
+            // Lazy for the same reason as "tenant". Only a still-unpaid, unclaimed invoice nags the store.
+            'billing' => fn () => ($invoice = Tenant::current()?->invoices()->where('status', InvoiceStatus::Open)->orderBy('due_date')->first()) ? [
+                'dueDate' => $invoice->due_date->toDateString(),
+                'overdue' => $invoice->due_date->lt(today()),
             ] : null,
         ];
     }

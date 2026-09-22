@@ -1,5 +1,5 @@
-import { usePage } from '@inertiajs/react';
-import { WifiSlashIcon } from '@phosphor-icons/react';
+import { Link, usePage } from '@inertiajs/react';
+import { CreditCardIcon, WifiSlashIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
@@ -9,11 +9,13 @@ import InstallPrompt from '@/components/install-prompt';
 import MobileScreen from '@/components/mobile-screen';
 import BottomNav from '@/components/shop/bottom-nav';
 import PaymentClaimAlerts from '@/components/shop/payment-claim-alerts';
+import { useFormat } from '@/hooks/use-format';
 import { useOnline } from '@/hooks/use-online';
 import { useTenant } from '@/hooks/use-tenant';
 import { echoEnabled } from '@/lib/echo';
 import { NAV_TABS } from '@/lib/nav-section';
 import { cn } from '@/lib/utils';
+import { show as billingShow } from '@/routes/billing';
 import type { BreadcrumbItem } from '@/types';
 
 // Desktop: shadcn inset sidebar. Mobile: the dashboard's phone screen, with
@@ -26,7 +28,10 @@ export default function AppLayout({
     children: React.ReactNode;
 }) {
     const { t } = useTranslation('shop');
-    const { component } = usePage();
+    const { component, props } = usePage<{
+        billing: { dueDate: string; overdue: boolean } | null;
+    }>();
+    const { shortDate } = useFormat();
     const online = useOnline();
     const tenant = useTenant();
     const showNav = component in NAV_TABS;
@@ -50,6 +55,25 @@ export default function AppLayout({
                             <WifiSlashIcon className="size-[15px]" />
                             {t('common.offline')}
                         </div>
+                    )}
+                    {props.billing && component !== 'billing/show' && (
+                        <Link
+                            href={billingShow.url()}
+                            className={cn(
+                                'flex items-center gap-2 px-5 py-2 text-[12.5px] font-medium',
+                                props.billing.overdue
+                                    ? 'bg-destructive/15 text-destructive'
+                                    : 'bg-brand-soft text-brand',
+                            )}
+                        >
+                            <CreditCardIcon className="size-[15px]" />
+                            {t(
+                                props.billing.overdue
+                                    ? 'billing.bannerOverdue'
+                                    : 'billing.bannerDue',
+                                { date: shortDate(props.billing.dueDate) },
+                            )}
+                        </Link>
                     )}
                     {children}
                     {showNav && <BottomNav active={NAV_TABS[component]} />}

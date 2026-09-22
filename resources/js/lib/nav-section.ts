@@ -35,6 +35,7 @@ const SECTIONS: Record<string, NavSection> = {
     expenses: 'finance',
     payables: 'finance',
     more: 'settings',
+    billing: 'settings',
     'pix-key': 'settings',
     settings: 'settings',
     admin: 'settings',

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\BillingCycle;
 use App\Enums\SubscriptionStatus;
 use App\Models\Organization;
 use App\Models\Plan;
@@ -25,6 +26,7 @@ class SubscriptionFactory extends Factory
             'plan_id' => Plan::factory(),
             'status' => SubscriptionStatus::Active,
             'price_cents' => 2990,
+            'billing_cycle' => BillingCycle::Monthly,
         ];
     }
 }

@@ -11,7 +11,8 @@
         "errors": "Errors",
         "pulse": "Pulse",
         "dashboard": "Dashboard",
-        "plans": "Plans"
+        "plans": "Plans",
+        "billing": "Billing"
     },
     "organizations": {
         "title": "Organizations",
@@ -85,7 +86,9 @@
             "salesMonth": "Sales this month",
             "activate": "Activate organization",
             "block": "Block organization",
-            "blockedReason": "Block reason: {{reason}}"
+            "blockedReason": "Block reason: {{reason}}",
+            "cycle": "Billing cycle",
+            "billingOverdue": "Subscription overdue."
         },
         "blockDialog": {
             "title": "Block {{name}}?",
@@ -187,6 +190,61 @@
         "toast": {
             "created": "Plan created.",
             "updated": "Plan updated."
+        }
+    },
+    "billing": {
+        "title": "Billing",
+        "heading": "Billing",
+        "description": "Validate merchants' subscription payments",
+        "searchPlaceholder": "Search by store",
+        "empty": "No invoices in this list.",
+        "kpis": {
+            "claimed": "Awaiting validation",
+            "open": "Open",
+            "overdue": "Overdue",
+            "received": "Received this month"
+        },
+        "tabs": {
+            "claimed": "Awaiting validation",
+            "open": "Open",
+            "overdue": "Overdue",
+            "paid": "Paid",
+            "all": "All"
+        },
+        "status": {
+            "open": "Open",
+            "claimed": "Awaiting validation",
+            "paid": "Paid",
+            "canceled": "Canceled",
+            "overdue": "Overdue"
+        },
+        "cycle": {
+            "monthly": "Monthly",
+            "annual": "Annual"
+        },
+        "row": {
+            "meta": "{{plan}} · {{cycle}} · due {{date}}",
+            "hasReceipt": "Has receipt"
+        },
+        "detail": {
+            "description": "Check the payment before approving.",
+            "plan": "Plan",
+            "amount": "Amount",
+            "due": "Due date",
+            "claimedAt": "Payment notice",
+            "lastRejection": "Last rejection reason",
+            "viewReceipt": "View receipt",
+            "noReceipt": "The merchant did not attach a receipt.",
+            "rejectReason": "Rejection reason (the merchant will see it)",
+            "confirmReject": "Reject payment",
+            "reject": "Reject",
+            "approve": "Approve payment",
+            "markPaid": "Mark as paid"
+        },
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next",
+            "summary": "Page {{current}} of {{last}}"
         }
     }
 }

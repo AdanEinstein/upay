@@ -2,6 +2,7 @@ import { Link, router } from '@inertiajs/react';
 import {
     BugIcon,
     BuildingsIcon,
+    CreditCardIcon,
     ListIcon,
     PulseIcon,
     SignOutIcon,
@@ -25,6 +26,7 @@ import {
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn } from '@/lib/utils';
 import { dashboard, logout } from '@/routes/super-admin';
+import { index as billingIndex } from '@/routes/super-admin/billing';
 import { index as errorsIndex } from '@/routes/super-admin/errors';
 import { index as organizationsIndex } from '@/routes/super-admin/organizations';
 import { index as plansIndex } from '@/routes/super-admin/plans';
@@ -56,6 +58,11 @@ export default function SuperAdminLayout({ children }: PropsWithChildren) {
             label: t('super:nav.plans'),
             href: plansIndex().url,
             icon: TagIcon,
+        },
+        {
+            label: t('super:nav.billing'),
+            href: billingIndex().url,
+            icon: CreditCardIcon,
         },
         {
             label: t('super:nav.errors'),

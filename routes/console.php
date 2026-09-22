@@ -10,3 +10,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('model:prune', ['--model' => [ErrorOccurrence::class]])->daily();
+
+Schedule::command('billing:run')->daily();

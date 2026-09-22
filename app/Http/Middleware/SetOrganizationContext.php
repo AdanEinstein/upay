@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\SubscriptionStatus;
 use App\Models\Organization;
 use App\Support\Tenant;
 use Closure;
@@ -22,7 +23,12 @@ class SetOrganizationContext
             ->where('slug', $request->route('organization'))
             ->firstOrFail();
 
-        abort_unless($organization->isActive(), 404);
+        if (! $organization->isActive() && ! $request->routeIs('billing.*')) {
+            // A store suspended for non-payment can still reach the billing screen to pay.
+            abort_unless($organization->subscription?->status === SubscriptionStatus::PastDue, 404);
+
+            return redirect()->route('billing.show', ['organization' => $organization->slug]);
+        }
 
         if ($user = $request->user()) {
             abort_unless($user->organization_id === $organization->id, 403);

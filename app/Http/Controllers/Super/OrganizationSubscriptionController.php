@@ -18,6 +18,7 @@ class OrganizationSubscriptionController extends Controller
         $organization->subscription()->updateOrCreate([], [
             'plan_id' => $plan->id,
             'price_cents' => $plan->price_cents,
+            ...($request->validated('billing_cycle') ? ['billing_cycle' => $request->validated('billing_cycle')] : []),
             'canceled_at' => null,
         ]);
 

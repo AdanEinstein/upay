@@ -63,7 +63,7 @@ type Organization = {
     status: Status;
     suspensionReason: string | null;
     createdAt: string;
-    plan: { id: number; name: string } | null;
+    plan: { id: number; name: string; cycle: 'monthly' | 'annual' } | null;
     pastDue: boolean;
     owner: { name: string; email: string } | null;
     usersCount: number;
@@ -402,6 +402,9 @@ function OrganizationDetail({
 }) {
     const { t } = useTranslation(['super', 'common']);
     const [planId, setPlanId] = useState(String(organization?.plan?.id ?? ''));
+    const [cycle, setCycle] = useState<string>(
+        organization?.plan?.cycle ?? 'monthly',
+    );
     const [blocking, setBlocking] = useState(false);
     const [reason, setReason] = useState('');
     const [processing, setProcessing] = useState(false);
@@ -466,7 +469,13 @@ function OrganizationDetail({
                                     {t(
                                         'super:organizations.detail.blockedReason',
                                         {
-                                            reason: organization.suspensionReason,
+                                            reason:
+                                                organization.suspensionReason ===
+                                                'billing_overdue'
+                                                    ? t(
+                                                          'super:organizations.detail.billingOverdue',
+                                                      )
+                                                    : organization.suspensionReason,
                                         },
                                     )}
                                 </p>
@@ -523,18 +532,42 @@ function OrganizationDetail({
                                         ))}
                                     </SelectContent>
                                 </Select>
+                                <Select value={cycle} onValueChange={setCycle}>
+                                    <SelectTrigger
+                                        id="cycle"
+                                        aria-label={t(
+                                            'super:organizations.detail.cycle',
+                                        )}
+                                        className="w-32"
+                                    >
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="monthly">
+                                            {t('super:billing.cycle.monthly')}
+                                        </SelectItem>
+                                        <SelectItem value="annual">
+                                            {t('super:billing.cycle.annual')}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
                                 <Button
                                     variant="secondary"
                                     disabled={
                                         processing ||
                                         planId === '' ||
-                                        planId === String(organization.plan?.id)
+                                        (planId ===
+                                            String(organization.plan?.id) &&
+                                            cycle === organization.plan?.cycle)
                                     }
                                     onClick={() =>
                                         send(
                                             updateSubscription(organization.id)
                                                 .url,
-                                            { plan_id: Number(planId) },
+                                            {
+                                                plan_id: Number(planId),
+                                                billing_cycle: cycle,
+                                            },
                                             t(
                                                 'super:organizations.toast.planChanged',
                                             ),

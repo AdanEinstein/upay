@@ -41,7 +41,7 @@ class OrganizationController extends Controller
                     'suspensionReason' => $organization->suspension_reason,
                     'createdAt' => $organization->created_at->toDateString(),
                     'plan' => $organization->subscription
-                        ? ['id' => $organization->subscription->plan_id, 'name' => $organization->subscription->plan->name]
+                        ? ['id' => $organization->subscription->plan_id, 'name' => $organization->subscription->plan->name, 'cycle' => $organization->subscription->billing_cycle->value]
                         : null,
                     'pastDue' => $organization->subscription?->status === SubscriptionStatus::PastDue,
                     'owner' => ($owner = $organization->users->first())

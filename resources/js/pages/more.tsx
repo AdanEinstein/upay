@@ -16,10 +16,12 @@ import {
 } from '@phosphor-icons/react';
 import type { ComponentType } from 'react';
 import { useTranslation } from 'react-i18next';
+import PlanUsage from '@/components/shop/plan-usage';
 import ScreenTitle from '@/components/shop/screen-title';
 import { Button } from '@/components/ui/button';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { logout } from '@/routes';
+import { show as billing } from '@/routes/billing';
 import { show as catalog } from '@/routes/catalog';
 import { index as expenses } from '@/routes/expenses';
 import { index as finance } from '@/routes/finance';
@@ -109,36 +111,18 @@ export default function More({ pixKey, supportWhatsapp, plan }: Props) {
 
                 {plan && (
                     <div className="border-border flex flex-col gap-3 rounded-2xl border p-3.5 lg:gap-3.5 lg:p-[18px]">
-                        <div className="flex items-center justify-between">
+                        <Link
+                            href={billing.url()}
+                            className="flex items-center justify-between"
+                        >
                             <span className="text-sm font-semibold">
                                 {t('more.plan')}
                             </span>
                             <span className="bg-brand-soft text-brand rounded-full px-2 py-0.5 text-[11.5px] font-bold">
                                 {plan.name}
                             </span>
-                        </div>
-                        {plan.usage.map((item) => (
-                            <div key={item.key}>
-                                <div className="text-muted-foreground mb-1 flex justify-between text-xs">
-                                    <span>{t(`more.usage.${item.key}`)}</span>
-                                    <span>
-                                        {item.limit === null
-                                            ? item.used
-                                            : `${item.used}/${item.limit}`}
-                                    </span>
-                                </div>
-                                {item.limit !== null && (
-                                    <div className="bg-muted h-1.5 overflow-hidden rounded-full">
-                                        <div
-                                            className="bg-brand h-full rounded-full"
-                                            style={{
-                                                width: `${Math.min(100, (item.used / item.limit) * 100)}%`,
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                        </Link>
+                        <PlanUsage items={plan.usage} />
                         <Button
                             asChild
                             variant="outline"

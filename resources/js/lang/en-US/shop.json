@@ -498,5 +498,74 @@
         "open": "Open WhatsApp",
         "chargeMessage": "Hi, {{name}}! Just a reminder about your balance of {{amount}}. You can follow and pay by PIX here: {{link}} — any questions, just ask!",
         "inviteMessage": "Hi, {{name}}! Check out what's new at {{store}}: {{link}}"
+    },
+    "billing": {
+        "title": "Subscription",
+        "cycle": {
+            "monthly": "monthly",
+            "annual": "annually"
+        },
+        "dueOn": "Due on {{date}}",
+        "overdueSince": "Was due on {{date}}",
+        "rejected": "Payment not confirmed: {{reason}}",
+        "qrAlt": "PIX QR Code for this invoice",
+        "copyPix": "Copy PIX code",
+        "copiedPix": "Code copied",
+        "copied": "PIX code copied.",
+        "copyFailed": "Could not copy. Copy it manually.",
+        "pixHint": "Pay in your bank app with PIX copy and paste or the QR Code. Then let us know you paid.",
+        "pixMissing": "The billing PIX is not available yet.",
+        "contactSupport": "Contact support",
+        "supportMessage": "Hi! I need the PIX to pay my subscription.",
+        "claimPending": "Notice sent. We will confirm your payment shortly.",
+        "receipt": "Attach receipt (optional)",
+        "receiptChosen": "Receipt: {{name}}",
+        "claimButton": "I already paid",
+        "history": "History",
+        "status": {
+            "open": "Open",
+            "claimed": "Under review",
+            "paid": "Paid",
+            "canceled": "Canceled"
+        },
+        "bannerDue": "Subscription due on {{date}}. Tap to pay.",
+        "bannerOverdue": "Subscription was due on {{date}}. Tap to pay.",
+        "statusLabel": "Plan status",
+        "planCycle": "Plan · billed {{cycle}}",
+        "state": {
+            "active": "Active",
+            "claimed": "Payment under review",
+            "overdue": "Overdue",
+            "suspended": "Suspended",
+            "canceled": "Canceled"
+        },
+        "stateHint": {
+            "active": "Your store is running normally.",
+            "claimed": "We got your notice. We will check the payment.",
+            "overdue": "Pay to keep access to your store.",
+            "suspended": "Store access is blocked until the payment is confirmed.",
+            "canceled": "This subscription was canceled."
+        },
+        "ruler": {
+            "daysLeft_one": "{{count}} day until renewal",
+            "daysLeft_other": "{{count}} days until renewal",
+            "daysToFirst_one": "{{count}} day until the first charge",
+            "daysToFirst_other": "{{count}} days until the first charge",
+            "today": "Renews today",
+            "lateDays_one": "Was due {{count}} day ago",
+            "lateDays_other": "Was due {{count}} days ago",
+            "accessUntil": "Access until {{date}}",
+            "renews": "Renews {{date}}",
+            "firstCharge": "First charge {{date}}",
+            "wasDue": "Was due {{date}}"
+        },
+        "usage": "Plan usage",
+        "upToDate": "No open invoices.",
+        "noPlan": {
+            "title": "You do not have a plan yet",
+            "description": "Contact support to get a plan and unlock more resources.",
+            "message": "Hi! I want to get a plan."
+        },
+        "description": "Track your plan, usage and invoices."
     }
 }

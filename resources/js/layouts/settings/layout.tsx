@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
 import { edit as editAppearance } from '@/routes/appearance';
+import { show as showBilling } from '@/routes/billing';
 import { edit as editLocale } from '@/routes/locale';
 import { show as more } from '@/routes/more';
 import { edit as editOrganization } from '@/routes/organization-settings';
@@ -22,6 +23,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         {
             title: t('settings:nav.shop'),
             href: editOrganization(),
+            icon: null,
+        },
+        {
+            title: t('settings:nav.billing'),
+            href: showBilling(),
             icon: null,
         },
         {

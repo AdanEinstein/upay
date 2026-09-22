@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CatalogIdentityController;
 use App\Http\Controllers\CatalogNoticeController;
@@ -51,3 +52,6 @@ Route::resource('promotions', PromotionController::class)->except(['show']);
 Route::get('more', MoreController::class)->name('more.show');
 Route::get('pix-key', [PixKeyController::class, 'edit'])->name('pix-key.edit');
 Route::put('pix-key', [PixKeyController::class, 'update'])->name('pix-key.update');
+
+Route::get('billing', [BillingController::class, 'show'])->name('billing.show');
+Route::post('billing/invoices/{invoice}/claim', [BillingController::class, 'claim'])->name('billing.claim');

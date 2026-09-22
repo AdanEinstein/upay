@@ -3,6 +3,7 @@
     "description": "Manage your profile and account settings",
     "nav": {
         "shop": "Shop",
+        "billing": "Subscription",
         "profile": "Profile",
         "security": "Security",
         "appearance": "Appearance",

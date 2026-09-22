@@ -498,5 +498,74 @@
         "open": "Abrir WhatsApp",
         "chargeMessage": "Olá, {{name}}! Passando para lembrar do seu saldo de {{amount}}. Você pode acompanhar e pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
         "inviteMessage": "Olá, {{name}}! Dá uma olhada nas novidades da {{store}}: {{link}}"
+    },
+    "billing": {
+        "title": "Assinatura",
+        "cycle": {
+            "monthly": "mensal",
+            "annual": "anual"
+        },
+        "dueOn": "Vence em {{date}}",
+        "overdueSince": "Venceu em {{date}}",
+        "rejected": "Pagamento não confirmado: {{reason}}",
+        "qrAlt": "QR Code PIX da cobrança",
+        "copyPix": "Copiar código PIX",
+        "copiedPix": "Código copiado",
+        "copied": "Código PIX copiado.",
+        "copyFailed": "Não foi possível copiar. Copie manualmente.",
+        "pixHint": "Pague pelo app do seu banco com PIX copia e cola ou QR Code. Depois, avise que pagou.",
+        "pixMissing": "O PIX de cobrança ainda não está disponível.",
+        "contactSupport": "Falar com o suporte",
+        "supportMessage": "Olá! Preciso do PIX para pagar a assinatura.",
+        "claimPending": "Aviso enviado. Vamos confirmar o pagamento em breve.",
+        "receipt": "Anexar comprovante (opcional)",
+        "receiptChosen": "Comprovante: {{name}}",
+        "claimButton": "Já paguei",
+        "history": "Histórico",
+        "status": {
+            "open": "Em aberto",
+            "claimed": "Em análise",
+            "paid": "Paga",
+            "canceled": "Cancelada"
+        },
+        "bannerDue": "Assinatura vence em {{date}}. Toque para pagar.",
+        "bannerOverdue": "Assinatura vencida em {{date}}. Toque para pagar.",
+        "statusLabel": "Status do plano",
+        "planCycle": "Plano · cobrança {{cycle}}",
+        "state": {
+            "active": "Ativo",
+            "claimed": "Pagamento em análise",
+            "overdue": "Em atraso",
+            "suspended": "Suspenso",
+            "canceled": "Cancelado"
+        },
+        "stateHint": {
+            "active": "Sua loja está funcionando normalmente.",
+            "claimed": "Recebemos seu aviso. Vamos conferir o pagamento.",
+            "overdue": "Pague para não perder o acesso à loja.",
+            "suspended": "O acesso à loja está bloqueado até o pagamento ser confirmado.",
+            "canceled": "Esta assinatura foi cancelada."
+        },
+        "ruler": {
+            "daysLeft_one": "Falta {{count}} dia para renovar",
+            "daysLeft_other": "Faltam {{count}} dias para renovar",
+            "daysToFirst_one": "Falta {{count}} dia para a primeira cobrança",
+            "daysToFirst_other": "Faltam {{count}} dias para a primeira cobrança",
+            "today": "Renova hoje",
+            "lateDays_one": "Venceu há {{count}} dia",
+            "lateDays_other": "Venceu há {{count}} dias",
+            "accessUntil": "Acesso até {{date}}",
+            "renews": "Renova em {{date}}",
+            "firstCharge": "1ª cobrança em {{date}}",
+            "wasDue": "Venceu em {{date}}"
+        },
+        "usage": "Uso do plano",
+        "upToDate": "Nenhuma cobrança em aberto.",
+        "noPlan": {
+            "title": "Você ainda não tem um plano",
+            "description": "Fale com o suporte para contratar um plano e liberar mais recursos.",
+            "message": "Olá! Quero contratar um plano."
+        },
+        "description": "Acompanhe seu plano, o uso e as cobranças."
     }
 }
