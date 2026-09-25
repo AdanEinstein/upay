@@ -36,6 +36,10 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $middleware->redirectUsersTo(function (Request $request) {
+            if ($request->routeIs('super-admin.*')) {
+                return route('super-admin.dashboard');
+            }
+
             $slug = $request->user()?->organization?->slug;
 
             return $slug ? route('dashboard', ['organization' => $slug]) : route('home');

@@ -92,3 +92,9 @@ test('database sessions do not record the super admin email as the session user 
 
     expect(DB::table('sessions')->where('id', 'super-admin-session')->value('user_id'))->toBeNull();
 });
+
+test('an authenticated super admin visiting the login screen is redirected to the dashboard', function () {
+    $this->actingAs(new SuperAdminUser(['id' => 'super@example.com']), 'super_admin');
+
+    $this->get(route('super-admin.login'))->assertRedirect(route('super-admin.dashboard'));
+});
