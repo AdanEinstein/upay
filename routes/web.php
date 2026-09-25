@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppManifestController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\OrganizationSettingsController;
 use App\Http\Controllers\PlanLimitController;
@@ -9,9 +10,16 @@ use App\Http\Controllers\PublicPaymentClaimController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\SetOrganizationContext;
+use App\Support\AppIcon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeController::class)->name('home');
+
+// No extension on the icon path: nginx serves *.png straight from public/ without reaching PHP.
+Route::get('{organization:slug}/manifest.webmanifest', [AppManifestController::class, 'manifest'])->name('app-manifest');
+Route::get('{organization:slug}/app-icon/{variant}', [AppManifestController::class, 'icon'])
+    ->whereIn('variant', array_keys(AppIcon::VARIANTS))
+    ->name('app-icon');
 
 require __DIR__.'/super-admin.php';
 
