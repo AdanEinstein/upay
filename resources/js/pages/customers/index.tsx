@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chip } from '@/components/shop/chip';
 import EmptyState from '@/components/shop/empty-state';
+import MoreButton from '@/components/shop/more-button';
 import ScreenTitle from '@/components/shop/screen-title';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,6 +42,9 @@ export default function CustomersIndex({
         return (
             <>
                 <Head title={t('customers.title')} />
+                <div className="flex justify-end px-5 pt-4 lg:hidden">
+                    <MoreButton />
+                </div>
                 <EmptyState
                     icon={<UserPlusIcon />}
                     title={t('customers.empty.title')}
@@ -61,7 +65,7 @@ export default function CustomersIndex({
             <Head title={t('customers.title')} />
             <ScreenTitle
                 action={
-                    <>
+                    <div className="flex items-center gap-2">
                         <Button
                             asChild
                             size="icon-sm"
@@ -80,7 +84,8 @@ export default function CustomersIndex({
                                 {t('customers.empty.action')}
                             </Link>
                         </Button>
-                    </>
+                        <MoreButton />
+                    </div>
                 }
             >
                 {t('customers.title')}

@@ -2,7 +2,6 @@ import { Head, Link } from '@inertiajs/react';
 import {
     BagIcon,
     ChartLineUpIcon,
-    DotsThreeCircleIcon,
     StorefrontIcon,
     ReceiptIcon,
     WarningIcon,
@@ -10,6 +9,7 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EmptyState from '@/components/shop/empty-state';
+import MoreButton from '@/components/shop/more-button';
 import ShareSheet from '@/components/shop/share-sheet';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ import { cn } from '@/lib/utils';
 import { publicDebtUrl } from '@/lib/whatsapp';
 import { show as catalog } from '@/routes/catalog';
 import { index as finance } from '@/routes/finance';
-import { show as more } from '@/routes/more';
 import { create as createSale, show as showSale } from '@/routes/sales';
 
 type Owed = {
@@ -105,11 +104,6 @@ export default function Home({
             label: 'home.shortcuts.catalog',
             href: catalog.url(),
         },
-        {
-            icon: DotsThreeCircleIcon,
-            label: 'home.shortcuts.more',
-            href: more.url(),
-        },
     ];
 
     return (
@@ -117,26 +111,38 @@ export default function Home({
             <Head title={t('nav.home')} />
 
             {!hasSales ? (
-                <EmptyState
-                    icon={<BagIcon />}
-                    title={t('home.empty.title')}
-                    description={t('home.empty.description')}
-                >
-                    <Button asChild size="lg" className="h-12 px-6 text-[15px]">
-                        <Link href={createSale.url()}>
-                            {t('home.empty.action')}
-                        </Link>
-                    </Button>
-                </EmptyState>
+                <>
+                    <div className="flex justify-end px-5 pt-4 lg:hidden">
+                        <MoreButton />
+                    </div>
+                    <EmptyState
+                        icon={<BagIcon />}
+                        title={t('home.empty.title')}
+                        description={t('home.empty.description')}
+                    >
+                        <Button
+                            asChild
+                            size="lg"
+                            className="h-12 px-6 text-[15px]"
+                        >
+                            <Link href={createSale.url()}>
+                                {t('home.empty.action')}
+                            </Link>
+                        </Button>
+                    </EmptyState>
+                </>
             ) : (
                 <div className="flex flex-col gap-[18px] px-5 pt-5 lg:gap-5 lg:px-0 lg:pt-4">
-                    <div>
-                        <h1 className="font-heading text-xl font-bold lg:text-2xl">
-                            {t('home.greeting', { name: tenant?.name })}
-                        </h1>
-                        <p className="text-muted-foreground text-[13px] lg:text-sm">
-                            {t('home.subtitle')}
-                        </p>
+                    <div className="flex items-start justify-between gap-3">
+                        <div>
+                            <h1 className="font-heading text-xl font-bold lg:text-2xl">
+                                {t('home.greeting', { name: tenant?.name })}
+                            </h1>
+                            <p className="text-muted-foreground text-[13px] lg:text-sm">
+                                {t('home.subtitle')}
+                            </p>
+                        </div>
+                        <MoreButton />
                     </div>
 
                     <div className="flex [scrollbar-width:none] gap-2 overflow-x-auto lg:hidden">
