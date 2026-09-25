@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chip, ChipRow } from '@/components/shop/chip';
 import EmptyState from '@/components/shop/empty-state';
+import MoreButton from '@/components/shop/more-button';
 import ProductImage from '@/components/shop/product-image';
 import ScreenTitle from '@/components/shop/screen-title';
 import { Button } from '@/components/ui/button';
@@ -87,6 +88,9 @@ export default function ProductsIndex({ products }: { products: Product[] }) {
         return (
             <>
                 <Head title={t('products.title')} />
+                <div className="flex justify-end px-5 pt-4 lg:hidden">
+                    <MoreButton />
+                </div>
                 <EmptyState
                     icon={<PackageIcon />}
                     title={t('products.empty.title')}
@@ -145,6 +149,7 @@ export default function ProductsIndex({ products }: { products: Product[] }) {
                                 </span>
                             </Link>
                         </Button>
+                        <MoreButton />
                     </div>
                 }
             >

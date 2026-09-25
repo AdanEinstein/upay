@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chip, ChipRow } from '@/components/shop/chip';
 import EmptyState from '@/components/shop/empty-state';
+import MoreButton from '@/components/shop/more-button';
 import ScreenTitle from '@/components/shop/screen-title';
 import { StatusBadge, useDueLabel } from '@/components/shop/status-badge';
 import type { SettlementStatus } from '@/components/shop/status-badge';
@@ -53,27 +54,39 @@ export default function SalesIndex({ sales }: { sales: Sale[] }) {
             <Head title={t('sales.title')} />
 
             {sales.length === 0 ? (
-                <EmptyState
-                    icon={<BagIcon />}
-                    title={t('sales.empty.title')}
-                    description={t('sales.empty.description')}
-                >
-                    <Button asChild size="lg" className="h-12 px-6 text-[15px]">
-                        <Link href={create.url()}>
-                            {t('sales.empty.action')}
-                        </Link>
-                    </Button>
-                </EmptyState>
+                <>
+                    <div className="flex justify-end px-5 pt-4 lg:hidden">
+                        <MoreButton />
+                    </div>
+                    <EmptyState
+                        icon={<BagIcon />}
+                        title={t('sales.empty.title')}
+                        description={t('sales.empty.description')}
+                    >
+                        <Button
+                            asChild
+                            size="lg"
+                            className="h-12 px-6 text-[15px]"
+                        >
+                            <Link href={create.url()}>
+                                {t('sales.empty.action')}
+                            </Link>
+                        </Button>
+                    </EmptyState>
+                </>
             ) : (
                 <>
                     <ScreenTitle
                         action={
-                            <Button asChild size="sm" variant="outline">
-                                <Link href={receivables.url()}>
-                                    <ReceiptIcon />
-                                    {t('sales.receivables')}
-                                </Link>
-                            </Button>
+                            <div className="flex items-center gap-2">
+                                <Button asChild size="sm" variant="outline">
+                                    <Link href={receivables.url()}>
+                                        <ReceiptIcon />
+                                        {t('sales.receivables')}
+                                    </Link>
+                                </Button>
+                                <MoreButton />
+                            </div>
                         }
                     >
                         {t('sales.title')}
