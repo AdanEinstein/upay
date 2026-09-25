@@ -72,8 +72,7 @@
         "chargeOverdueMessage": "Olá, {{name}}! Passando para lembrar que sua parcela de {{amount}} está em atraso. Você pode pagar por PIX aqui: {{link}} — qualquer dúvida, me chama!",
         "shortcuts": {
             "finance": "Financeiro",
-            "catalog": "Catálogo",
-            "more": "Mais"
+            "catalog": "Catálogo"
         },
         "empty": {
             "title": "Sua loja está pronta",

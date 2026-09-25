@@ -72,8 +72,7 @@
         "chargeOverdueMessage": "Hi, {{name}}! Just a reminder that your installment of {{amount}} is overdue. You can pay by PIX here: {{link}} — any questions, just ask!",
         "shortcuts": {
             "finance": "Finance",
-            "catalog": "Catalog",
-            "more": "More"
+            "catalog": "Catalog"
         },
         "empty": {
             "title": "Your shop is ready",

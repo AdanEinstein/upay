@@ -2,7 +2,6 @@ import { Head, Link } from '@inertiajs/react';
 import {
     BagIcon,
     ChartLineUpIcon,
-    DotsThreeCircleIcon,
     StorefrontIcon,
     ReceiptIcon,
     WarningIcon,
@@ -20,7 +19,6 @@ import { cn } from '@/lib/utils';
 import { publicDebtUrl } from '@/lib/whatsapp';
 import { show as catalog } from '@/routes/catalog';
 import { index as finance } from '@/routes/finance';
-import { show as more } from '@/routes/more';
 import { create as createSale, show as showSale } from '@/routes/sales';
 
 type Owed = {
@@ -105,11 +103,6 @@ export default function Home({
             icon: StorefrontIcon,
             label: 'home.shortcuts.catalog',
             href: catalog.url(),
-        },
-        {
-            icon: DotsThreeCircleIcon,
-            label: 'home.shortcuts.more',
-            href: more.url(),
         },
     ];
 
