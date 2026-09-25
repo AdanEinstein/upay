@@ -1,19 +1,17 @@
-# Importado do field-core como ponto de partida (runner self-hosted, deploy
-# via docker compose). Desativado no repo-template (workflow_dispatch apenas)
-# pra não gastar Actions minutes aqui — e porque o template não tem
-# docker-compose.dev.yml/secrets de deploy próprios. Adapte nome do app,
-# secrets e docker-compose.*.yml em projetos derivados antes de reativar os
-# triggers push/tags.
 name: Deploy Development
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 concurrency:
   group: deploy-development
-  # cancel-in-progress killed a running migrate:fresh mid-drop/seed when a
-  # second push landed, corrupting the org table -> UNIQUE slug crash. Queue
-  # instead of cancelling so each deploy's migrate:fresh always finishes.
+  # cancelling mid-deploy can kill `migrate --force` partway through. Queue
+  # instead so each deploy finishes.
   cancel-in-progress: false
 
 jobs:
@@ -23,39 +21,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      # ponytail: no shivammathur/setup-php here -- that action installs via
-      # apt/sudo, which hangs on a self-hosted runner without root.
-      #
-      # Build the CI toolchain image once (cached across runs -- same
-      # Dockerfile content = same layer cache hit), then run composer/npm
-      # AS THE HOST USER (--user), so vendor/, node_modules/, public/build/
-      # and the wayfinder-generated resources/js/actions|routes/ come out
-      # owned by the runner user instead of root. Learned the hard way:
-      # root-owned output in the workspace breaks actions/checkout's own
-      # cleanup on the next run.
+      # ponytail: no shivammathur/setup-php here -- it installs via apt/sudo,
+      # which hangs on a self-hosted runner without root. Build a CI toolchain
+      # image instead (layer-cached across runs) and run it AS THE HOST USER
+      # (--user) so vendor/, node_modules/, public/build/ and the wayfinder
+      # output stay owned by the runner -- root-owned files in the workspace
+      # break actions/checkout's cleanup on the next run.
       - name: Build CI toolchain image
         run: |
-          cat > /tmp/field-core-ci.Dockerfile << 'EOF'
+          cat > "$RUNNER_TEMP/upay-ci.Dockerfile" << 'EOF'
           FROM php:8.4-cli-alpine
           RUN apk add --no-cache nodejs npm git unzip curl \
+              && npm install -g pnpm@10.30.3 \
               && curl -sSLf -o /usr/local/bin/install-php-extensions \
                   https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
               && chmod +x /usr/local/bin/install-php-extensions \
               && install-php-extensions mbstring xml pdo_sqlite sqlite3 gd \
               && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           EOF
-          docker build -t field-core-ci:8.4 -f /tmp/field-core-ci.Dockerfile /tmp
+          docker build -t upay-ci:8.4 -f "$RUNNER_TEMP/upay-ci.Dockerfile" "$RUNNER_TEMP"
 
       - name: Install deps, build assets, lint/type-check/test
         run: |
-          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
-            -v "$PWD":/app -w /app field-core-ci:8.4 sh -c '
+          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e APP_ENV=local \
+            -v "$PWD":/app -w /app upay-ci:8.4 sh -c '
               set -e
               composer install --no-interaction --prefer-dist --optimize-autoloader
-              npm ci
+              pnpm install --frozen-lockfile
               cp .env.example .env
               php artisan key:generate
-              npm run build
+              pnpm run build
               composer ci:check
             '
 
@@ -71,14 +66,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      # Values are written unquoted: the compose files read this with
+      # `format: raw` (literal values, no `$` interpolation, no quote parsing).
       - name: Write .env.development
         env:
           APP_KEY: ${{ secrets.APP_KEY }}
           APP_URL: ${{ secrets.APP_URL }}
+          PASSKEYS_USER_HANDLE_SECRET: ${{ secrets.PASSKEYS_USER_HANDLE_SECRET }}
           SUPER_ADMIN_NAME: ${{ secrets.SUPER_ADMIN_NAME }}
-          SUPER_ADMIN_USERNAME: ${{ secrets.SUPER_ADMIN_USERNAME }}
           SUPER_ADMIN_EMAIL: ${{ secrets.SUPER_ADMIN_EMAIL }}
-          SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD }}
+          SUPER_ADMIN_PASSWORD_HASH: ${{ secrets.SUPER_ADMIN_PASSWORD_HASH }}
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -95,12 +92,14 @@ jobs:
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
           MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
-          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
-          VAPID_SUBJECT: ${{ secrets.VAPID_SUBJECT }}
+          SUPPORT_WHATSAPP: ${{ secrets.SUPPORT_WHATSAPP }}
+          BILLING_PIX_KEY: ${{ secrets.BILLING_PIX_KEY }}
+          BILLING_PIX_KEY_TYPE: ${{ secrets.BILLING_PIX_KEY_TYPE }}
+          BILLING_MERCHANT_NAME: ${{ secrets.BILLING_MERCHANT_NAME }}
         run: |
+          umask 077
           cat > .env.development <<EOF
-          APP_NAME=FieldCore
+          APP_NAME=Upay
           APP_ENV=development
           APP_DEBUG=true
           APP_KEY=${APP_KEY}
@@ -108,13 +107,17 @@ jobs:
 
           APP_LOCALE=pt_BR
           APP_FALLBACK_LOCALE=en
+          APP_FAKER_LOCALE=pt_BR
+
+          PASSKEYS_USER_HANDLE_SECRET=${PASSKEYS_USER_HANDLE_SECRET}
 
           SUPER_ADMIN_NAME=${SUPER_ADMIN_NAME}
-          SUPER_ADMIN_USERNAME=${SUPER_ADMIN_USERNAME}
           SUPER_ADMIN_EMAIL=${SUPER_ADMIN_EMAIL}
-          SUPER_ADMIN_PASSWORD=${SUPER_ADMIN_PASSWORD}
+          SUPER_ADMIN_PASSWORD_HASH=${SUPER_ADMIN_PASSWORD_HASH}
 
+          # stderr -> docker compose logs
           LOG_CHANNEL=stack
+          LOG_STACK=stderr
           LOG_LEVEL=debug
 
           DB_CONNECTION=pgsql
@@ -129,15 +132,11 @@ jobs:
           SESSION_SAME_SITE=lax
           SESSION_SECURE_COOKIE=true
 
-          SANCTUM_TOKEN_PREFIX=fldc_
-
           BROADCAST_CONNECTION=reverb
-          FILESYSTEM_DISK=local
+          # uploads on the upay-dev-storage docker volume, served via /storage
+          FILESYSTEM_DISK=public
           QUEUE_CONNECTION=database
           CACHE_STORE=database
-
-          # fresh demo data on every development deploy (see docker/entrypoint.sh)
-          SEED_DEMO_DATA=true
 
           REVERB_APP_ID=${REVERB_APP_ID}
           REVERB_APP_KEY=${REVERB_APP_KEY}
@@ -158,32 +157,30 @@ jobs:
           MAIL_USERNAME=${MAIL_USERNAME}
           MAIL_PASSWORD=${MAIL_PASSWORD}
           MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
-          MAIL_FROM_NAME=FieldCore
+          MAIL_FROM_NAME=Upay
           RESEND_API_KEY=${RESEND_API_KEY}
 
-          VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
-          VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
-          VAPID_SUBJECT=${VAPID_SUBJECT}
+          SUPPORT_WHATSAPP=${SUPPORT_WHATSAPP}
+
+          BILLING_PIX_KEY=${BILLING_PIX_KEY}
+          BILLING_PIX_KEY_TYPE=${BILLING_PIX_KEY_TYPE}
+          BILLING_MERCHANT_NAME=${BILLING_MERCHANT_NAME}
           EOF
 
       - name: Build image
         env:
-          VITE_APP_NAME: FieldCore
           VITE_REVERB_APP_KEY: ${{ secrets.REVERB_APP_KEY }}
           VITE_REVERB_HOST: ${{ secrets.REVERB_HOST }}
           VITE_REVERB_PORT: ${{ secrets.REVERB_PORT }}
           VITE_REVERB_SCHEME: ${{ secrets.REVERB_SCHEME }}
-          VITE_VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
         run: |
           docker build \
-            --build-arg VITE_APP_NAME="${VITE_APP_NAME}" \
+            --build-arg VITE_APP_NAME=Upay \
             --build-arg VITE_REVERB_APP_KEY="${VITE_REVERB_APP_KEY}" \
             --build-arg VITE_REVERB_HOST="${VITE_REVERB_HOST}" \
             --build-arg VITE_REVERB_PORT="${VITE_REVERB_PORT}" \
             --build-arg VITE_REVERB_SCHEME="${VITE_REVERB_SCHEME}" \
-            --build-arg VITE_VAPID_PUBLIC_KEY="${VITE_VAPID_PUBLIC_KEY}" \
-            --build-arg INCLUDE_DEV_DEPS=true \
-            -t field-core:latest \
+            -t upay:dev \
             .
 
       - name: Deploy
@@ -192,22 +189,23 @@ jobs:
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: docker compose -f docker-compose.dev.yml up -d
+        # --wait blocks until every healthcheck passes (app's start_period
+        # covers the migrations), so a broken release fails the job here.
+        run: docker compose -f docker-compose.dev.yml up -d --wait --wait-timeout 300
 
       - name: Dump container logs on failure
         if: failure()
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: docker compose -f docker-compose.dev.yml logs --tail=100
 
       - name: Health check
         env:
           PORT: ${{ secrets.PORT }}
-        run: |
-          sleep 10
-          curl -f http://127.0.0.1:${PORT}/up || exit 1
+        run: curl -fsS --retry 5 --retry-delay 3 --retry-all-errors "http://127.0.0.1:${PORT:-8011}/up" > /dev/null
 
       - name: Clean up unused docker resources
         if: always()
         run: |
-          docker container prune -f
           docker image prune -f
           docker builder prune -f --filter "until=72h"

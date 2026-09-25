@@ -30,7 +30,19 @@ return [
 
     'disks' => [
 
-        'local' => [
+        // Production swaps these two disks to Supabase Storage (S3 API) by
+        // setting the bucket envs; controllers keep using 'local'/'public'.
+        'local' => env('SUPABASE_PRIVATE_BUCKET') ? [
+            'driver' => 's3',
+            'key' => env('SUPABASE_S3_KEY'),
+            'secret' => env('SUPABASE_S3_SECRET'),
+            'region' => env('SUPABASE_S3_REGION'),
+            'bucket' => env('SUPABASE_PRIVATE_BUCKET'),
+            'endpoint' => env('SUPABASE_S3_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
+            'report' => false,
+        ] : [
             'driver' => 'local',
             'root' => storage_path('app/private'),
             'serve' => true,
@@ -38,7 +50,19 @@ return [
             'report' => false,
         ],
 
-        'public' => [
+        'public' => env('SUPABASE_PUBLIC_BUCKET') ? [
+            'driver' => 's3',
+            'key' => env('SUPABASE_S3_KEY'),
+            'secret' => env('SUPABASE_S3_SECRET'),
+            'region' => env('SUPABASE_S3_REGION'),
+            'bucket' => env('SUPABASE_PUBLIC_BUCKET'),
+            'endpoint' => env('SUPABASE_S3_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'url' => rtrim((string) env('SUPABASE_URL'), '/').'/storage/v1/object/public/'.env('SUPABASE_PUBLIC_BUCKET'),
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ] : [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => rtrim((string) env('APP_URL', 'http://localhost'), '/').'/storage',

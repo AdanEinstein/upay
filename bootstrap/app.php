@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Containers only listen on 127.0.0.1, so the host nginx (TLS
+        // terminator) is the only thing that can reach them.
+        $middleware->trustProxies(at: '*');
+
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->redirectGuestsTo(function (Request $request) {

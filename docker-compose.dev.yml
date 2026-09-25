@@ -1,0 +1,88 @@
+name: upay-dev
+# deploy: development (.github/workflows/deploy-development.yml)
+
+x-app-image: &app-image upay:dev
+
+x-app-env: &app-env
+    # raw: no `$` interpolation, so values like the bcrypt
+    # SUPER_ADMIN_PASSWORD_HASH reach the app intact (quotes don't stop it).
+    - path: .env.development
+      format: raw
+
+services:
+    db:
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_DB: ${DB_DATABASE:-upay}
+            POSTGRES_USER: ${DB_USERNAME:-upay}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+        volumes:
+            - upay-dev-pgdata:/var/lib/postgresql/data
+        restart: unless-stopped
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME:-upay}']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    app:
+        image: *app-image
+        env_file: *app-env
+        ports:
+            # loopback only -- the host nginx is the sole public entry point (also
+            # what makes bootstrap/app.php's trustProxies('*') safe).
+            - '127.0.0.1:${PORT:-8011}:80'
+        volumes:
+            - upay-dev-storage:/var/www/html/storage/app
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+        healthcheck:
+            test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1/up']
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 180s
+
+    queue:
+        image: *app-image
+        env_file: *app-env
+        environment:
+            APP_ROLE: queue
+        volumes:
+            - upay-dev-storage:/var/www/html/storage/app
+        restart: unless-stopped
+        depends_on:
+            app:
+                condition: service_healthy
+
+    reverb:
+        image: *app-image
+        env_file: *app-env
+        environment:
+            APP_ROLE: reverb
+        ports:
+            # fixed VPS-internal port the host nginx proxies to; REVERB_PORT (secret)
+            # is the public port baked into VITE_REVERB_PORT -- different values.
+            - '127.0.0.1:${REVERB_LOCAL_PORT:-8095}:8080'
+        restart: unless-stopped
+        depends_on:
+            app:
+                condition: service_healthy
+
+    scheduler:
+        image: *app-image
+        env_file: *app-env
+        environment:
+            APP_ROLE: scheduler
+        volumes:
+            - upay-dev-storage:/var/www/html/storage/app
+        restart: unless-stopped
+        depends_on:
+            app:
+                condition: service_healthy
+
+volumes:
+    upay-dev-pgdata:
+    upay-dev-storage:

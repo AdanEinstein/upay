@@ -1,0 +1,80 @@
+name: upay-prod
+# deploy: production (.github/workflows/deploy-production.yml)
+# Postgres and uploads live on Supabase; only redis runs locally.
+
+x-app-image: &app-image upay:${IMAGE_TAG:-latest}
+
+x-app-env: &app-env
+    # raw: no `$` interpolation, so values like the bcrypt
+    # SUPER_ADMIN_PASSWORD_HASH reach the app intact (quotes don't stop it).
+    - path: .env.production
+      format: raw
+
+services:
+    redis:
+        image: redis:7-alpine
+        restart: unless-stopped
+        volumes:
+            - upay-prod-redis:/data
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            interval: 10s
+            timeout: 3s
+            retries: 5
+
+    app:
+        image: *app-image
+        env_file: *app-env
+        ports:
+            # loopback only -- the host nginx is the sole public entry point (also
+            # what makes bootstrap/app.php's trustProxies('*') safe).
+            - '127.0.0.1:${PORT:-8010}:80'
+        restart: unless-stopped
+        depends_on:
+            redis:
+                condition: service_healthy
+        healthcheck:
+            test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1/up']
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            # migrate --force over the Supabase pooler can be slow -- give the
+            # entrypoint room before failures start counting.
+            start_period: 180s
+
+    queue:
+        image: *app-image
+        env_file: *app-env
+        environment:
+            APP_ROLE: queue
+        restart: unless-stopped
+        depends_on:
+            app:
+                condition: service_healthy
+
+    reverb:
+        image: *app-image
+        env_file: *app-env
+        environment:
+            APP_ROLE: reverb
+        ports:
+            # fixed VPS-internal port the host nginx proxies to; REVERB_PORT (secret)
+            # is the public port baked into VITE_REVERB_PORT -- different values.
+            - '127.0.0.1:${REVERB_LOCAL_PORT:-8094}:8080'
+        restart: unless-stopped
+        depends_on:
+            app:
+                condition: service_healthy
+
+    scheduler:
+        image: *app-image
+        env_file: *app-env
+        environment:
+            APP_ROLE: scheduler
+        restart: unless-stopped
+        depends_on:
+            app:
+                condition: service_healthy
+
+volumes:
+    upay-prod-redis:
