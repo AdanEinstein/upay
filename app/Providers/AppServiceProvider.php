@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Auth\SuperAdminUserProvider;
 use App\Models\Organization;
+use App\Session\TenantUserDatabaseSessionHandler;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Connection;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -49,6 +51,13 @@ class AppServiceProvider extends ServiceProvider
         $this->guardSuperAdminCredentials();
 
         Auth::provider('super_admin', fn () => new SuperAdminUserProvider);
+
+        Session::extend('database', fn ($app) => new TenantUserDatabaseSessionHandler(
+            $app['db']->connection($app['config']['session.connection']),
+            $app['config']['session.table'],
+            $app['config']['session.lifetime'],
+            $app,
+        ));
 
         RateLimiter::for('super-admin-login', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());

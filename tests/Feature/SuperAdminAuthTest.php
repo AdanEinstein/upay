@@ -3,6 +3,7 @@
 use App\Auth\SuperAdminUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -80,4 +81,14 @@ test('super admin can log out', function () {
 test('the organizations area requires super admin authentication', function () {
     $this->get(route('super-admin.organizations.index'))
         ->assertRedirect(route('super-admin.login'));
+});
+
+test('database sessions do not record the super admin email as the session user id', function () {
+    config(['session.driver' => 'database']);
+
+    $this->actingAs(new SuperAdminUser(['id' => 'super@example.com']), 'super_admin');
+
+    app('session')->driver('database')->getHandler()->write('super-admin-session', 'payload');
+
+    expect(DB::table('sessions')->where('id', 'super-admin-session')->value('user_id'))->toBeNull();
 });
