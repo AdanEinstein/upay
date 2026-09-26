@@ -11,6 +11,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Set by resources/js/lib/virtual-keyboard.ts while the mobile keyboard is up. */
+@custom-variant keyboard-open (&:is([data-keyboard-open] *));
+
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
@@ -74,6 +77,10 @@
 }
 
 :root {
+    /* Height of the mobile on-screen keyboard over the layout viewport, kept
+       up to date by resources/js/lib/virtual-keyboard.ts. */
+    --keyboard-inset: 0px;
+
     /* Tenant brand color defaults — match Organization model column defaults.
        Overridden inline per request once a tenant is resolved. */
     --tenant-primary: #3667f6;
@@ -173,6 +180,14 @@
 
     body {
         @apply bg-background text-foreground;
+    }
+
+    /* Leave room for sticky footers when a field scrolls into view above the
+       mobile keyboard. */
+    input,
+    textarea,
+    [contenteditable] {
+        scroll-margin-block: 6rem;
     }
     html {
         @apply font-sans;

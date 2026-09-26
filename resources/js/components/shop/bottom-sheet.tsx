@@ -31,6 +31,8 @@ export default function BottomSheet({
                 className={cn(
                     brandScope,
                     'mx-auto max-w-md gap-0 rounded-t-3xl pb-[env(safe-area-inset-bottom)]',
+                    // Mobile: ride above the on-screen keyboard (iOS keeps it over fixed elements).
+                    'max-h-[calc(100svh-var(--keyboard-inset)-1rem)] overflow-y-auto data-[side=bottom]:bottom-(--keyboard-inset)',
                     // Desktop: centered modal instead of a bottom sheet.
                     'lg:pb-0 lg:data-[side=bottom]:inset-x-auto lg:data-[side=bottom]:top-1/2 lg:data-[side=bottom]:bottom-auto lg:data-[side=bottom]:left-1/2 lg:data-[side=bottom]:w-[440px] lg:data-[side=bottom]:-translate-x-1/2 lg:data-[side=bottom]:-translate-y-1/2 lg:data-[side=bottom]:rounded-2xl lg:data-[side=bottom]:border',
                 )}
