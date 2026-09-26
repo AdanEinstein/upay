@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { CaretDownIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
@@ -9,6 +9,7 @@ import Textarea from '@/components/shop/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useQueueWhenOffline } from '@/hooks/use-offline-queue';
 import { maskDocument, maskPhone } from '@/lib/mask';
 import { cn } from '@/lib/utils';
 import { formatPhone } from '@/lib/whatsapp';
@@ -29,6 +30,7 @@ export default function CustomerForm({
     customer: Customer | null;
 }) {
     const { t } = useTranslation('shop');
+    const queueWhenOffline = useQueueWhenOffline();
     const [more, setMore] = useState(
         Boolean(customer?.document || customer?.address),
     );
@@ -42,6 +44,26 @@ export default function CustomerForm({
 
     function submit(event: FormEvent) {
         event.preventDefault();
+
+        if (
+            queueWhenOffline({
+                method: customer ? 'put' : 'post',
+                url: customer
+                    ? update.url({ customer: customer.id })
+                    : store.url(),
+                data: form.data,
+                label: t(
+                    customer
+                        ? 'offline.labels.customerEdit'
+                        : 'offline.labels.customerNew',
+                    { name: form.data.name },
+                ),
+            })
+        ) {
+            router.visit(index.url());
+
+            return;
+        }
 
         if (customer) {
             form.put(update.url({ customer: customer.id }));

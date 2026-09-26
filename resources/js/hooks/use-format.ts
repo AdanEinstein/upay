@@ -11,5 +11,10 @@ export function useFormat() {
         money: (cents: number) => formatMoney(cents, locale),
         shortDate: (isoDate: string) => formatShortDate(isoDate, locale),
         date: (isoDate: string) => formatDate(isoDate, locale),
+        time: (isoDateTime: string) =>
+            new Date(isoDateTime).toLocaleTimeString(locale, {
+                hour: '2-digit',
+                minute: '2-digit',
+            }),
     };
 }

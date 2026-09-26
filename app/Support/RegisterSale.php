@@ -16,9 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Creates a sale with its items, stock movements, installments and any
- * immediate payment in a single transaction.
+ * immediate payment in a single transaction. A sale queued offline carries
+ * `occurred_at`, so it is dated when it happened rather than when it synced.
  *
- * @phpstan-type SaleData array{customer_id: int|null, items: list<array{product_id: int, variant_id: int|null, quantity: int}>, payment_type: string, payment_method: string, installments?: int|null, down_payment_cents?: int|null, first_due_date?: string|null}
+ * @phpstan-type SaleData array{customer_id: int|null, items: list<array{product_id: int, variant_id: int|null, quantity: int}>, payment_type: string, payment_method: string, installments?: int|null, down_payment_cents?: int|null, first_due_date?: string|null, occurred_at?: string|null}
  */
 class RegisterSale
 {
@@ -27,7 +28,11 @@ class RegisterSale
      */
     public function handle(array $data): Sale
     {
-        return DB::transaction(function () use ($data): Sale {
+        $soldAt = isset($data['occurred_at'])
+            ? CarbonImmutable::parse($data['occurred_at'])->setTimezone(config('app.timezone'))->min(CarbonImmutable::now())
+            : CarbonImmutable::now();
+
+        return DB::transaction(function () use ($data, $soldAt): Sale {
             $lines = [];
             $total = 0;
 
@@ -49,7 +54,7 @@ class RegisterSale
                 'customer_id' => $data['customer_id'],
                 'total_cents' => $total,
                 'status' => SaleStatus::Completed,
-                'sold_at' => now(),
+                'sold_at' => $soldAt,
             ]);
 
             foreach ($lines as $line) {
@@ -71,7 +76,7 @@ class RegisterSale
                 ]);
             }
 
-            $this->createInstallments($sale, $data);
+            $this->createInstallments($sale, $data, $soldAt);
 
             return $sale;
         });
@@ -80,16 +85,16 @@ class RegisterSale
     /**
      * @param  array<string, mixed>  $data
      */
-    private function createInstallments(Sale $sale, array $data): void
+    private function createInstallments(Sale $sale, array $data, CarbonImmutable $soldAt): void
     {
         $method = PaymentMethod::from($data['payment_method']);
         $total = $sale->total_cents;
 
         if ($data['payment_type'] === 'avista') {
-            $this->installment($sale, 1, $total, today())->payments()->create([
+            $this->installment($sale, 1, $total, $soldAt->startOfDay())->payments()->create([
                 'amount_cents' => $total,
                 'method' => $method,
-                'paid_at' => now(),
+                'paid_at' => $soldAt,
             ]);
 
             return;
@@ -97,7 +102,7 @@ class RegisterSale
 
         if ($data['payment_type'] === 'fiado') {
             // ponytail: fiado has no due-date field in the design; default to 30 days.
-            $this->installment($sale, 1, $total, today()->addDays(30));
+            $this->installment($sale, 1, $total, $soldAt->startOfDay()->addDays(30));
 
             return;
         }
@@ -107,14 +112,14 @@ class RegisterSale
         $rest = $total - $entry;
 
         if ($entry > 0) {
-            $this->installment($sale, 0, $entry, today())->payments()->create([
+            $this->installment($sale, 0, $entry, $soldAt->startOfDay())->payments()->create([
                 'amount_cents' => $entry,
                 'method' => $method,
-                'paid_at' => now(),
+                'paid_at' => $soldAt,
             ]);
         }
 
-        $firstDue = CarbonImmutable::parse($data['first_due_date'] ?? today()->addMonth()->toDateString());
+        $firstDue = CarbonImmutable::parse($data['first_due_date'] ?? $soldAt->addMonth()->toDateString());
         $base = (int) round($rest / $count);
 
         for ($number = 1; $number <= $count; $number++) {

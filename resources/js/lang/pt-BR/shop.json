@@ -24,7 +24,6 @@
         "saving": "Salvando…",
         "delete": "Excluir",
         "optional": "opcional",
-        "offline": "Sem conexão, mostrando dados salvos",
         "noResults": "Nada encontrado.",
         "today": "Hoje"
     },
@@ -570,5 +569,41 @@
             "message": "Olá! Quero contratar um plano."
         },
         "description": "Acompanhe seu plano, o uso e as cobranças."
+    },
+    "offline": {
+        "banner": "Sem conexão",
+        "bannerSince": "Sem conexão · dados de {{time}}",
+        "queuedCount_one": "{{count}} ação na fila",
+        "queuedCount_other": "{{count}} ações na fila",
+        "sending_one": "Enviando {{count}} ação…",
+        "sending_other": "Enviando {{count}} ações…",
+        "failed_one": "{{count}} ação não foi enviada",
+        "failed_other": "{{count}} ações não foram enviadas",
+        "view": "Ver",
+        "queued": "Salvo. Será enviado quando a conexão voltar.",
+        "sent_one": "{{count}} ação feita offline foi enviada.",
+        "sent_other": "{{count}} ações feitas offline foram enviadas.",
+        "loginAgain": "Sua sessão expirou. Entre de novo para enviar as ações da fila.",
+        "needsConnection": "Isso precisa de conexão. Tente de novo quando estiver online.",
+        "logoutConfirm_one": "{{count}} ação ainda não foi enviada e será descartada se você sair. Sair mesmo assim?",
+        "logoutConfirm_other": "{{count}} ações ainda não foram enviadas e serão descartadas se você sair. Sair mesmo assim?",
+        "sheetTitle": "Ações na fila",
+        "sheetDescription": "Feitas sem conexão. São enviadas sozinhas, na ordem, quando a conexão voltar.",
+        "waiting": "Aguardando conexão",
+        "discard": "Descartar",
+        "retry": "Tentar de novo",
+        "rejected": "Não foi possível registrar.",
+        "planLimit": "Limite de clientes do plano atingido.",
+        "labels": {
+            "sale": "Venda de {{total}} · {{customer}}",
+            "payment": "Recebimento de {{amount}} · {{customer}}",
+            "expense": "Despesa paga: {{description}} · {{amount}}",
+            "customerNew": "Novo cliente: {{name}}",
+            "customerEdit": "Cliente editado: {{name}}",
+            "stock_one": "+{{count}} unidade em {{product}}",
+            "stock_other": "+{{count}} unidades em {{product}}",
+            "noCustomer": "sem cliente"
+        },
+        "notSaved": "Esta tela ainda não foi salva para uso offline. Abra-a uma vez com conexão."
     }
 }

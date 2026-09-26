@@ -6,11 +6,13 @@ use App\Models\Organization;
 use App\Support\AppIcon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 /**
- * Web app manifest and icons per organization, so the installed app carries
- * the store's brand colors. Public on purpose: browsers fetch the manifest and
- * its icons without cookies.
+ * Web app manifest, icons and offline page per organization, so the installed
+ * app carries the store's brand colors. Public on purpose: browsers fetch the
+ * manifest and its icons without cookies, and the service worker caches the
+ * offline page whatever the session state.
  */
 class AppManifestController extends Controller
 {
@@ -43,6 +45,21 @@ class AppManifestController extends Controller
         return response((new AppIcon($organization))->png($variant), headers: [
             'Content-Type' => 'image/png',
             'Cache-Control' => 'public, max-age=31536000, immutable',
+        ]);
+    }
+
+    /**
+     * Shown by public/sw.js when a navigation fails for lack of connection.
+     * Self-contained (inline icon and styles) because nothing else can load offline.
+     */
+    public function offline(Organization $organization): View
+    {
+        $icon = new AppIcon($organization);
+
+        return view('offline', [
+            'background' => $icon->background(),
+            'foreground' => $icon->foreground(),
+            'iconDataUri' => 'data:image/png;base64,'.base64_encode($icon->png('192')),
         ]);
     }
 }

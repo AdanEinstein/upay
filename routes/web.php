@@ -8,18 +8,21 @@ use App\Http\Controllers\PublicCatalogController;
 use App\Http\Controllers\PublicDebtController;
 use App\Http\Controllers\PublicPaymentClaimController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ServiceWorkerController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\SetOrganizationContext;
 use App\Support\AppIcon;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeController::class)->name('home');
+Route::get('service-worker', ServiceWorkerController::class)->name('service-worker');
 
 // No extension on the icon path: nginx serves *.png straight from public/ without reaching PHP.
 Route::get('{organization:slug}/manifest.webmanifest', [AppManifestController::class, 'manifest'])->name('app-manifest');
 Route::get('{organization:slug}/app-icon/{variant}', [AppManifestController::class, 'icon'])
     ->whereIn('variant', array_keys(AppIcon::VARIANTS))
     ->name('app-icon');
+Route::get('{organization:slug}/offline', [AppManifestController::class, 'offline'])->name('app-offline');
 
 require __DIR__.'/super-admin.php';
 

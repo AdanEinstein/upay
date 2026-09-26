@@ -6,7 +6,7 @@ export const echoEnabled = Boolean(import.meta.env.VITE_REVERB_APP_KEY);
 
 // The app has no <meta name="csrf-token">, and a token baked in at boot would go
 // stale after login, so read the XSRF cookie fresh on every channel authorization.
-function xsrfToken(): string {
+export function xsrfToken(): string {
     const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
 
     return match ? decodeURIComponent(match[1]) : '';

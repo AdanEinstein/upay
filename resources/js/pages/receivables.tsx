@@ -3,6 +3,7 @@ import { CheckIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '@/components/shop/page-header';
 import { useFormat } from '@/hooks/use-format';
+import { useQueueWhenOffline } from '@/hooks/use-offline-queue';
 import { cn } from '@/lib/utils';
 import { index as sales } from '@/routes/sales';
 import { store } from '@/routes/installments/payments';
@@ -20,14 +21,29 @@ const ORDER = ['overdue', 'today', 'week', 'later'] as const;
 export default function Receivables({ groups }: { groups: Groups }) {
     const { t } = useTranslation('shop');
     const { money, shortDate } = useFormat();
+    const queueWhenOffline = useQueueWhenOffline();
     const empty = ORDER.every((key) => groups[key].length === 0);
 
     function markPaid(row: Row) {
-        router.post(
-            store.url({ installment: row.id }),
-            { amount_cents: row.amountCents, method: 'pix' },
-            { preserveScroll: true },
-        );
+        const data = { amount_cents: row.amountCents, method: 'pix' };
+
+        if (
+            queueWhenOffline({
+                method: 'post',
+                url: store.url({ installment: row.id }),
+                data,
+                label: t('offline.labels.payment', {
+                    amount: money(row.amountCents),
+                    customer: row.customer ?? t('offline.labels.noCustomer'),
+                }),
+            })
+        ) {
+            return;
+        }
+
+        router.post(store.url({ installment: row.id }), data, {
+            preserveScroll: true,
+        });
     }
 
     return (

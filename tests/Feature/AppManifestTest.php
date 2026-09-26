@@ -71,3 +71,13 @@ test('tenant pages link the organization manifest and other pages the default on
     $this->get(route('home'))
         ->assertSee('href="/manifest.webmanifest"', false);
 });
+
+test('the offline page is branded with the organization colors without requiring a login', function () {
+    $organization = Organization::factory()->create(['accent_color' => '#16a34a', 'on_primary_color' => '#111111']);
+
+    $this->get(route('app-offline', ['organization' => $organization->slug]))
+        ->assertOk()
+        ->assertSee('--tenant-primary: #16a34a; --tenant-on-primary: #111111', false)
+        ->assertSee('data:image/png;base64,', false)
+        ->assertSee('Você está sem internet');
+});

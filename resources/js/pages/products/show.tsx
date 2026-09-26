@@ -8,6 +8,7 @@ import PageHeader from '@/components/shop/page-header';
 import ProductImage from '@/components/shop/product-image';
 import { Button } from '@/components/ui/button';
 import { useFormat } from '@/hooks/use-format';
+import { useQueueWhenOffline } from '@/hooks/use-offline-queue';
 import { cn } from '@/lib/utils';
 import { edit, index } from '@/routes/products';
 import { store as restock } from '@/routes/products/stock';
@@ -37,6 +38,7 @@ type Props = {
 export default function ShowProduct({ product, movements }: Props) {
     const { t } = useTranslation('shop');
     const { money, shortDate } = useFormat();
+    const queueWhenOffline = useQueueWhenOffline();
     const [image, setImage] = useState(0);
     const [open, setOpen] = useState(false);
     const form = useForm({
@@ -289,12 +291,28 @@ export default function ShowProduct({ product, movements }: Props) {
                     size="lg"
                     className="h-12 text-base"
                     disabled={form.processing}
-                    onClick={() =>
+                    onClick={() => {
+                        if (
+                            queueWhenOffline({
+                                method: 'post',
+                                url: restock.url({ product: product.id }),
+                                data: form.data,
+                                label: t('offline.labels.stock', {
+                                    product: product.name,
+                                    count: form.data.quantity,
+                                }),
+                            })
+                        ) {
+                            setOpen(false);
+
+                            return;
+                        }
+
                         form.post(restock.url({ product: product.id }), {
                             preserveScroll: true,
                             onSuccess: () => setOpen(false),
-                        })
-                    }
+                        });
+                    }}
                 >
                     {t('products.detail.restockConfirm')}
                 </Button>

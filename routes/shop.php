@@ -20,27 +20,30 @@ use App\Http\Controllers\ProductStockController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SaleController;
+use App\Http\Middleware\IdempotentRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', HomeController::class)->name('dashboard');
 
-Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
-Route::post('installments/{installment}/payments', [InstallmentPaymentController::class, 'store'])->name('installments.payments.store');
+Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show', 'destroy'])
+    ->middlewareFor('store', IdempotentRequest::class);
+Route::post('installments/{installment}/payments', [InstallmentPaymentController::class, 'store'])->middleware(IdempotentRequest::class)->name('installments.payments.store');
 Route::post('payment-claims/{claim}/confirm', [PaymentClaimController::class, 'confirm'])->name('payment-claims.confirm');
 Route::post('payment-claims/{claim}/reject', [PaymentClaimController::class, 'reject'])->name('payment-claims.reject');
 Route::get('payment-claims/{claim}/receipt', [PaymentClaimController::class, 'receipt'])->name('payment-claims.receipt');
 Route::get('receivables', ReceivableController::class)->name('receivables.index');
 
-Route::resource('customers', CustomerController::class)->except(['destroy']);
+Route::resource('customers', CustomerController::class)->except(['destroy'])
+    ->middlewareFor(['store', 'update'], IdempotentRequest::class);
 Route::post('customers/{customer}/public-link', CustomerPublicLinkController::class)->name('customers.public-link.regenerate');
 
 Route::resource('products', ProductController::class)->except(['destroy']);
-Route::post('products/{product}/stock', [ProductStockController::class, 'store'])->name('products.stock.store');
+Route::post('products/{product}/stock', [ProductStockController::class, 'store'])->middleware(IdempotentRequest::class)->name('products.stock.store');
 
 Route::get('finance', FinanceController::class)->name('finance.index');
 Route::resource('expenses', ExpenseController::class)->except(['show', 'destroy']);
 Route::get('expenses/{expense}/receipt', [ExpenseController::class, 'receipt'])->name('expenses.receipt');
-Route::post('expenses/{expense}/pay', ExpensePaymentController::class)->name('expenses.pay');
+Route::post('expenses/{expense}/pay', ExpensePaymentController::class)->middleware(IdempotentRequest::class)->name('expenses.pay');
 Route::get('payables', PayableController::class)->name('payables.index');
 
 Route::get('catalog', [CatalogController::class, 'show'])->name('catalog.show');

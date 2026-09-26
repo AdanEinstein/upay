@@ -1,6 +1,8 @@
 {
     "All rights reserved.": "Todos os direitos reservados.",
+    "Back online, reloading": "Conexão de volta, recarregando",
     "Catalog published.": "Catálogo publicado.",
+    "Check your Wi-Fi or mobile data. This screen reloads on its own once you are back online.": "Confira o Wi-Fi ou os dados móveis. Esta tela recarrega sozinha quando a conexão voltar.",
     "Expense marked as paid.": "Despesa marcada como paga.",
     "Forbidden": "Acesso negado",
     "Hello!": "Olá!",
@@ -9,6 +11,7 @@
     "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Se tiver problemas para clicar no botão \":actionText\", copie e cole a URL abaixo\nno seu navegador:",
     "Invalid credential format.": "Formato de credencial inválido.",
     "New link generated. The old one no longer works.": "Novo link gerado. O anterior não funciona mais.",
+    "No connection": "Sem conexão",
     "Not Found": "Página não encontrada",
     "Not enough stock.": "Estoque insuficiente.",
     "Organization settings updated.": "Configurações da organização atualizadas.",
@@ -44,10 +47,13 @@
     "These credentials do not match our records.": "Essas credenciais não correspondem aos nossos registros.",
     "This password reset link will expire in :count minutes.": "Este link de redefinição de senha expira em :count minutos.",
     "Too Many Requests": "Muitas requisições",
+    "Try again": "Tentar de novo",
     "Unauthorized": "Não autorizado",
     "Verify Email Address": "Confirmar e-mail",
     "Verify your email address": "Confirme seu e-mail",
+    "Waiting for connection": "Aguardando conexão",
     "Whoops!": "Ops!",
     "You are receiving this email because we received a password reset request for your account.": "Você está recebendo este e-mail porque recebemos um pedido de redefinição de senha para a sua conta.",
+    "You're offline": "Você está sem internet",
     "Your password has been reset.": "Sua senha foi redefinida."
 }

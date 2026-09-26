@@ -27,6 +27,8 @@ class SaleStoreRequest extends FormRequest
             'installments' => ['required_if:payment_type,parcelado', 'nullable', 'integer', 'min:2', 'max:12'],
             'down_payment_cents' => ['nullable', 'integer', 'min:0', 'max:99999999'],
             'first_due_date' => ['nullable', 'date', 'after_or_equal:today'],
+            // Set by the offline queue; a few minutes of slack for a phone clock running ahead.
+            'occurred_at' => ['nullable', 'date', 'before_or_equal:+10 minutes'],
         ];
     }
 }

@@ -24,7 +24,6 @@
         "saving": "Saving…",
         "delete": "Delete",
         "optional": "optional",
-        "offline": "No connection, showing saved data",
         "noResults": "Nothing found.",
         "today": "Today"
     },
@@ -570,5 +569,41 @@
             "message": "Hi! I want to get a plan."
         },
         "description": "Track your plan, usage and invoices."
+    },
+    "offline": {
+        "banner": "No connection",
+        "bannerSince": "No connection · data from {{time}}",
+        "queuedCount_one": "{{count}} action queued",
+        "queuedCount_other": "{{count}} actions queued",
+        "sending_one": "Sending {{count}} action…",
+        "sending_other": "Sending {{count}} actions…",
+        "failed_one": "{{count}} action wasn't sent",
+        "failed_other": "{{count}} actions weren't sent",
+        "view": "View",
+        "queued": "Saved. It will be sent when you're back online.",
+        "sent_one": "{{count}} action made offline was sent.",
+        "sent_other": "{{count}} actions made offline were sent.",
+        "loginAgain": "Your session expired. Log in again to send the queued actions.",
+        "needsConnection": "This needs a connection. Try again when you're online.",
+        "logoutConfirm_one": "{{count}} action hasn't been sent yet and will be discarded if you log out. Log out anyway?",
+        "logoutConfirm_other": "{{count}} actions haven't been sent yet and will be discarded if you log out. Log out anyway?",
+        "sheetTitle": "Queued actions",
+        "sheetDescription": "Made without a connection. They're sent on their own, in order, once you're back online.",
+        "waiting": "Waiting for connection",
+        "discard": "Discard",
+        "retry": "Try again",
+        "rejected": "Couldn't be registered.",
+        "planLimit": "Your plan's customer limit was reached.",
+        "labels": {
+            "sale": "Sale of {{total}} · {{customer}}",
+            "payment": "Payment of {{amount}} · {{customer}}",
+            "expense": "Expense paid: {{description}} · {{amount}}",
+            "customerNew": "New customer: {{name}}",
+            "customerEdit": "Customer edited: {{name}}",
+            "stock_one": "+{{count}} unit in {{product}}",
+            "stock_other": "+{{count}} units in {{product}}",
+            "noCustomer": "no customer"
+        },
+        "notSaved": "This screen hasn't been saved for offline use yet. Open it once while online."
     }
 }

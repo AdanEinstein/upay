@@ -9,6 +9,7 @@ import SettingsLayout from '@/layouts/settings/layout';
 import SuperAdminLayout from '@/layouts/super-admin-layout';
 import '@/lib/echo';
 import { initializeI18n } from '@/lib/i18n';
+import { initializeOfflinePage } from '@/lib/offline-page';
 import { currentOrganization } from '@/lib/organization';
 import { useSyncLocale } from '@/lib/sync-locale';
 import { useSyncTenantTheme } from '@/lib/sync-tenant-theme';
@@ -105,3 +106,6 @@ initializeTheme();
 
 // Keeps focused fields visible above the mobile on-screen keyboard.
 initializeVirtualKeyboard();
+
+// Shows the store's own page instead of the browser's when there's no connection.
+initializeOfflinePage();

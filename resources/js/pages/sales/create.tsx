@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import {
     CameraIcon,
     CaretLeftIcon,
@@ -17,10 +17,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormat } from '@/hooks/use-format';
 import { useInitials } from '@/hooks/use-initials';
+import { useQueueWhenOffline } from '@/hooks/use-offline-queue';
 import { maskPhone } from '@/lib/mask';
 import { cn } from '@/lib/utils';
 import { store as storeCustomer } from '@/routes/customers';
-import { store } from '@/routes/sales';
+import { index, store } from '@/routes/sales';
 
 type Customer = { id: number; name: string; phone: string | null };
 type Sellable = {
@@ -79,6 +80,7 @@ export default function CreateSale({
     categories: string[];
 }) {
     const { t } = useTranslation('shop');
+    const queueWhenOffline = useQueueWhenOffline();
     const { money, shortDate } = useFormat();
     const getInitials = useInitials();
     const [step, setStep] = useState<1 | 2 | 3>(selectedCustomerId ? 2 : 1);
@@ -131,7 +133,7 @@ export default function CreateSale({
     }
 
     function confirm() {
-        sale.transform(() => ({
+        const data = {
             customer_id: customerId,
             items: lines.map((item) => ({
                 product_id: item.productId,
@@ -143,7 +145,25 @@ export default function CreateSale({
             installments: paymentType === 'parcelado' ? installments : null,
             down_payment_cents: paymentType === 'parcelado' ? entry : null,
             first_due_date: paymentType === 'parcelado' ? firstDue : null,
-        }));
+        };
+
+        if (
+            queueWhenOffline({
+                method: 'post',
+                url: store.url(),
+                data,
+                label: t('offline.labels.sale', {
+                    total: money(totalCents),
+                    customer: customer?.name ?? t('offline.labels.noCustomer'),
+                }),
+            })
+        ) {
+            router.visit(index.url());
+
+            return;
+        }
+
+        sale.transform(() => data);
         sale.post(store.url());
     }
 

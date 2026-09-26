@@ -15,6 +15,7 @@ import type { SettlementStatus } from '@/components/shop/status-badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useFormat } from '@/hooks/use-format';
+import { useQueueWhenOffline } from '@/hooks/use-offline-queue';
 import { useTenant } from '@/hooks/use-tenant';
 import { publicDebtUrl, whatsappUrl } from '@/lib/whatsapp';
 import { store as storePayment } from '@/routes/installments/payments';
@@ -81,6 +82,7 @@ export default function ShowSale({
 }) {
     const { t } = useTranslation('shop');
     const { money, shortDate } = useFormat();
+    const queueWhenOffline = useQueueWhenOffline();
     const tenant = useTenant();
     const [paying, setPaying] = useState(false);
     const [sharing, setSharing] = useState<'charge' | 'link' | null>(null);
@@ -112,6 +114,23 @@ export default function ShowSale({
 
     function submitPayment() {
         if (!next) {
+            return;
+        }
+
+        if (
+            queueWhenOffline({
+                method: 'post',
+                url: storePayment.url({ installment: next.id }),
+                data: payment.data,
+                label: t('offline.labels.payment', {
+                    amount: money(payment.data.amount_cents ?? 0),
+                    customer:
+                        sale.customer?.name ?? t('offline.labels.noCustomer'),
+                }),
+            })
+        ) {
+            setPaying(false);
+
             return;
         }
 

@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { CreditCardIcon, WifiSlashIcon } from '@phosphor-icons/react';
+import { CreditCardIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
@@ -8,9 +8,9 @@ import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import InstallPrompt from '@/components/install-prompt';
 import MobileScreen from '@/components/mobile-screen';
 import BottomNav from '@/components/shop/bottom-nav';
+import OfflineStatus from '@/components/shop/offline-status';
 import PaymentClaimAlerts from '@/components/shop/payment-claim-alerts';
 import { useFormat } from '@/hooks/use-format';
-import { useOnline } from '@/hooks/use-online';
 import { useTenant } from '@/hooks/use-tenant';
 import { echoEnabled } from '@/lib/echo';
 import { NAV_TABS } from '@/lib/nav-section';
@@ -32,7 +32,6 @@ export default function AppLayout({
         billing: { dueDate: string; overdue: boolean } | null;
     }>();
     const { shortDate } = useFormat();
-    const online = useOnline();
     const tenant = useTenant();
     const showNav = component in NAV_TABS;
 
@@ -50,12 +49,7 @@ export default function AppLayout({
                         'lg:mx-0 lg:min-h-0 lg:max-w-[800px] lg:flex-1 lg:px-5 lg:pt-4 lg:pb-10',
                     )}
                 >
-                    {!online && (
-                        <div className="bg-muted text-muted-foreground flex items-center gap-2 px-5 py-2 text-[12.5px] font-medium">
-                            <WifiSlashIcon className="size-[15px]" />
-                            {t('common.offline')}
-                        </div>
-                    )}
+                    <OfflineStatus />
                     {props.billing && component !== 'billing/show' && (
                         <Link
                             href={billingShow.url()}

@@ -3,6 +3,7 @@ import { CheckIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '@/components/shop/page-header';
 import { useFormat } from '@/hooks/use-format';
+import { useQueueWhenOffline } from '@/hooks/use-offline-queue';
 import { cn } from '@/lib/utils';
 import { pay } from '@/routes/expenses';
 import { index as finance } from '@/routes/finance';
@@ -20,7 +21,26 @@ const ORDER = ['overdue', 'today', 'week', 'later'] as const;
 export default function Payables({ groups }: { groups: Groups }) {
     const { t } = useTranslation('shop');
     const { money, shortDate } = useFormat();
+    const queueWhenOffline = useQueueWhenOffline();
     const empty = ORDER.every((key) => groups[key].length === 0);
+
+    function markPaid(row: Row) {
+        if (
+            queueWhenOffline({
+                method: 'post',
+                url: pay.url({ expense: row.id }),
+                data: {},
+                label: t('offline.labels.expense', {
+                    description: row.description,
+                    amount: money(row.amountCents),
+                }),
+            })
+        ) {
+            return;
+        }
+
+        router.post(pay.url({ expense: row.id }), {}, { preserveScroll: true });
+    }
 
     return (
         <>
@@ -52,13 +72,7 @@ export default function Payables({ groups }: { groups: Groups }) {
                             >
                                 <button
                                     type="button"
-                                    onClick={() =>
-                                        router.post(
-                                            pay.url({ expense: row.id }),
-                                            {},
-                                            { preserveScroll: true },
-                                        )
-                                    }
+                                    onClick={() => markPaid(row)}
                                     aria-label={t('payables.markPaid')}
                                     className="border-border bg-card text-brand-foreground hover:bg-brand flex size-6 shrink-0 items-center justify-center rounded-full border-2"
                                 >
