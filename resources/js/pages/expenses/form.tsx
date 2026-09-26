@@ -5,6 +5,7 @@ import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import InputError from '@/components/input-error';
 import MoneyInput from '@/components/money-input';
+import PhotoInput from '@/components/photo-input';
 import { Chip } from '@/components/shop/chip';
 import PageHeader from '@/components/shop/page-header';
 import { Button } from '@/components/ui/button';
@@ -137,8 +138,7 @@ export default function ExpenseForm({ expense }: { expense: Expense | null }) {
                         {t('expenses.form.receipt')}
                     </p>
                     <label className="border-border text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 flex h-[100px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed transition-colors has-[:focus-visible]:ring-[3px]">
-                        <input
-                            type="file"
+                        <PhotoInput
                             accept="image/*"
                             className="sr-only"
                             onChange={(event) => {

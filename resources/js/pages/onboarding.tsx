@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import InputError from '@/components/input-error';
 import MobileScreen from '@/components/mobile-screen';
 import MoneyInput from '@/components/money-input';
+import PhotoInput from '@/components/photo-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -39,8 +40,7 @@ function PhotoPicker({
 
     return (
         <label className="group flex cursor-pointer flex-col items-center gap-2 self-center">
-            <input
-                type="file"
+            <PhotoInput
                 accept="image/*"
                 className="peer sr-only"
                 onChange={(event) => {
