@@ -23,7 +23,7 @@ Estado verificado em 2026-09-21 (`php artisan test`: 160/160 passando). Commitad
 
 Login, recuperar senha, cadastro + planos, onboarding, prompt PWA, tela de limite de plano.
 Arquivos: `pages/auth/*`, `pages/onboarding.tsx`, `pages/plan-limit.tsx`, `components/install-prompt.tsx`, `public/manifest.webmanifest`.
-Reimportada 2026-09-21: adicionado painel de marca desktop (split 44%) em `layouts/auth/auth-simple-layout.tsx` (login/cadastro com chamada; demais só logo; `split: false` no login do super admin). Splash não virou tela (sem rota de carregamento).
+Reimportada 2026-09-21: adicionado painel de marca desktop (split 44%) em `layouts/auth/auth-simple-layout.tsx` (login/cadastro com chamada; demais só logo; `split: false` no login do super admin). Splash (0.1) feita 2026-09-26: renderizada no `app.blade.php` enquanto o JS carrega, removida com fade no `app.tsx` quando o Inertia monta.
 
 ### [x] Etapa 1 — Super Admin (`SuperAdmin.dc.html`)
 

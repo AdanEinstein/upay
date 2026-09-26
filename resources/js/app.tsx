@@ -99,6 +99,13 @@ void createInertiaApp({
     progress: {
         color: '#4B5563',
     },
+}).then(() => {
+    // The splash is server-rendered in app.blade.php; fade it out once the first page is up.
+    const splash = document.getElementById('splash');
+
+    void splash
+        ?.animate({ opacity: [1, 0] }, { duration: 200 })
+        .finished.then(() => splash.remove());
 });
 
 // This will set light / dark mode on load...
