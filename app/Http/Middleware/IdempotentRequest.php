@@ -28,10 +28,6 @@ class IdempotentRequest
 
         $done = "idempotency:{$request->user()->id}:{$key}";
 
-        if (Cache::has($done)) {
-            return response()->noContent();
-        }
-
         $lock = Cache::lock("{$done}:lock", 30);
 
         // Another attempt with the same key is still running; the queue retries later.

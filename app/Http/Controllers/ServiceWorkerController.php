@@ -48,11 +48,10 @@ class ServiceWorkerController extends Controller
         /** @var array<string, array{file: string, css?: list<string>, assets?: list<string>}> $chunks */
         $chunks = json_decode((string) file_get_contents($manifest), true);
 
-        return collect($chunks)
+        return array_values(collect($chunks)
             ->flatMap(fn (array $chunk): array => [$chunk['file'], ...($chunk['css'] ?? []), ...($chunk['assets'] ?? [])])
             ->unique()
             ->map(fn (string $file): string => "/build/{$file}")
-            ->values()
-            ->all();
+            ->all());
     }
 }
