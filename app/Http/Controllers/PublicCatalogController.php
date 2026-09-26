@@ -33,6 +33,7 @@ class PublicCatalogController extends Controller
 
         return Inertia::render('public/catalog', [
             'store' => [
+                'slug' => $organization->slug,
                 'name' => $organization->name,
                 'logoUrl' => $organization->logo_path ? Storage::url($organization->logo_path) : null,
                 'coverUrl' => $settings->cover_path ? Storage::url($settings->cover_path) : null,
