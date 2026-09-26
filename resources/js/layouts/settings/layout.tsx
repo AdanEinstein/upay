@@ -76,7 +76,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 <aside className="hidden w-full max-w-xl lg:block lg:w-48">
                     <nav
                         className="flex flex-col space-y-1 space-x-0"
-                        aria-label="Settings"
+                        aria-label={t('common:settings')}
                     >
                         {sidebarNavItems.map((item, index) => (
                             <Button

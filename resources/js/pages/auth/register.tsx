@@ -66,7 +66,7 @@ export default function Register({ plans }: { plans: Plan[] }) {
                                     name="email"
                                     required
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('common:emailPlaceholder')}
                                     className="h-11"
                                 />
                                 <InputError message={errors.email} />

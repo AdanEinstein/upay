@@ -79,7 +79,7 @@ export default function ForgotPassword({ status }: Props) {
                                     onChange={(event) =>
                                         setEmail(event.target.value)
                                     }
-                                    placeholder="email@example.com"
+                                    placeholder={t('common:emailPlaceholder')}
                                     className="h-11"
                                 />
                                 <InputError message={errors.email} />

@@ -48,7 +48,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('common:emailPlaceholder')}
                                     className="h-11"
                                 />
                                 <InputError message={errors.email} />

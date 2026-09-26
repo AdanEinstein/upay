@@ -59,6 +59,12 @@ test('claiming payment without a receipt moves the invoice to claimed', function
         ->and($invoice->receipt_path)->toBeNull();
 });
 
+test('claiming payment flashes a toast translated to the user locale', function () {
+    $this->actingAs($this->user)
+        ->post(shopRoute('billing.claim', ['invoice' => $this->invoice->id]))
+        ->assertInertiaFlash('toast.message', 'Aviso de pagamento enviado. Vamos confirmar em breve.');
+});
+
 test('claiming payment stores the optional receipt privately', function () {
     $this->actingAs($this->user)
         ->post(shopRoute('billing.claim', ['invoice' => $this->invoice->id]), ['receipt' => UploadedFile::fake()->image('proof.png')])

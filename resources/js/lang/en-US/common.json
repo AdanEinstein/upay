@@ -23,5 +23,9 @@
         "camera": "Take photo",
         "gallery": "Choose from gallery",
         "files": "Choose file"
-    }
+    },
+    "somethingWentWrong": "Something went wrong.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "emailPlaceholder": "email@example.com"
 }

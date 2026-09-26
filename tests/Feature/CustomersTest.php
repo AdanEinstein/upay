@@ -50,6 +50,14 @@ test('creating a customer normalizes phone and document to digits', function () 
     expect($customer->phone)->toBe('11999990001')->and($customer->document)->toBe('12345678909');
 });
 
+test('validation errors are translated to the user locale', function () {
+    $this->actingAs($this->user)->post(shopRoute('customers.store'), ['document' => '123'])
+        ->assertSessionHasErrors([
+            'name' => 'O campo nome é obrigatório.',
+            'document' => 'O CPF/CNPJ deve ter 11 ou 14 dígitos.',
+        ]);
+});
+
 test('creating from the sale flow returns to it with the customer selected', function () {
     $response = $this->actingAs($this->user)->post(shopRoute('customers.store'), ['name' => 'Ana', 'from' => 'sale']);
 
