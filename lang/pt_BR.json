@@ -42,6 +42,7 @@
     "The :attribute must be at least :length characters and contain at least one uppercase character, one number, and one special character.": "O campo :attribute deve ter pelo menos :length caracteres e conter pelo menos uma letra maiúscula, um número e um caractere especial.",
     "The :attribute must be at least :length characters and contain at least one uppercase character.": "O campo :attribute deve ter pelo menos :length caracteres e conter pelo menos uma letra maiúscula.",
     "The :attribute must be at least :length characters.": "O campo :attribute deve ter pelo menos :length caracteres.",
+    "The installed app switches to the new color the next time it is opened. It can take up to a day, and the phone may ask you to confirm.": "O app instalado muda para a nova cor na próxima vez que for aberto. Pode levar até 1 dia, e o celular pode pedir para confirmar.",
     "The provided password was incorrect.": "A senha informada está incorreta.",
     "The provided two factor authentication code was invalid.": "O código de autenticação em dois fatores é inválido.",
     "The provided two factor recovery code was invalid.": "O código de recuperação em dois fatores é inválido.",

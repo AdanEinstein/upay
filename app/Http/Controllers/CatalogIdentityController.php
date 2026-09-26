@@ -48,6 +48,10 @@ class CatalogIdentityController extends Controller
             $organization->logo_path = $request->file('logo')->store('organizations/'.$organization->id, 'public');
         }
 
+        if ($organization->isDirty(['accent_color', 'on_primary_color'])) {
+            Inertia::flash('toast', ['type' => 'info', 'message' => __('The installed app switches to the new color the next time it is opened. It can take up to a day, and the phone may ask you to confirm.')]);
+        }
+
         $organization->save();
 
         $settings = ShopSetting::current();

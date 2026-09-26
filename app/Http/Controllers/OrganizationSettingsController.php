@@ -50,9 +50,14 @@ class OrganizationSettingsController extends Controller
             }
         }
 
+        $iconColorsChanged = $organization->isDirty(['accent_color', 'on_primary_color']);
         $organization->save();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Organization settings updated.')]);
+        Inertia::flash('toast', array_filter([
+            'type' => 'success',
+            'message' => __('Organization settings updated.'),
+            'description' => $iconColorsChanged ? __('The installed app switches to the new color the next time it is opened. It can take up to a day, and the phone may ask you to confirm.') : null,
+        ]));
 
         return back();
     }

@@ -103,3 +103,28 @@ test('the settings page exposes the default colors', function () {
         ->get(route('organization-settings.edit', ['organization' => $user->organization->slug]))
         ->assertInertia(fn (Assert $page) => $page->where('defaultColors', Organization::DEFAULT_COLORS));
 });
+
+test('changing the brand color tells the merchant when the installed app follows', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->put(route('organization-settings.update', ['organization' => $user->organization->slug]), [
+            'name' => $user->organization->name,
+            ...Organization::DEFAULT_COLORS,
+            'accent_color' => '#16a34a',
+        ])
+        ->assertInertiaFlash('toast.message', 'Configurações da organização atualizadas.')
+        ->assertInertiaFlash('toast.description', 'O app instalado muda para a nova cor na próxima vez que for aberto. Pode levar até 1 dia, e o celular pode pedir para confirmar.');
+});
+
+test('saving without changing the brand color does not mention the installed app', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->put(route('organization-settings.update', ['organization' => $user->organization->slug]), [
+            'name' => 'Acme Inc.',
+            ...Organization::DEFAULT_COLORS,
+        ])
+        ->assertInertiaFlash('toast.message', 'Configurações da organização atualizadas.')
+        ->assertInertiaFlashMissing('toast.description');
+});
