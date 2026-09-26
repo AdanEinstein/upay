@@ -414,7 +414,7 @@ function ProductScreen({
                     )}
 
                     {whatsapp && (
-                        <div className="bg-background border-border fixed inset-x-0 bottom-0 mx-auto w-full max-w-md border-t px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] lg:static lg:mx-0 lg:w-auto lg:max-w-none lg:border-0 lg:bg-transparent lg:p-0">
+                        <div className="bg-background border-border keyboard-open:hidden fixed inset-x-0 bottom-0 mx-auto w-full max-w-md border-t px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] lg:static lg:mx-0 lg:w-auto lg:max-w-none lg:border-0 lg:bg-transparent lg:p-0">
                             <Button
                                 asChild
                                 className="h-12 w-full text-base lg:w-auto lg:self-start lg:px-7"

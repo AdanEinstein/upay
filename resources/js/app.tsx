@@ -12,6 +12,7 @@ import { initializeI18n } from '@/lib/i18n';
 import { currentOrganization } from '@/lib/organization';
 import { useSyncLocale } from '@/lib/sync-locale';
 import { useSyncTenantTheme } from '@/lib/sync-tenant-theme';
+import { initializeVirtualKeyboard } from '@/lib/virtual-keyboard';
 import { setUrlDefaults } from '@/wayfinder';
 
 const SHOP_PAGES = [
@@ -100,3 +101,6 @@ void createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+
+// Keeps focused fields visible above the mobile on-screen keyboard.
+initializeVirtualKeyboard();

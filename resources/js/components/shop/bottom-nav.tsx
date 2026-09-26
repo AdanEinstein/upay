@@ -83,7 +83,7 @@ export default function BottomNav({ active }: { active: NavTab }) {
 
     return (
         <>
-            <nav className="bg-card border-border fixed inset-x-0 bottom-0 z-30 mx-auto h-[84px] max-w-md border-t pb-[env(safe-area-inset-bottom)] lg:hidden">
+            <nav className="bg-card border-border keyboard-open:hidden fixed inset-x-0 bottom-0 z-30 mx-auto h-[84px] max-w-md border-t pb-[env(safe-area-inset-bottom)] lg:hidden">
                 <div className="grid h-full grid-cols-5 items-start pt-2">
                     {TABS.map(({ key, icon: Icon, label, href, column }) => (
                         <Link
