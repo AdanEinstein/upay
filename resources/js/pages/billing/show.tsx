@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import Heading from '@/components/heading';
+import PhotoInput from '@/components/photo-input';
 import EmptyState from '@/components/shop/empty-state';
 import PeriodRuler from '@/components/shop/period-ruler';
 import PlanUsage from '@/components/shop/plan-usage';
@@ -159,8 +160,7 @@ function CurrentInvoice({
             ) : (
                 <div className="border-border flex w-full flex-col gap-2 border-t pt-4">
                     <label className="text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 border-border flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed px-3 text-[13px] transition-colors has-[:focus-visible]:ring-[3px]">
-                        <input
-                            type="file"
+                        <PhotoInput
                             accept="image/*,application/pdf"
                             className="sr-only"
                             onChange={(event) =>

@@ -17,5 +17,11 @@
         "description": "Add to your home screen to open faster.",
         "install": "Install",
         "notNow": "Not now"
+    },
+    "photoSource": {
+        "title": "Add image",
+        "camera": "Take photo",
+        "gallery": "Choose from gallery",
+        "files": "Choose file"
     }
 }

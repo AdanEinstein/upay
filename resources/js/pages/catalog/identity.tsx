@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import InputError from '@/components/input-error';
+import PhotoInput from '@/components/photo-input';
 import PageHeader from '@/components/shop/page-header';
 import Textarea from '@/components/shop/textarea';
 import { Button } from '@/components/ui/button';
@@ -58,8 +59,7 @@ function ImagePicker({
                     className,
                 )}
             >
-                <input
-                    type="file"
+                <PhotoInput
                     accept="image/*"
                     className="sr-only"
                     onChange={(event) => {

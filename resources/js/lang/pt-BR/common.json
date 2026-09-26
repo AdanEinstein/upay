@@ -17,5 +17,11 @@
         "description": "Adicione à tela inicial para abrir mais rápido.",
         "install": "Instalar",
         "notNow": "Agora não"
+    },
+    "photoSource": {
+        "title": "Adicionar imagem",
+        "camera": "Tirar foto",
+        "gallery": "Escolher da galeria",
+        "files": "Escolher arquivo"
     }
 }

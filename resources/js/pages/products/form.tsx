@@ -5,6 +5,7 @@ import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import InputError from '@/components/input-error';
 import MoneyInput from '@/components/money-input';
+import PhotoInput from '@/components/photo-input';
 import { Chip } from '@/components/shop/chip';
 import PageHeader from '@/components/shop/page-header';
 import Textarea from '@/components/shop/textarea';
@@ -165,8 +166,7 @@ export default function ProductForm({
                         ))}
                         {slots < MAX_PHOTOS && (
                             <label className="border-border text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-[11px] transition-colors has-[:focus-visible]:ring-[3px]">
-                                <input
-                                    type="file"
+                                <PhotoInput
                                     accept="image/*"
                                     className="sr-only"
                                     onChange={(event) => {

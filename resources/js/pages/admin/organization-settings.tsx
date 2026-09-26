@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import OrganizationSettingsController from '@/actions/App/Http/Controllers/OrganizationSettingsController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import PhotoInput from '@/components/photo-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -57,10 +58,9 @@ function FileDropzone({
                 htmlFor={id}
                 className="border-border text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-5 text-center text-sm transition-colors has-[:focus-visible]:ring-[3px]"
             >
-                <input
+                <PhotoInput
                     id={id}
                     name={name}
-                    type="file"
                     accept="image/*"
                     className="sr-only"
                     onChange={(event) => {

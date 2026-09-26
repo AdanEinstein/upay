@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import MobileScreen, { brandScope } from '@/components/mobile-screen';
+import PhotoInput from '@/components/photo-input';
 import EmptyState from '@/components/shop/empty-state';
 import { StatusBadge } from '@/components/shop/status-badge';
 import type { SettlementStatus } from '@/components/shop/status-badge';
@@ -455,8 +456,7 @@ function PixScreen({
                 ) : (
                     <div className="border-border flex w-full flex-col gap-2 border-t pt-4">
                         <label className="text-muted-foreground hover:border-primary/50 has-[:focus-visible]:ring-ring/50 border-border flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed px-3 text-[13px] transition-colors has-[:focus-visible]:ring-[3px]">
-                            <input
-                                type="file"
+                            <PhotoInput
                                 accept="image/*,application/pdf"
                                 className="sr-only"
                                 onChange={(event) =>
