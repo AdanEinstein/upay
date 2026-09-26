@@ -37,7 +37,7 @@ class ProductRequest extends FormRequest
             'variants.*.name' => ['required', 'string', 'max:60'],
             'variants.*.stock_qty' => ['required', 'integer', 'min:0', 'max:999999'],
             'photos' => ['array', 'max:'.max(0, 4 - $existing + $removing)],
-            'photos.*' => ['image', 'max:2048'],
+            'photos.*' => ['image', 'max:10240'],
             'remove_image_ids' => ['array'],
             'remove_image_ids.*' => ['integer', Rule::exists('product_images', 'id')->where('product_id', $product?->id)],
         ];
