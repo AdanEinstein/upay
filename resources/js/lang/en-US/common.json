@@ -27,5 +27,10 @@
     "somethingWentWrong": "Something went wrong.",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
-    "emailPlaceholder": "email@example.com"
+    "emailPlaceholder": "email@example.com",
+    "datePicker": {
+        "placeholder": "Select a date",
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month"
+    }
 }

@@ -3,7 +3,11 @@ import { cn } from 'cn';
 import { ClockIcon } from '@phosphor-icons/react';
 
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 

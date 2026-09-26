@@ -8,6 +8,7 @@ import {
 } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import DateInput from '@/components/date-input';
 import InputError from '@/components/input-error';
 import MoneyInput from '@/components/money-input';
 import { Chip, ChipRow } from '@/components/shop/chip';
@@ -16,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormat } from '@/hooks/use-format';
 import { useInitials } from '@/hooks/use-initials';
+import { maskPhone } from '@/lib/mask';
 import { cn } from '@/lib/utils';
 import { store as storeCustomer } from '@/routes/customers';
 import { store } from '@/routes/sales';
@@ -288,11 +290,14 @@ export default function CreateSale({
                                             message={newCustomer.errors.name}
                                         />
                                         <Input
+                                            type="tel"
                                             value={newCustomer.data.phone}
                                             onChange={(event) =>
                                                 newCustomer.setData(
                                                     'phone',
-                                                    event.target.value,
+                                                    maskPhone(
+                                                        event.target.value,
+                                                    ),
                                                 )
                                             }
                                             placeholder={t(
@@ -599,16 +604,11 @@ export default function CreateSale({
                                             <Label htmlFor="first-due">
                                                 {t('newSale.payment.firstDue')}
                                             </Label>
-                                            <Input
+                                            <DateInput
                                                 id="first-due"
-                                                type="date"
                                                 min={isoToday()}
                                                 value={firstDue}
-                                                onChange={(event) =>
-                                                    setFirstDue(
-                                                        event.target.value,
-                                                    )
-                                                }
+                                                onValueChange={setFirstDue}
                                                 className="h-10"
                                             />
                                             <InputError

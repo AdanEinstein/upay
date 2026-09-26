@@ -24,6 +24,10 @@ export type DatePickerProps = {
         'disabled' | 'weekStartsOn' | 'showOutsideDays' | 'labels'
     >;
     className?: string;
+    /** Classes do popover (renderizado em portal, fora do escopo de tema da página). */
+    contentClassName?: string;
+    id?: string;
+    'aria-label'?: string;
 };
 
 function DatePicker({
@@ -39,6 +43,9 @@ function DatePicker({
     onOpenChange,
     calendarProps,
     className,
+    contentClassName,
+    id,
+    'aria-label': ariaLabel,
 }: DatePickerProps) {
     const [innerOpen, setInnerOpen] = React.useState(defaultOpen ?? false);
     const isOpen = open ?? innerOpen;
@@ -58,6 +65,8 @@ function DatePicker({
         <Popover open={isOpen} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
+                    id={id}
+                    aria-label={ariaLabel}
                     type="button"
                     variant="outline"
                     disabled={disabled}
@@ -71,7 +80,7 @@ function DatePicker({
                     {text}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto">
+            <PopoverContent className={cn('w-auto', contentClassName)}>
                 <Calendar
                     mode="single"
                     selected={value}

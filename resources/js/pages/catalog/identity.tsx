@@ -10,6 +10,7 @@ import Textarea from '@/components/shop/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { maskPhone } from '@/lib/mask';
 import { cn } from '@/lib/utils';
 import { formatPhone } from '@/lib/whatsapp';
 import { show } from '@/routes/catalog';
@@ -246,7 +247,10 @@ export default function CatalogIdentity({
                             inputMode="tel"
                             value={form.data.whatsapp}
                             onChange={(event) =>
-                                form.setData('whatsapp', event.target.value)
+                                form.setData(
+                                    'whatsapp',
+                                    maskPhone(event.target.value),
+                                )
                             }
                             className="h-11"
                         />

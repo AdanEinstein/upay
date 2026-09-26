@@ -2,12 +2,12 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { CheckIcon, MinusIcon, PlusIcon } from '@phosphor-icons/react';
 import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import DateInput from '@/components/date-input';
 import InputError from '@/components/input-error';
 import MoneyInput from '@/components/money-input';
 import { Chip } from '@/components/shop/chip';
 import PageHeader from '@/components/shop/page-header';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormat } from '@/hooks/use-format';
 import { cn } from '@/lib/utils';
@@ -238,21 +238,19 @@ export default function PromotionForm({
                 <div className="flex flex-col gap-1.5">
                     <Label>{t('promotions.form.validity')}</Label>
                     <div className="grid grid-cols-2 gap-2.5">
-                        <Input
-                            type="date"
+                        <DateInput
                             aria-label={t('promotions.form.start')}
                             value={form.data.starts_on}
-                            onChange={(event) =>
-                                form.setData('starts_on', event.target.value)
+                            onValueChange={(value) =>
+                                form.setData('starts_on', value)
                             }
                             className="h-10"
                         />
-                        <Input
-                            type="date"
+                        <DateInput
                             aria-label={t('promotions.form.end')}
                             value={form.data.ends_on}
-                            onChange={(event) =>
-                                form.setData('ends_on', event.target.value)
+                            onValueChange={(value) =>
+                                form.setData('ends_on', value)
                             }
                             className="h-10"
                         />

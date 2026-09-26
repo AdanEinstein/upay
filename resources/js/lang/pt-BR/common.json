@@ -27,5 +27,10 @@
     "somethingWentWrong": "Algo deu errado.",
     "showPassword": "Mostrar senha",
     "hidePassword": "Ocultar senha",
-    "emailPlaceholder": "email@exemplo.com"
+    "emailPlaceholder": "email@exemplo.com",
+    "datePicker": {
+        "placeholder": "Selecione uma data",
+        "previousMonth": "Mês anterior",
+        "nextMonth": "Próximo mês"
+    }
 }

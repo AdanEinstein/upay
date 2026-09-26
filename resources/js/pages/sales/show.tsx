@@ -2,6 +2,7 @@ import { Head, Link, router, useForm } from '@inertiajs/react';
 import { CheckIcon, WhatsappLogoIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import DateInput from '@/components/date-input';
 import InputError from '@/components/input-error';
 import MoneyInput from '@/components/money-input';
 import BottomSheet from '@/components/shop/bottom-sheet';
@@ -12,7 +13,6 @@ import ShareSheet from '@/components/shop/share-sheet';
 import { StatusBadge } from '@/components/shop/status-badge';
 import type { SettlementStatus } from '@/components/shop/status-badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormat } from '@/hooks/use-format';
 import { useTenant } from '@/hooks/use-tenant';
@@ -476,15 +476,13 @@ export default function ShowSale({
                     <Label htmlFor="payment-date">
                         {t('sale.payment.date')}
                     </Label>
-                    <Input
+                    <DateInput
                         id="payment-date"
-                        type="date"
                         max={isoToday()}
                         value={payment.data.paid_on}
-                        onChange={(event) =>
-                            payment.setData('paid_on', event.target.value)
+                        onValueChange={(value) =>
+                            payment.setData('paid_on', value)
                         }
-                        className="h-11"
                     />
                     <InputError message={payment.errors.paid_on} />
                 </div>

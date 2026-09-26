@@ -3,8 +3,12 @@ import { cn } from 'cn';
 import { CalendarBlankIcon } from '@phosphor-icons/react';
 
 import { Button } from '@/components/ui/button';
-import { Calendar, type CalendarProps } from './calendar';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Calendar, type CalendarProps } from '@/components/ui/calendar';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 import { TimeColumns } from './time-picker';
 
 export type DateTimePickerProps = {

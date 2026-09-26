@@ -20,7 +20,7 @@
 
 - 164 componentes; 59 com preview autorado (todos `good`): 29 primitivos `ui/`, 24 de app e 6 novos só-DS (Calendar, DatePicker, TimePicker, TimeColumns, DateTimePicker, Popover).
 - Restam no floor card: subpartes dos compostos (CardHeader, DialogTitle…), `Toaster` (o `toast()` do sonner num preview usaria outra cópia do módulo) e os subcomponentes de Popover.
-- Componentes só do design system (NÃO existem no app): `.design-sync/components/*.tsx` (popover, calendar, date-picker, time-picker, date-time-picker). Sem dependência nova (Popover do pacote `radix-ui`; datas via `Intl`). Decisão do usuário: ficam fora do código do Upay.
+- `Popover`, `Calendar` e `DatePicker` foram para o app em `resources/js/components/ui/` (2026-09-25; usados via `@/components/date-input`). Só no design system restam `.design-sync/components/{time-picker,date-time-picker}.tsx`. Sem dependência nova (Popover do pacote `radix-ui`; datas via `Intl`).
 - `.design-sync/inertia-stub.tsx`: shim de `@inertiajs/react` (usePage com tenant "Loja Exemplo"/usuário "Maria Souza", Link vira `<a>`, Form/router no-op), ligado por `.design-sync/tsconfig.bundle.json`. Sem ele os componentes de app lançam "usePage must be used within the Inertia component".
 - `.design-sync/i18n-init.ts`: inicializa i18next com os JSONs pt-BR reais (`initAsync: false`); sem isso os cards mostram chaves cruas (`settings:deleteAccount.warning`).
 - `.design-sync/shims/app-logo-icon.tsx`: `AppLogoIcon` com a máscara embutida como data URI (o original usa `/logo-mark.png`, caminho absoluto que não resolve no projeto de design). `build-inputs.mjs` troca o arquivo do app por qualquer `.design-sync/shims/<nome>.tsx` de mesmo nome; o alias para os componentes que importam via `@/` está em `tsconfig.bundle.json`.

@@ -1,6 +1,7 @@
 import { Head, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import DateInput from '@/components/date-input';
 import InputError from '@/components/input-error';
 import { Chip } from '@/components/shop/chip';
 import { NOTICE_STYLES } from '@/components/shop/notice-styles';
@@ -9,7 +10,6 @@ import PageHeader from '@/components/shop/page-header';
 import Textarea from '@/components/shop/textarea';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { show } from '@/routes/catalog';
@@ -110,18 +110,13 @@ export default function CatalogNotice({
                     <Label htmlFor="expires">
                         {t('catalog.noticeForm.expires')}
                     </Label>
-                    <Input
+                    <DateInput
                         id="expires"
-                        type="date"
                         min={new Date().toLocaleDateString('en-CA')}
                         value={form.data.notice_expires_on}
-                        onChange={(event) =>
-                            form.setData(
-                                'notice_expires_on',
-                                event.target.value,
-                            )
+                        onValueChange={(value) =>
+                            form.setData('notice_expires_on', value)
                         }
-                        className="h-11"
                     />
                     <InputError message={form.errors.notice_expires_on} />
                 </div>

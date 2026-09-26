@@ -9,6 +9,7 @@ import Textarea from '@/components/shop/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { maskDocument, maskPhone } from '@/lib/mask';
 import { cn } from '@/lib/utils';
 import { formatPhone } from '@/lib/whatsapp';
 import { index, show, store, update } from '@/routes/customers';
@@ -35,7 +36,7 @@ export default function CustomerForm({
         name: customer?.name ?? '',
         phone: customer?.phone ? formatPhone(customer.phone) : '',
         notes: customer?.notes ?? '',
-        document: customer?.document ?? '',
+        document: customer?.document ? maskDocument(customer.document) : '',
         address: customer?.address ?? '',
     });
 
@@ -91,7 +92,7 @@ export default function CustomerForm({
                         inputMode="tel"
                         value={form.data.phone}
                         onChange={(event) =>
-                            form.setData('phone', event.target.value)
+                            form.setData('phone', maskPhone(event.target.value))
                         }
                         placeholder={t('customers.form.whatsappPlaceholder')}
                         className="h-11"
@@ -135,7 +136,10 @@ export default function CustomerForm({
                                 inputMode="numeric"
                                 value={form.data.document}
                                 onChange={(event) =>
-                                    form.setData('document', event.target.value)
+                                    form.setData(
+                                        'document',
+                                        maskDocument(event.target.value),
+                                    )
                                 }
                                 placeholder={t(
                                     'customers.form.documentPlaceholder',

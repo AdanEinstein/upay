@@ -3,6 +3,7 @@ import { CameraIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import DateInput from '@/components/date-input';
 import InputError from '@/components/input-error';
 import MoneyInput from '@/components/money-input';
 import PhotoInput from '@/components/photo-input';
@@ -107,14 +108,12 @@ export default function ExpenseForm({ expense }: { expense: Expense | null }) {
                 </div>
                 <div className="flex flex-col gap-1.5">
                     <Label htmlFor="due-date">{t('expenses.form.date')}</Label>
-                    <Input
+                    <DateInput
                         id="due-date"
-                        type="date"
                         value={form.data.due_date}
-                        onChange={(event) =>
-                            form.setData('due_date', event.target.value)
+                        onValueChange={(value) =>
+                            form.setData('due_date', value)
                         }
-                        className="h-11"
                     />
                     <InputError message={form.errors.due_date} />
                 </div>
