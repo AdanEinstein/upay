@@ -6,11 +6,11 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class RegisterController extends Controller
 {
@@ -21,7 +21,11 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function store(RegisterRequest $request): RedirectResponse
+    /**
+     * A full page load into the new organization (not an Inertia visit), so the
+     * page head links its manifest and the app installs scoped to the store.
+     */
+    public function store(RegisterRequest $request): SymfonyResponse
     {
         $plan = Plan::query()->where('slug', $request->validated('plan'))->firstOrFail();
 
@@ -46,6 +50,6 @@ class RegisterController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return to_route('onboarding.show', ['organization' => $user->organization->slug]);
+        return Inertia::location(route('onboarding.show', ['organization' => $user->organization->slug]));
     }
 }

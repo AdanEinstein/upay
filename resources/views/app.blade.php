@@ -113,12 +113,12 @@
 
         <link rel="icon" href="/favicon.ico" sizes="64x64">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        {{-- Only organization pages are installable: the app opens straight into its store. --}}
         @if ($tenant)
             <link rel="apple-touch-icon" href="{{ route('app-icon', ['organization' => $tenant->slug, 'variant' => 'apple', 'v' => (new \App\Support\AppIcon($tenant))->version()]) }}">
             <link rel="manifest" href="{{ route('app-manifest', ['organization' => $tenant->slug]) }}">
         @else
             <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-            <link rel="manifest" href="/manifest.webmanifest">
         @endif
         <meta name="theme-color" content="{{ $isHexColor($tenant?->accent_color) ? $tenant->accent_color : '#3667f6' }}">
 
