@@ -70,6 +70,7 @@ void createInertiaApp({
             case name === 'welcome':
             case name === 'onboarding':
             case name === 'plan-limit':
+            case name === 'error':
             case name.startsWith('public/'):
                 return null;
             case SHOP_PAGES.some(

@@ -25,23 +25,26 @@ class ErrorOccurrenceRecorder
      * Identical occurrences (same status + exception class + path) within a
      * 60s window collapse into one row, so a bot hammering a 404 or a
      * recurring 500 can't flood the table.
+     *
+     * Returns the new row's id, or null when nothing was stored (status not
+     * tracked, deduplicated, or the insert failed).
      */
-    public static function record(Request $request, Throwable $exception, int $status): void
+    public static function record(Request $request, Throwable $exception, int $status): ?int
     {
         if (! in_array($status, self::RECORDED_STATUSES, true)) {
-            return;
+            return null;
         }
 
         try {
             $fingerprint = 'error-occurrence:'.md5($status.'|'.$exception::class.'|'.$request->path());
 
             if (! Cache::add($fingerprint, true, 60)) {
-                return;
+                return null;
             }
 
             $user = $request->user('web');
 
-            ErrorOccurrence::query()->create([
+            return ErrorOccurrence::query()->create([
                 'organization_id' => Tenant::id() ?? $user?->organization_id,
                 'user_id' => $user?->id,
                 'status' => $status,
@@ -50,9 +53,11 @@ class ErrorOccurrenceRecorder
                 'exception_class' => $exception::class,
                 'message' => $exception->getMessage(),
                 'trace' => Str::limit($exception->getTraceAsString(), 20000, ''),
-            ]);
+            ])->id;
         } catch (Throwable $e) {
             Log::error('Failed to record error occurrence', ['exception' => $e]);
+
+            return null;
         }
     }
 }

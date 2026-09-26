@@ -6,12 +6,15 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetOrganizationContext;
 use App\Http\Middleware\SetUserLocale;
 use App\Support\ErrorOccurrenceRecorder;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Router;
+use Inertia\ExceptionResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -68,8 +71,33 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request): Response {
-            ErrorOccurrenceRecorder::record($request, $exception, $response->getStatusCode());
+            $status = $response->getStatusCode();
+            $errorId = ErrorOccurrenceRecorder::record($request, $exception, $status);
 
-            return $response;
+            // Friendly Inertia error page instead of Laravel's raw one.
+            // `testing` keeps the raw response so the suite isn't affected;
+            // `local` keeps it only for 500s, which need Ignition's trace.
+            if (! in_array($status, [401, 403, 404, 419, 429, 500, 503], true)
+                || $request->is('api/*')
+                || $request->expectsJson()
+                || app()->environment('testing')
+                || (app()->environment('local') && $status === 500)) {
+                return $response;
+            }
+
+            $organization = $request->route('organization');
+
+            return (new ExceptionResponse($exception, $request, $response, app(Router::class), app(Kernel::class)))
+                ->render('error', [
+                    'status' => $status,
+                    'loginUrl' => match (true) {
+                        is_string($organization) => route('login', ['organization' => $organization]),
+                        $request->is('super-admin', 'super-admin/*') => route('super-admin.login'),
+                        default => null,
+                    },
+                    'errorId' => $errorId,
+                ])
+                ->withSharedData()
+                ->toResponse($request);
         });
     })->create();

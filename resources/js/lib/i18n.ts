@@ -5,6 +5,7 @@ import adminEnUS from '@/lang/en-US/admin.json';
 import authEnUS from '@/lang/en-US/auth.json';
 import commonEnUS from '@/lang/en-US/common.json';
 import dashboardEnUS from '@/lang/en-US/dashboard.json';
+import errorsEnUS from '@/lang/en-US/errors.json';
 import navEnUS from '@/lang/en-US/nav.json';
 import onboardingEnUS from '@/lang/en-US/onboarding.json';
 import publicEnUS from '@/lang/en-US/public.json';
@@ -16,6 +17,7 @@ import adminPtBR from '@/lang/pt-BR/admin.json';
 import authPtBR from '@/lang/pt-BR/auth.json';
 import commonPtBR from '@/lang/pt-BR/common.json';
 import dashboardPtBR from '@/lang/pt-BR/dashboard.json';
+import errorsPtBR from '@/lang/pt-BR/errors.json';
 import navPtBR from '@/lang/pt-BR/nav.json';
 import onboardingPtBR from '@/lang/pt-BR/onboarding.json';
 import publicPtBR from '@/lang/pt-BR/public.json';
@@ -39,6 +41,7 @@ export const resources = {
         welcome: welcomePtBR,
         onboarding: onboardingPtBR,
         shop: shopPtBR,
+        errors: errorsPtBR,
     },
     'en-US': {
         common: commonEnUS,
@@ -52,6 +55,7 @@ export const resources = {
         welcome: welcomeEnUS,
         onboarding: onboardingEnUS,
         shop: shopEnUS,
+        errors: errorsEnUS,
     },
 } as const;
 

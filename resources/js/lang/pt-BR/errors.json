@@ -1,0 +1,30 @@
+{
+    "status": "Erro {{status}}",
+    "notFound": {
+        "title": "Página não encontrada",
+        "description": "Verifique o endereço ou volte para a página anterior."
+    },
+    "forbidden": {
+        "title": "Acesso não permitido",
+        "description": "Você não tem permissão para acessar essa página. Entre novamente para continuar."
+    },
+    "sessionExpired": {
+        "title": "Sua sessão expirou",
+        "description": "Por segurança, você precisa entrar novamente para continuar."
+    },
+    "tooManyRequests": {
+        "title": "Muitas tentativas",
+        "description": "Você fez várias requisições em pouco tempo. Aguarde um instante e tente novamente."
+    },
+    "maintenance": {
+        "title": "Em manutenção",
+        "description": "Estamos fazendo uma manutenção rápida. Tente novamente em alguns minutos."
+    },
+    "default": {
+        "title": "Algo deu errado do nosso lado",
+        "description": "O erro já foi registrado. Tente novamente em alguns minutos."
+    },
+    "back": "Voltar",
+    "goToLogin": "Ir para o login",
+    "errorId": "Código do erro: #{{id}}"
+}

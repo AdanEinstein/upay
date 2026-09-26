@@ -1,0 +1,30 @@
+{
+    "status": "Error {{status}}",
+    "notFound": {
+        "title": "Page not found",
+        "description": "Check the address or go back to the previous page."
+    },
+    "forbidden": {
+        "title": "Access denied",
+        "description": "You don't have permission to access this page. Sign in again to continue."
+    },
+    "sessionExpired": {
+        "title": "Your session expired",
+        "description": "For your security, you need to sign in again to continue."
+    },
+    "tooManyRequests": {
+        "title": "Too many attempts",
+        "description": "You made several requests in a short time. Wait a moment and try again."
+    },
+    "maintenance": {
+        "title": "Under maintenance",
+        "description": "We're running a quick maintenance. Try again in a few minutes."
+    },
+    "default": {
+        "title": "Something went wrong on our end",
+        "description": "The error has been logged. Try again in a few minutes."
+    },
+    "back": "Go back",
+    "goToLogin": "Go to login",
+    "errorId": "Error code: #{{id}}"
+}
