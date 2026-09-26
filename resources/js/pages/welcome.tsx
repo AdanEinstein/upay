@@ -1,4 +1,4 @@
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
     ArrowRightIcon,
     ChartLineUpIcon,
@@ -65,10 +65,12 @@ export default function Welcome({ plans }: { plans: Plan[] }) {
             return;
         }
 
-        router.visit(
+        // A full page load, not an Inertia visit: the organization's page head
+        // links its manifest, so installing the app scopes it to the store.
+        window.location.assign(
             organization === SUPER_ADMIN_SLUG
-                ? superAdminLogin()
-                : login({ organization }),
+                ? superAdminLogin.url()
+                : login.url({ organization }),
         );
     }
 

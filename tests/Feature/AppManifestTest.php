@@ -20,6 +20,7 @@ test('the manifest carries the organization brand color without requiring a logi
         ->assertJsonPath('theme_color', '#16a34a')
         ->assertJsonPath('background_color', '#16a34a')
         ->assertJsonPath('start_url', "/{$organization->slug}/dashboard")
+        ->assertJsonPath('scope', "/{$organization->slug}/")
         ->assertJsonCount(3, 'icons')
         ->assertJsonPath('icons.2.purpose', 'maskable');
 
@@ -62,14 +63,14 @@ test('unknown organizations and icon variants are not found', function () {
     $this->get('/no-such-store/manifest.webmanifest')->assertNotFound();
 });
 
-test('tenant pages link the organization manifest and other pages the default one', function () {
+test('only tenant pages link a manifest, so the app always installs scoped to an organization', function () {
     $organization = Organization::factory()->create();
 
     $this->get(route('login', ['organization' => $organization->slug]))
         ->assertSee('href="'.route('app-manifest', ['organization' => $organization->slug]).'"', false);
 
-    $this->get(route('home'))
-        ->assertSee('href="/manifest.webmanifest"', false);
+    $this->get(route('home'))->assertDontSee('rel="manifest"', false);
+    $this->get(route('register'))->assertDontSee('rel="manifest"', false);
 });
 
 test('the offline page is branded with the organization colors without requiring a login', function () {

@@ -48,6 +48,13 @@ test('a merchant can register a store and is sent to onboarding', function () {
         ->and($organization->subscription->price_cents)->toBe(4990);
 });
 
+test('registering from the app loads onboarding as a full page so the store manifest is linked', function () {
+    $this->withHeaders(['X-Inertia' => 'true'])
+        ->post(route('register.store'), registrationPayload())
+        ->assertStatus(409)
+        ->assertHeader('X-Inertia-Location', route('onboarding.show', ['organization' => 'loja-da-ana']));
+});
+
 test('the slug gets a numeric suffix when taken or reserved', function () {
     Organization::factory()->create(['slug' => 'loja-da-ana']);
 
