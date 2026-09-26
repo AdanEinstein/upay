@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ContentSecurityPolicy;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetOrganizationContext;
@@ -58,6 +59,7 @@ return Application::configure(basePath: dirname(__DIR__))
             SetUserLocale::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            ContentSecurityPolicy::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

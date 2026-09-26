@@ -40,6 +40,14 @@ class Customer extends Model
     }
 
     /**
+     * Swap the public debt link token, invalidating the old link (e.g. after it leaked).
+     */
+    public function rotatePublicToken(): void
+    {
+        $this->forceFill(['public_token' => Str::random(40)])->save();
+    }
+
+    /**
      * Adds `balance_cents` (installments minus payments) to every row.
      *
      * @param  Builder<static>  $builder

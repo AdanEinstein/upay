@@ -231,7 +231,11 @@
             "cash": "paid now",
             "credit": "on credit",
             "cancelled": "cancelled",
-            "linkMessage": "Hi, {{name}}! Follow your purchases and payments here: {{link}}"
+            "linkMessage": "Hi, {{name}}! Follow your purchases and payments here: {{link}}",
+            "newLink": "Generate new link",
+            "newLinkTitle": "Generate a new link?",
+            "newLinkConfirm": "The current link will stop working. Anyone who already has it will need the new one.",
+            "newLinkAction": "Generate new link"
         }
     },
     "products": {

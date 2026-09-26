@@ -5,6 +5,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CatalogIdentityController;
 use App\Http\Controllers\CatalogNoticeController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerPublicLinkController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpensePaymentController;
 use App\Http\Controllers\FinanceController;
@@ -31,12 +32,14 @@ Route::get('payment-claims/{claim}/receipt', [PaymentClaimController::class, 're
 Route::get('receivables', ReceivableController::class)->name('receivables.index');
 
 Route::resource('customers', CustomerController::class)->except(['destroy']);
+Route::post('customers/{customer}/public-link', CustomerPublicLinkController::class)->name('customers.public-link.regenerate');
 
 Route::resource('products', ProductController::class)->except(['destroy']);
 Route::post('products/{product}/stock', [ProductStockController::class, 'store'])->name('products.stock.store');
 
 Route::get('finance', FinanceController::class)->name('finance.index');
 Route::resource('expenses', ExpenseController::class)->except(['show', 'destroy']);
+Route::get('expenses/{expense}/receipt', [ExpenseController::class, 'receipt'])->name('expenses.receipt');
 Route::post('expenses/{expense}/pay', ExpensePaymentController::class)->name('expenses.pay');
 Route::get('payables', PayableController::class)->name('payables.index');
 

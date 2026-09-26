@@ -83,3 +83,28 @@ test('customers of another organization are not reachable', function () {
     $this->actingAs($this->user)->get(shopRoute('customers.show', ['customer' => $foreign->id]))->assertNotFound();
     $this->actingAs($this->user)->put(shopRoute('customers.update', ['customer' => $foreign->id]), ['name' => 'x'])->assertNotFound();
 });
+
+test('regenerating the public link kills the old one', function () {
+    $customer = Customer::factory()->create(['organization_id' => $this->organization->id]);
+    $oldToken = $customer->public_token;
+
+    $this->actingAs($this->user)->post(shopRoute('customers.public-link.regenerate', ['customer' => $customer->id]))->assertRedirect();
+    Tenant::forget();
+
+    $newToken = $customer->fresh()->public_token;
+
+    expect($newToken)->not->toBe($oldToken)->toHaveLength(40);
+    $this->get(route('public.debt', $oldToken))->assertNotFound();
+    $this->get(route('public.debt', $newToken))->assertOk();
+});
+
+test('another store cannot regenerate a customer link', function () {
+    $customer = Customer::factory()->create(['organization_id' => $this->organization->id]);
+    $stranger = User::factory()->create();
+
+    $this->actingAs($stranger)
+        ->post(route('customers.public-link.regenerate', ['organization' => $stranger->organization->slug, 'customer' => $customer->id]))
+        ->assertNotFound();
+
+    expect($customer->fresh()->public_token)->toBe($customer->public_token);
+});

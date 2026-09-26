@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExpenseController extends Controller
 {
@@ -56,7 +57,7 @@ class ExpenseController extends Controller
                 'description' => $expense->description,
                 'recurring' => $expense->recurring,
                 'paid' => $expense->paid_at !== null,
-                'receiptUrl' => $expense->receipt_path ? Storage::url($expense->receipt_path) : null,
+                'receiptUrl' => $expense->receipt_path ? route('expenses.receipt', $expense) : null,
             ],
         ]);
     }
@@ -74,6 +75,13 @@ class ExpenseController extends Controller
         return to_route('expenses.index');
     }
 
+    public function receipt(Expense $expense): StreamedResponse
+    {
+        abort_unless($expense->receipt_path && Storage::disk('local')->exists($expense->receipt_path), 404);
+
+        return Storage::disk('local')->response($expense->receipt_path, null, ['X-Content-Type-Options' => 'nosniff']);
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -82,7 +90,7 @@ class ExpenseController extends Controller
         $attributes = $request->safe()->only(['amount_cents', 'category', 'due_date', 'description']) + ['recurring' => $request->boolean('recurring')];
 
         if ($request->hasFile('receipt')) {
-            $attributes['receipt_path'] = $request->file('receipt')->store('expenses/'.$request->user()->organization_id, 'public');
+            $attributes['receipt_path'] = $request->file('receipt')->store('expenses/'.$request->user()->organization_id, 'local');
         }
 
         return $attributes;

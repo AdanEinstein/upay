@@ -101,7 +101,7 @@ jobs:
           cat > .env.development <<EOF
           APP_NAME=Upay
           APP_ENV=development
-          APP_DEBUG=true
+          APP_DEBUG=false
           APP_KEY=${APP_KEY}
           APP_URL=${APP_URL}
 

@@ -7,6 +7,8 @@ use App\Models\Sale;
 use App\Models\User;
 use App\Support\Tenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
@@ -81,4 +83,21 @@ test('expense form validates category and stores a receipt', function () {
         ->assertSessionHasNoErrors();
 
     expect(Expense::query()->firstOrFail()->paid_at)->not->toBeNull();
+});
+
+test('expense receipt is stored privately and served only to its own store', function () {
+    Storage::fake('local');
+    Storage::fake('public');
+
+    $this->actingAs($this->user)->post(shopRoute('expenses.store'), ['amount_cents' => 100, 'category' => 'rent', 'due_date' => today()->toDateString(), 'description' => 'Aluguel', 'receipt' => UploadedFile::fake()->image('nota.png')])
+        ->assertSessionHasNoErrors();
+
+    $expense = Expense::query()->withoutTenant()->sole();
+    Storage::disk('local')->assertExists($expense->receipt_path);
+    expect(Storage::disk('public')->allFiles())->toBeEmpty();
+
+    $this->actingAs($this->user)->get(shopRoute('expenses.receipt', ['expense' => $expense->id]))->assertOk();
+
+    $stranger = User::factory()->create();
+    $this->actingAs($stranger)->get(route('expenses.receipt', ['organization' => $stranger->organization->slug, 'expense' => $expense->id]))->assertNotFound();
 });

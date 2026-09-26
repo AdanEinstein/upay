@@ -1,7 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { PencilSimpleIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import BottomSheet from '@/components/shop/bottom-sheet';
 import PageHeader from '@/components/shop/page-header';
 import ShareSheet from '@/components/shop/share-sheet';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { useFormat } from '@/hooks/use-format';
 import { useInitials } from '@/hooks/use-initials';
 import { formatPhone, publicDebtUrl } from '@/lib/whatsapp';
 import { edit, index } from '@/routes/customers';
+import { regenerate as regenerateLink } from '@/routes/customers/public-link';
 import { create as createSale, show as showSale } from '@/routes/sales';
 
 type Props = {
@@ -36,6 +38,7 @@ export default function ShowCustomer({ customer, sales }: Props) {
     const { money, shortDate, date } = useFormat();
     const getInitials = useInitials();
     const [sharing, setSharing] = useState<'charge' | 'link' | null>(null);
+    const [regenerating, setRegenerating] = useState(false);
     const link = publicDebtUrl(customer.publicToken);
 
     const kind = (sale: Props['sales'][number]) => {
@@ -131,6 +134,13 @@ export default function ShowCustomer({ customer, sales }: Props) {
                             {t('customers.detail.sendLink')}
                         </Button>
                     </div>
+                    <Button
+                        variant="ghost"
+                        className="text-muted-foreground h-9 text-[13px]"
+                        onClick={() => setRegenerating(true)}
+                    >
+                        {t('customers.detail.newLink')}
+                    </Button>
                 </div>
 
                 <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1">
@@ -192,6 +202,30 @@ export default function ShowCustomer({ customer, sales }: Props) {
                     },
                 ]}
             />
+
+            <BottomSheet
+                open={regenerating}
+                onOpenChange={setRegenerating}
+                title={t('customers.detail.newLinkTitle')}
+                description={t('customers.detail.newLinkConfirm')}
+            >
+                <Button
+                    size="lg"
+                    className="h-12 text-base"
+                    onClick={() =>
+                        router.post(
+                            regenerateLink.url({ customer: customer.id }),
+                            {},
+                            {
+                                preserveScroll: true,
+                                onSuccess: () => setRegenerating(false),
+                            },
+                        )
+                    }
+                >
+                    {t('customers.detail.newLinkAction')}
+                </Button>
+            </BottomSheet>
         </>
     );
 }

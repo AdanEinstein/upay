@@ -231,7 +231,11 @@
             "cash": "à vista",
             "credit": "fiado",
             "cancelled": "cancelada",
-            "linkMessage": "Olá, {{name}}! Aqui você acompanha suas compras e pagamentos: {{link}}"
+            "linkMessage": "Olá, {{name}}! Aqui você acompanha suas compras e pagamentos: {{link}}",
+            "newLink": "Gerar novo link",
+            "newLinkTitle": "Gerar novo link?",
+            "newLinkConfirm": "O link atual deixa de funcionar. Quem já recebeu vai precisar do novo.",
+            "newLinkAction": "Gerar novo link"
         }
     },
     "products": {
