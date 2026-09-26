@@ -52,7 +52,7 @@ class AuthenticationTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('logout', ['organization' => $user->organization->slug]));
 
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('login', ['organization' => $user->organization->slug]));
 
         $this->assertGuest();
     }

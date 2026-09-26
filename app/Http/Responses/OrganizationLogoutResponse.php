@@ -8,6 +8,6 @@ class OrganizationLogoutResponse implements LogoutResponseContract
 {
     public function toResponse($request): mixed
     {
-        return redirect()->route('home');
+        return redirect()->route('login', ['organization' => $request->route('organization')]);
     }
 }
