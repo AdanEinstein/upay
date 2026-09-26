@@ -45,6 +45,20 @@ test('choosing an accent color derives the whole brand palette', function () {
         ->assertSessionHasErrors('accent_color');
 });
 
+test('picking a new accent color tells the merchant when the installed app follows', function () {
+    $this->actingAs($this->user)
+        ->post(shopRoute('catalog.identity.update'), ['name' => 'Loja da Ana', 'accent_color' => '#16a34a'])
+        ->assertInertiaFlash('toast.message', 'O app instalado muda para a nova cor na próxima vez que for aberto. Pode levar até 1 dia, e o celular pode pedir para confirmar.');
+});
+
+test('keeping the accent color does not mention the installed app', function () {
+    $this->organization->update(['accent_color' => '#16a34a']);
+
+    $this->actingAs($this->user)
+        ->post(shopRoute('catalog.identity.update'), ['name' => 'Loja da Ana', 'accent_color' => '#16a34a'])
+        ->assertInertiaFlashMissing('toast');
+});
+
 test('an expired notice is not live', function () {
     Tenant::use($this->organization);
     $settings = ShopSetting::current();
