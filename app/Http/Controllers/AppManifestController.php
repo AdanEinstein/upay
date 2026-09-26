@@ -12,7 +12,8 @@ use Illuminate\View\View;
  * Web app manifest, icons and offline page per organization, so the installed
  * app carries the store's brand colors. Public on purpose: browsers fetch the
  * manifest and its icons without cookies, and the service worker caches the
- * offline page whatever the session state.
+ * offline page whatever the session state. The app is scoped to the
+ * organization's path, so the welcome page and other stores open outside it.
  */
 class AppManifestController extends Controller
 {
@@ -32,6 +33,7 @@ class AppManifestController extends Controller
             'name' => 'Upay',
             'short_name' => 'Upay',
             'start_url' => route('dashboard', ['organization' => $organization->slug], false),
+            'scope' => "/{$organization->slug}/",
             'display' => 'standalone',
             'lang' => 'pt-BR',
             'background_color' => $icon->background(),

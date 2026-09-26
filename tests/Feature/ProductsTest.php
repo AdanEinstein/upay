@@ -74,6 +74,14 @@ test('at most four photos per product', function () {
         ->assertSessionHasErrors('photos');
 });
 
+test('accepts phone-sized photos up to 10 MB', function () {
+    $this->actingAs($this->user)->post(shopRoute('products.store'), ['name' => 'X', 'price_cents' => 100, 'photos' => [UploadedFile::fake()->image('a.jpg')->size(8000)]])
+        ->assertSessionHasNoErrors();
+
+    $this->actingAs($this->user)->post(shopRoute('products.store'), ['name' => 'Y', 'price_cents' => 100, 'photos' => [UploadedFile::fake()->image('b.jpg')->size(10241)]])
+        ->assertSessionHasErrors('photos.0');
+});
+
 test('restocking a variant raises both the variant and the product', function () {
     $product = Product::factory()->create(['organization_id' => $this->organization->id, 'stock_qty' => 4]);
     $variant = ProductVariant::factory()->create(['product_id' => $product->id, 'stock_qty' => 4]);

@@ -24,7 +24,7 @@ class OnboardingRequest extends FormRequest
             'logo' => ['nullable', 'image', 'max:1024'],
             'product_name' => ['nullable', 'string', 'max:255'],
             'product_price_cents' => ['nullable', 'required_with:product_name', 'integer', 'min:0', 'max:99999999'],
-            'product_photo' => ['nullable', 'image', 'max:2048'],
+            'product_photo' => ['nullable', 'image', 'max:10240'],
             ...$this->pixKeyRules(),
         ];
     }

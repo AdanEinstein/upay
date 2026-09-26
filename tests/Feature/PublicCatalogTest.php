@@ -34,6 +34,7 @@ it('serves the published catalog without login and defers the products', functio
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/catalog')
+            ->where('store.slug', 'loja-da-ana')
             ->where('store.name', 'Loja da Ana')
             ->missing('products')
             ->loadDeferredProps(fn (Assert $reload) => $reload

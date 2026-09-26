@@ -11,7 +11,9 @@ import {
     SheetTitle,
 } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { currentOrganization } from '@/lib/organization';
 import { cn } from '@/lib/utils';
+import { appManifest } from '@/routes';
 
 type InstallEvent = Event & { prompt: () => Promise<unknown> };
 
@@ -31,6 +33,22 @@ if (typeof window !== 'undefined') {
     });
 }
 
+// Inertia visits keep the <head> of the first page load, so the manifest the
+// browser would install may belong to another page. Only offer the install
+// when it is this organization's, which scopes the app to the store.
+function linksOrganizationManifest(): boolean {
+    const organization = currentOrganization();
+    const href = document.querySelector<HTMLLinkElement>(
+        'link[rel="manifest"]',
+    )?.href;
+
+    return (
+        organization !== '' &&
+        href !== undefined &&
+        new URL(href).pathname === appManifest.url({ organization })
+    );
+}
+
 function isSnoozed(): boolean {
     try {
         return Number(localStorage.getItem(SNOOZE_KEY)) > Date.now();
@@ -45,7 +63,10 @@ export default function InstallPrompt() {
     const [event, setEvent] = useState<InstallEvent | null>(null);
 
     useEffect(() => {
-        const sync = () => setEvent(isSnoozed() ? null : deferred);
+        const sync = () =>
+            setEvent(
+                isSnoozed() || !linksOrganizationManifest() ? null : deferred,
+            );
 
         sync();
         window.addEventListener(READY_EVENT, sync);
